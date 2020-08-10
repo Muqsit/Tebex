@@ -1,0 +1,10 @@
+# Tebex Configuration
+secret: ""
+
+# Number of concurrent calls that can be requested
+worker-limit: 2
+
+# Sub-commands to disable. You may want to disable "secret" sub-command when running in production
+# Example to disable "tbx secret" and "tbx info":
+# disabled-sub-commands: [secret, info]
+disabled-sub-commands: []
