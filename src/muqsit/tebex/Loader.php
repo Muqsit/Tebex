@@ -13,6 +13,7 @@ use muqsit\tebex\thread\response\TebexResponseHandler;
 use muqsit\tebex\thread\ssl\SSLConfiguration;
 use pocketmine\command\PluginCommand;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\MainLogger;
 
 final class Loader extends PluginBase{
 
@@ -69,7 +70,7 @@ final class Loader extends PluginBase{
 		/** @var TebexInformation|TebexException $result */
 		$result = null;
 
-		$api = new TebexAPI($this->getLogger(), $secret, SSLConfiguration::recommended(), $this->worker_limit);
+		$api = new TebexAPI(MainLogger::getLogger(), $secret, SSLConfiguration::recommended(), $this->worker_limit);
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }
@@ -98,7 +99,11 @@ final class Loader extends PluginBase{
 		$this->information = $information;
 		$this->handler = new TebexHandler($this);
 
-		$this->command->setExecutor(new TebexCommandExecutor($this, $this->handler, $this->getConfig()->get("disabled-sub-commands", [])));
+		$executor = new TebexCommandExecutor($this, $this->handler);
+		foreach($this->getConfig()->get("disabled-sub-commands", []) as $disabled_sub_command){
+			$executor->unregisterSubCommand($disabled_sub_command);
+		}
+		$this->command->setExecutor($executor);
 
 		$account = $this->information->getAccount();
 		$server = $this->information->getServer();
