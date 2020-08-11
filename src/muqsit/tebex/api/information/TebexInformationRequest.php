@@ -20,6 +20,23 @@ final class TebexInformationRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		account: array{
+	 * 			id: int,
+	 * 			domain: string,
+	 * 			name: string,
+	 * 			currency: array{iso_4217: string, symbol: string},
+	 * 			online_mode: bool,
+	 * 			game_type: string,
+	 * 			log_events: bool
+	 * 		},
+	 * 		server: array{id: int, name: string}
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		["account" => $account, "server" => $server] = $response;
 		return new TebexInformation(

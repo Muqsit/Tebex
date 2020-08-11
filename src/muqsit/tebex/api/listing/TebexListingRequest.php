@@ -22,6 +22,22 @@ final class TebexListingRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		categories: array<array{
+	 * 			packages: array,
+	 * 			subcategories: array<array{packages: array, id: int, order: int, name: string, gui_item: string|int}>,
+	 * 			id: int,
+	 * 			order: int,
+	 * 			name: string,
+	 * 			gui_item: string|int,
+	 * 			only_subcategories: bool
+	 * 		}>
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$categories = [];
 		foreach($response["categories"] as $entry){

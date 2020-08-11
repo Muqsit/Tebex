@@ -15,6 +15,7 @@ abstract class TebexPOSTRequest implements TebexRequest{
 		$curl_opts[CURLOPT_POST] = true;
 		$curl_opts[CURLOPT_CUSTOMREQUEST] = "POST";
 		$curl_opts[CURLOPT_POSTFIELDS] = $data;
+		assert(is_array($curl_opts[CURLOPT_HTTPHEADER]));
 		array_push($curl_opts[CURLOPT_HTTPHEADER],
 			"Content-Type: application/json",
 			"Content-Length: " . strlen($data)

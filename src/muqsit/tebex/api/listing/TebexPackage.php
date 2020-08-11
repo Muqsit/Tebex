@@ -13,6 +13,16 @@ class TebexPackage implements Sortable{
 	/**
 	 * @param array<string, mixed> $response
 	 * @return static
+	 *
+	 * @phpstan-param array{
+	 * 		id: int,
+	 * 		order: int,
+	 * 		name: string,
+	 * 		price: string,
+	 * 		sale: array{active: bool, discount: string},
+	 * 		image: string|false,
+	 * 		gui_item: string|int
+	 * } $response
 	 */
 	public static function fromTebexData(array $response) : self{
 		return new static(

@@ -16,13 +16,42 @@ final class TebexPackage implements TebexResponse{
 	 * @return self
 	 */
 	public static function fromTebexResponse(array $data) : self{
-		$category = $data["category"];
+		/**
+		 * @phpstan-var array{
+		 * 		category: array{id: int, name: string},
+		 * 		servers: array{id: int, name: string},
+		 * 		id: int,
+		 * 		name: string,
+		 * 		image: string|false,
+		 * 		price: float,
+		 * 		expiry_length: int,
+		 * 		expiry_period: string,
+		 * 		type: string,
+		 * 		global_limit: int,
+		 * 		global_limit_period: string,
+		 * 		user_limit: int,
+		 * 		user_limit_period: string,
+		 * 		required_packages: int[],
+		 * 		require_any: bool,
+		 * 		create_giftcard: bool,
+		 * 		show_until: int|false,
+		 * 		gui_item: string,
+		 * 		disabled: bool,
+		 * 		disable_quantity: bool,
+		 * 		custom_price: bool,
+		 * 		choose_server: bool,
+		 * 		limit_expires: bool,
+		 * 		inherit_commands: bool,
+		 * 		variable_giftcard: bool
+		 * } $data
+		 */
 
 		$servers = [];
 		foreach($data["servers"] as ["id" => $id, "name" => $name]){
 			$servers[] = new TebexPackageServer($id, $name);
 		}
 
+		$category = $data["category"];
 		return new self(
 			$data["id"],
 			$data["name"],

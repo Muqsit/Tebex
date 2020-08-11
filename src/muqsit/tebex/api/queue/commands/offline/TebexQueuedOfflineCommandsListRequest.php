@@ -21,10 +21,25 @@ final class TebexQueuedOfflineCommandsListRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array<string, mixed> $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		commands: array<array{
+	 * 			id: int,
+	 * 			player: array<string, mixed>,
+	 * 			command: string,
+	 * 			payment: int,
+	 * 			package: int,
+	 * 			conditions: array{delay: int}
+	 * 		}>,
+	 * 		meta: array{limited: bool}
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$commands = [];
 		foreach($response["commands"] as $cmd){
-			$cmd["player"]["id"] = (int) $cmd["player"]["id"];
 			$commands[] = new TebexQueuedOfflineCommand(
 				$cmd["id"],
 				$cmd["command"],

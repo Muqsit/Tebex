@@ -20,6 +20,10 @@ final class TebexPackagesRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array<string, mixed>[] $response
+	 * @return TebexResponse
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$packages = [];
 		foreach($response as $package_response){

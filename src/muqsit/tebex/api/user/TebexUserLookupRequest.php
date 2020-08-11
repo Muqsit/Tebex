@@ -27,6 +27,26 @@ final class TebexUserLookupRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		payments: array<array{txn_id: string, time: int, price: float, currency: string, status: int}>,
+	 * 		player: array{
+	 * 			id: string,
+	 * 			created_at: string,
+	 * 			updated_at: string,
+	 * 			cache_expire: string,
+	 * 			username: string,
+	 * 			meta: string,
+	 * 			plugin_username_id: int
+	 * 		},
+	 * 		banCount: int,
+	 * 		chargebackRate: int,
+	 * 		purchaseTotals: array<string, float>
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$payments = [];
 		foreach($response["payments"] as $payment){

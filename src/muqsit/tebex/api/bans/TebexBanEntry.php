@@ -13,16 +13,26 @@ final class TebexBanEntry implements TebexResponse{
 	 * @return self
 	 */
 	public static function fromTebexResponse(array $response) : self{
-		$user = $response["user"] ?? null;
+		/**
+		 * @phpstan-var array{
+		 * 		user : ?array{ign: string, uuid: string},
+		 * 		id: int,
+		 * 		time: string,
+		 * 		ip: string,
+		 * 		payment_email: string,
+		 * 		reason: string
+		 * } $response
+		 */
+
 		return new TebexBanEntry(
 			$response["id"],
 			$response["time"],
 			$response["ip"],
 			$response["payment_email"],
 			$response["reason"],
-			$user !== null ? new TebexBanEntryUser(
-				$user["ign"],
-				$user["uuid"]
+			isset($response["user"]) ? new TebexBanEntryUser(
+				$response["user"]["ign"],
+				$response["user"]["uuid"]
 			) : null
 		);
 	}

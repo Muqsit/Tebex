@@ -20,6 +20,10 @@ final class TebexBanListRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array{data: array} $response
+	 * @return TebexResponse
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$entries = [];
 		foreach($response["data"] as $entry){

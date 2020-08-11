@@ -38,6 +38,12 @@ final class TebexCheckoutRequest extends TebexPOSTRequest{
 		return "";
 	}
 
+	/**
+	 * @param array $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{url: string, expires: string} $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		return new TebexCheckoutInfo($response["url"], $response["expires"]);
 	}

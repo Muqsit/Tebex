@@ -35,6 +35,10 @@ final class TebexBanRequest extends TebexPOSTRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array{data: array} $response
+	 * @return TebexResponse
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		return TebexBanEntry::fromTebexResponse($response["data"]);
 	}

@@ -20,6 +20,21 @@ final class TebexSalesRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array<string, mixed> $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		data: array<array{
+	 * 			id: int,
+	 * 			effective: array{type: string, packages: int[], categories: int[]},
+	 * 			discount: array{type: string, percentage: int, value: int},
+	 * 			start: int,
+	 * 			expire: int,
+	 * 			order: int
+	 * 		}>
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		$sales = [];
 		foreach($response["data"] as [

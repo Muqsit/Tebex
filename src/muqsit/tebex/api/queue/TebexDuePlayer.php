@@ -11,7 +11,8 @@ final class TebexDuePlayer{
 	 * @return self
 	 */
 	public static function fromTebexResponse(array $data) : self{
-		return new self($data["id"], $data["name"], $data["uuid"]);
+		/** @phpstan-var array{id: string|int, name: string, uuid: string} $data */
+		return new self((int) $data["id"], $data["name"], $data["uuid"]);
 	}
 
 	/** @var int */

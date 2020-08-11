@@ -113,9 +113,10 @@ final class TebexThread extends Thread{
 		$this->registerClassLoader();
 		$default_curl_opts = $this->getDefaultCurlOptions();
 		while($this->running){
-			while(($request = $this->incoming->shift()) !== null){
+			while(($request_serialized = $this->incoming->shift()) !== null){
+				assert(is_string($request_serialized));
 				/** @var TebexRequestHolder $request_holder */
-				$request_holder = igbinary_unserialize($request);
+				$request_holder = igbinary_unserialize($request_serialized);
 
 				$request = $request_holder->request;
 
@@ -131,25 +132,36 @@ final class TebexThread extends Thread{
 					curl_setopt_array($ch, $curl_opts);
 
 					$body = curl_exec($ch);
+
+					/** @var float $latency */
 					$latency = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
 
 					if(!is_string($body)){
 						$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException("cURL request failed {" . curl_errno($ch) . "): " . curl_error($ch)));
 					}else{
+						/** @var int $response_code */
 						$response_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 						if($response_code !== $request->getExpectedResponseCode()){
-							$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException(json_decode($body, true)["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}"));
+							try{
+								/** @var array{error_message: string} $message_body */
+								$message_body = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+							}catch(JsonException $e){
+								$message_body = [];
+							}
+							$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($message_body["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}"));
 						}else{
 							$exception = null;
 							$result = null;
 							try{
+								/** @phpstan-var array<string, mixed> $result */
 								$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 							}catch(JsonException $e){
 								$exception = $e;
 							}
-							if($exception !== null){
-								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($exception->getMessage()));
-							}elseif(isset($result["error_code"])){
+							if($result === null){
+								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($exception !== null ? $exception->getMessage() : ""));
+							}elseif(isset($result["error_code"], $result["error_message"])){
+								assert(is_string($result["error_message"]));
 								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($result["error_message"]));
 							}else{
 								$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, $request->createResponse($result));
@@ -190,9 +202,11 @@ final class TebexThread extends Thread{
 	 * @return Generator<float>
 	 */
 	public function collectPending() : Generator{
-		while(($holder = $this->outgoing->shift()) !== null){
+		while(($holder_serialized = $this->outgoing->shift()) !== null){
+			assert(is_string($holder_serialized));
+
 			/** @var TebexResponseHolder<TebexResponse> $holder */
-			$holder = igbinary_unserialize($holder);
+			$holder = igbinary_unserialize($holder_serialized);
 
 			$holder->trigger(self::$handlers[$holder->handler_id]);
 			unset(self::$handlers[$holder->handler_id]);

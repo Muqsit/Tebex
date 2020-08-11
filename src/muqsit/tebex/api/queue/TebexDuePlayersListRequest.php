@@ -20,6 +20,15 @@ final class TebexDuePlayersListRequest extends TebexGETRequest{
 		return 200;
 	}
 
+	/**
+	 * @param array<string, mixed> $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-param array{
+	 * 		meta: array{execute_offline: bool, next_check: int, more: bool},
+	 * 		players: array<array<string, mixed>>
+	 * } $response
+	 */
 	public function createResponse(array $response) : TebexResponse{
 		["meta" => $meta, "players" => $players_list] = $response;
 
