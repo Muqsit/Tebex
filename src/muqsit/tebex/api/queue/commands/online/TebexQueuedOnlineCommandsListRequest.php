@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\queue\commands\online;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexQueuedOnlineCommandsListRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexQueuedOnlineCommandsInfo>
+ */
+final class TebexQueuedOnlineCommandsListRequest extends TebexGETRequest{
 
 	/** @var int */
 	private $player_id;

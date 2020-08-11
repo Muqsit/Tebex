@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\bans;
 
 use muqsit\tebex\api\TebexPOSTRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexBanRequest extends TebexPOSTRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexPOSTRequest<TebexBanEntry>
+ */
+final class TebexBanRequest extends TebexPOSTRequest{
 
 	/** @var string */
 	private $username_or_uuid;

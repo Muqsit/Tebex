@@ -88,6 +88,12 @@ final class TebexDueOfflineCommandsHandler{
 		}
 	}
 
+	/**
+	 * @param TebexQueuedOfflineCommand $command
+	 * @param Closure $callback
+	 *
+	 * @phpstan-param Closure(bool) : void $callback
+	 */
 	private function executeCommand(TebexQueuedOfflineCommand $command, Closure $callback) : void{
 		$delay = $command->getConditions()->getDelay();
 		if($delay > 0){

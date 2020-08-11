@@ -30,6 +30,14 @@ abstract class BaseTebexAPI{
 		$this->pool->start();
 	}
 
+	/**
+	 * @param TebexRequest $request
+	 * @param TebexResponseHandler $callback
+	 *
+	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+	 * @phpstan-param TebexRequest<TTebexResponse> $request
+	 * @phpstan-param TebexResponseHandler<TTebexResponse> $callback
+	 */
 	public function request(TebexRequest $request, TebexResponseHandler $callback) : void{
 		$this->pool->getLeastBusyWorker()->push($request, $callback);
 	}

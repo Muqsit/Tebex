@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\package;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexPackagesRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexPackages>
+ */
+final class TebexPackagesRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/packages";

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\queue\commands;
 
+use muqsit\tebex\api\EmptyTebexResponse;
 use muqsit\tebex\api\TebexDELETERequest;
+use muqsit\tebex\api\TebexResponse;
 
+/**
+ * @phpstan-extends TebexDELETERequest<EmptyTebexResponse>
+ */
 final class TebexDeleteCommandRequest extends TebexDELETERequest{
 
 	/** @var int[] */
@@ -30,5 +35,9 @@ final class TebexDeleteCommandRequest extends TebexDELETERequest{
 		return http_build_query([
 			"ids" => $this->command_ids
 		]);
+	}
+
+	public function createResponse(array $response) : TebexResponse{
+		return EmptyTebexResponse::instance();
 	}
 }

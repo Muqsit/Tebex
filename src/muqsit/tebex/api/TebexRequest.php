@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api;
 
+/**
+ * @phpstan-template TTebexResponse of TebexResponse
+ */
 interface TebexRequest{
 
 	/**
@@ -30,4 +33,15 @@ interface TebexRequest{
 	 * @return int
 	 */
 	public function getExpectedResponseCode() : int;
+
+	/**
+	 * Creates a response object out of JSON formatted response
+	 * data obtained from the API.
+	 *
+	 * @param mixed[] $response
+	 * @return TebexResponse
+	 *
+	 * @phpstan-return TTebexResponse
+	 */
+	public function createResponse(array $response) : TebexResponse;
 }

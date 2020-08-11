@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\bans;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexBanListRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexBanList>
+ */
+final class TebexBanListRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/bans";

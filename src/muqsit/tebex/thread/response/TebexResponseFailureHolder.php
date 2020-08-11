@@ -6,6 +6,10 @@ namespace muqsit\tebex\thread\response;
 
 use muqsit\tebex\thread\TebexException;
 
+/**
+ * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+ * @phpstan-extends TebexResponseHolder<TTebexResponse>
+ */
 final class TebexResponseFailureHolder extends TebexResponseHolder{
 
 	/** @var TebexException */

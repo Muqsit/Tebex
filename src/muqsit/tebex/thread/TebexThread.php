@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\thread;
 
+use muqsit\tebex\api\TebexResponse;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\Thread;
 use function is_string;
 use Logger;
 use muqsit\tebex\api\TebexRequest;
-use muqsit\tebex\api\EmptyTebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 use muqsit\tebex\TebexAPI;
 use muqsit\tebex\thread\request\TebexRequestHolder;
 use muqsit\tebex\thread\response\TebexResponseFailureHolder;
@@ -24,7 +23,11 @@ use Threaded;
 
 final class TebexThread extends Thread{
 
-	/** @var TebexResponseHandler[] */
+	/**
+	 * @var TebexResponseHandler[]
+	 *
+	 * @phpstan-var TebexResponseHandler<\muqsit\tebex\api\TebexResponse>[]
+	 */
 	private static $handlers = [];
 
 	/** @var int */
@@ -69,6 +72,14 @@ final class TebexThread extends Thread{
 		$this->secret = $secret;
 	}
 
+	/**
+	 * @param TebexRequest $request
+	 * @param TebexResponseHandler $handler
+	 *
+	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+	 * @phpstan-param TebexRequest<TTebexResponse> $request
+	 * @phpstan-param TebexResponseHandler<TTebexResponse> $handler
+	 */
 	public function push(TebexRequest $request, TebexResponseHandler $handler) : void{
 		$handler_id = ++self::$handler_ids;
 		$this->incoming[] = igbinary_serialize(new TebexRequestHolder($request, $handler_id));
@@ -128,7 +139,7 @@ final class TebexThread extends Thread{
 						$response_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 						if($response_code !== $request->getExpectedResponseCode()){
 							$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException(json_decode($body, true)["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}"));
-						}elseif($request instanceof RespondingTebexRequest){
+						}else{
 							$exception = null;
 							$result = null;
 							try{
@@ -143,8 +154,6 @@ final class TebexThread extends Thread{
 							}else{
 								$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, $request->createResponse($result));
 							}
-						}else{
-							$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, EmptyTebexResponse::instance());
 						}
 					}
 
@@ -182,7 +191,7 @@ final class TebexThread extends Thread{
 	 */
 	public function collectPending() : Generator{
 		while(($holder = $this->outgoing->shift()) !== null){
-			/** @var TebexResponseHolder $holder */
+			/** @var TebexResponseHolder<TebexResponse> $holder */
 			$holder = igbinary_unserialize($holder);
 
 			$holder->trigger(self::$handlers[$holder->handler_id]);

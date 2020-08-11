@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\thread\response;
 
+/**
+ * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+ */
 abstract class TebexResponseHolder{
 
 	/** @var int */
@@ -17,5 +20,10 @@ abstract class TebexResponseHolder{
 		$this->latency = $latency;
 	}
 
+	/**
+	 * @param TebexResponseHandler $handler
+	 *
+	 * @phpstan-param TebexResponseHandler<TTebexResponse> $handler
+	 */
 	abstract public function trigger(TebexResponseHandler $handler) : void;
 }

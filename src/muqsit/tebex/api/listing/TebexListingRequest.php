@@ -6,10 +6,12 @@ namespace muqsit\tebex\api\listing;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 use muqsit\tebex\api\utils\TebexGUIItem;
 
-final class TebexListingRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexListingInfo>
+ */
+final class TebexListingRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/listing";

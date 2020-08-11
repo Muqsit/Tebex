@@ -160,6 +160,11 @@ final class TebexDueCommandsHandler{
 		return $this->list;
 	}
 
+	/**
+	 * @param Closure|null $callback
+	 *
+	 * @phpstan-param Closure(int, int) : void $callback
+	 */
 	public function refresh(?Closure $callback = null) : void{
 		$this->offline_commands_handler->check(function(int $offline_cmds_count) use($callback) : void{
 			$this->checkDuePlayers(null, static function(int $due_players_count) use($offline_cmds_count, $callback) : void{
@@ -170,6 +175,13 @@ final class TebexDueCommandsHandler{
 		});
 	}
 
+	/**
+	 * @param Closure|null $reschedule_condition
+	 * @param Closure|null $callback
+	 *
+	 * @phpstan-param Closure() : bool $reschedule_condition
+	 * @phpstan-param Closure(int) : void $callback
+	 */
 	public function checkDuePlayers(?Closure $reschedule_condition = null, ?Closure $callback = null) : void{
 		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($reschedule_condition, $callback) : void{
 			$this->onFetchDuePlayers($result);

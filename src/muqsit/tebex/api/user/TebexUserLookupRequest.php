@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\user;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexUserLookupRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexUser>
+ */
+final class TebexUserLookupRequest extends TebexGETRequest{
 
 	/** @var string */
 	private $username_or_uuid;

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\checkout;
 
-use muqsit\tebex\api\RespondingTebexRequest;
 use muqsit\tebex\api\TebexPOSTRequest;
 use muqsit\tebex\api\TebexResponse;
 
-final class TebexCheckoutRequest extends TebexPOSTRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexPOSTRequest<TebexCheckoutInfo>
+ */
+final class TebexCheckoutRequest extends TebexPOSTRequest{
 
 	/** @var int */
 	private $package_id;

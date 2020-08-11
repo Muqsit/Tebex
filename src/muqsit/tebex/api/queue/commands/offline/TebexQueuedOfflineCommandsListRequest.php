@@ -7,9 +7,11 @@ namespace muqsit\tebex\api\queue\commands\offline;
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
 use muqsit\tebex\api\queue\TebexDuePlayer;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexQueuedOfflineCommandsListRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexQueuedOfflineCommandsInfo>
+ */
+final class TebexQueuedOfflineCommandsListRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/queue/offline-commands";

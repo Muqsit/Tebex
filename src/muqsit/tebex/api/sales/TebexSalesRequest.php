@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\sales;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexSalesRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexSalesList>
+ */
+final class TebexSalesRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/sales";

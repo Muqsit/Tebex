@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\queue;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexDuePlayersListRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexDuePlayersInfo>
+ */
+final class TebexDuePlayersListRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/queue";

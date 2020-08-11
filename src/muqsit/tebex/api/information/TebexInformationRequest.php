@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\information;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexInformationRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexInformation>
+ */
+final class TebexInformationRequest extends TebexGETRequest{
 
 	public function getEndpoint() : string{
 		return "/information";

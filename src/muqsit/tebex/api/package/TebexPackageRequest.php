@@ -6,9 +6,11 @@ namespace muqsit\tebex\api\package;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
-use muqsit\tebex\api\RespondingTebexRequest;
 
-final class TebexPackageRequest extends TebexGETRequest implements RespondingTebexRequest{
+/**
+ * @phpstan-extends TebexGETRequest<TebexPackage>
+ */
+final class TebexPackageRequest extends TebexGETRequest{
 
 	/** @var int */
 	private $package_id;
