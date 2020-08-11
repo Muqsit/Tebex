@@ -13,8 +13,7 @@ a `TebexResponseHandler $callback` to retrieve responses.
 TebexAPI::getInformation(TebexResponseHandler $callback) : void
 ```
 You may construct a `new TebexResponseHandler(Closure<TebexResponse, void> $on_success, Closure<TebexException, void> $on_failure)`, or use the helper methods:
-- `TebexResponseHandler::unhandled()` — Returns a null TebexResponseHandler instance, basically a short way of calling api and ignoring response.
-- `TebexResponseHandler::debug()` — `var_dump`s the response.
+- `TebexResponseHandler::debug(string $expected_response_class = TebexResponse::class)` — `var_dump`s the response.
 - `TebexResponseHandler::onSuccess(Closure<TebexResponse, void> $on_success)` — Calls `$on_success` on success and logs (level: critical) error message on failure.
 ```php
 $secret = "";
@@ -29,6 +28,8 @@ $api->getInformation(TebexResponseHandler::onSuccess(function(TebexInformation $
 $api->lookup("Steve", TebexResponseHandler::onSuccess(function(TebexUser $user) : void{
 	var_dump($user->getChargebackRate());
 }));
+
+$api->lookup("Alex", TebexResponseHandler::debug(TebexUser::class)); // var_dump()s the TebexUser on success
 
 $api->waitAll(); // wait until all queued requests have received responses
 $api->shutdown(); // shutdown connection (stops all threads and unlinks temp SSL files)
