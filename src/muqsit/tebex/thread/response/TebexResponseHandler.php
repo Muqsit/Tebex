@@ -51,7 +51,7 @@ final class TebexResponseHandler{
 	 */
 	public static function onSuccess(Closure $on_success) : self{
 		return new self($on_success, static function(TebexException $exception) : void{
-			self::getLogger()->critical($exception->getMessage());
+			self::getLogger()->logException($exception);
 		});
 	}
 
