@@ -151,15 +151,19 @@ final class TebexThread extends Thread{
 							$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($message_body["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}"));
 						}else{
 							$exception = null;
-							$result = null;
-							try{
-								/** @phpstan-var array<string, mixed> $result */
-								$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-							}catch(JsonException $e){
-								$exception = $e;
+							if($body === ""){
+								$result = [];
+							}else{
+								$result = null;
+								try{
+									/** @phpstan-var array<string, mixed> $result */
+									$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+								}catch(JsonException $e){
+									$exception = $e;
+								}
 							}
 							if($result === null){
-								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($exception !== null ? $exception->getMessage() : ""));
+								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException(($exception !== null ? $exception->getMessage() : "") . " during parsing: " . base64_encode($body)));
 							}elseif(isset($result["error_code"], $result["error_message"])){
 								assert(is_string($result["error_message"]));
 								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($result["error_message"]));
