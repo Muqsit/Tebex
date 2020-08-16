@@ -14,7 +14,6 @@ use muqsit\tebex\thread\ssl\SSLConfiguration;
 use muqsit\tebex\utils\TypedConfig;
 use pocketmine\command\PluginCommand;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\MainLogger;
 
 final class Loader extends PluginBase{
 
@@ -33,9 +32,8 @@ final class Loader extends PluginBase{
 	/** @var int */
 	private $worker_limit;
 
-	public function onEnable() : void{
-		$command = new PluginCommand("tebex", $this);
-		$command->setExecutor(new UnregisteredTebexCommandExecutor($this));
+	protected function onEnable() : void{
+		$command = new PluginCommand("tebex", $this, new UnregisteredTebexCommandExecutor($this));
 		$command->setAliases(["tbx", "bc", "buycraft"]);
 		$command->setPermission("tebex.admin");
 		$this->getServer()->getCommandMap()->register($this->getName(), $command);
@@ -55,7 +53,7 @@ final class Loader extends PluginBase{
 		}
 	}
 
-	public function onDisable() : void{
+	protected function onDisable() : void{
 		if($this->handler !== null){
 			$this->handler->shutdown();
 		}
@@ -74,7 +72,7 @@ final class Loader extends PluginBase{
 		/** @var TebexInformation|TebexException $result */
 		$result = null;
 
-		$api = new TebexAPI(MainLogger::getLogger(), $secret, SSLConfiguration::recommended(), $this->worker_limit);
+		$api = new TebexAPI($this->getLogger(), $secret, SSLConfiguration::recommended(), $this->worker_limit);
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }

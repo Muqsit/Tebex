@@ -11,7 +11,7 @@ use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{

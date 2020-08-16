@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler\due\playerslist;
 
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 final class OfflineTebexDuePlayersList extends TebexDuePlayersList{
 

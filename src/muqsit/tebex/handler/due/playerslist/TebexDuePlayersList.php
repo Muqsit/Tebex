@@ -7,7 +7,7 @@ namespace muqsit\tebex\handler\due\playerslist;
 use muqsit\tebex\api\queue\TebexDuePlayer;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use Closure;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 abstract class TebexDuePlayersList{
 

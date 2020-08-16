@@ -35,7 +35,7 @@ final class TebexDueOfflineCommandsHandler{
 		$this->plugin = $plugin;
 		$this->logger = $plugin->getLogger();
 		$this->handler = $handler;
-		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function(int $currentTick) : void{ $this->check(); }), $check_period);
+		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() : void{ $this->check(); }), $check_period);
 	}
 
 	/**
@@ -99,7 +99,7 @@ final class TebexDueOfflineCommandsHandler{
 		if($delay > 0){
 			if(!$this->delayed->contains($id = $command->getId())){
 				$this->delayed->add($id);
-				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function(int $currentTick) use($command, $callback) : void{
+				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($command, $callback) : void{
 					$callback($this->instantlyExecuteCommand($command));
 				}), $delay * 20);
 			}

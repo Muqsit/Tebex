@@ -18,7 +18,7 @@ use muqsit\tebex\thread\response\TebexResponseHandler;
 use Closure;
 use InvalidArgumentException;
 use Logger;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 
@@ -190,7 +190,7 @@ final class TebexDueCommandsHandler{
 			}
 			if($reschedule_condition !== null && $reschedule_condition()){
 				$next_check = $result->getMeta()->getNextCheck();
-				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function(int $currentTick) use($reschedule_condition, $callback) : void{ $this->checkDuePlayers($reschedule_condition, $callback); }), $next_check * 20);
+				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($reschedule_condition, $callback) : void{ $this->checkDuePlayers($reschedule_condition, $callback); }), $next_check * 20);
 			}
 		}));
 	}

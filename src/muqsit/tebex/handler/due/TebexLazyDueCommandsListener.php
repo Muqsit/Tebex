@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler\due;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 
 final class TebexLazyDueCommandsListener implements Listener{
 
@@ -17,10 +17,10 @@ final class TebexLazyDueCommandsListener implements Listener{
 	}
 
 	/**
-	 * @param PlayerJoinEvent $event
+	 * @param PlayerLoginEvent $event
 	 * @priority MONITOR
 	 */
-	public function onPlayerJoin(PlayerJoinEvent $event) : void{
+	public function onPlayerJoin(PlayerLoginEvent $event) : void{
 		$this->handler->onPlayerJoin();
 	}
 }

@@ -9,7 +9,7 @@ use muqsit\tebex\api\queue\commands\online\TebexQueuedOnlineCommand;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\Loader;
 use Closure;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskScheduler;
 
@@ -71,7 +71,7 @@ final class TebexPlayerSession{
 	 */
 	private function scheduleCommandForDelay(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, int $delay, Closure $callback) : bool{
 		if(!isset($this->delayed_online_command_handlers[$id = $command->getId()])){
-			$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function(int $currentTick) use($command, $due_player, $callback) : void{
+			$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function() use($command, $due_player, $callback) : void{
 				$callback($this->instantlyExecuteOnlineCommand($command, $due_player));
 			}), $delay));
 			return true;

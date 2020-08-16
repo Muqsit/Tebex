@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\api\utils;
 
 use muqsit\tebex\api\queue\TebexDuePlayer;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 final class TebexCommand{
 
