@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\sales;
 
+use muqsit\tebex\api\utils\TebexDiscountInfo;
+use muqsit\tebex\api\utils\TebexEffectiveInfo;
+
 final class TebexSale{
 
 	/** @var int */
 	private $id;
 
-	/** @var TebexSaleEffectiveInfo */
+	/** @var TebexEffectiveInfo */
 	private $effective;
 
-	/** @var TebexSaleDiscountInfo */
+	/** @var TebexDiscountInfo */
 	private $discount;
 
 	/** @var int */
@@ -24,7 +27,7 @@ final class TebexSale{
 	/** @var int */
 	private $order;
 
-	public function __construct(int $id, TebexSaleEffectiveInfo $effective, TebexSaleDiscountInfo $discount, int $start, int $expire, int $order){
+	public function __construct(int $id, TebexEffectiveInfo $effective, TebexDiscountInfo $discount, int $start, int $expire, int $order){
 		$this->id = $id;
 		$this->effective = $effective;
 		$this->discount = $discount;
@@ -37,11 +40,11 @@ final class TebexSale{
 		return $this->id;
 	}
 
-	public function getEffective() : TebexSaleEffectiveInfo{
+	public function getEffective() : TebexEffectiveInfo{
 		return $this->effective;
 	}
 
-	public function getDiscount() : TebexSaleDiscountInfo{
+	public function getDiscount() : TebexDiscountInfo{
 		return $this->discount;
 	}
 

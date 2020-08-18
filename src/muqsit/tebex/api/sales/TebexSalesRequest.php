@@ -6,6 +6,8 @@ namespace muqsit\tebex\api\sales;
 
 use muqsit\tebex\api\TebexGETRequest;
 use muqsit\tebex\api\TebexResponse;
+use muqsit\tebex\api\utils\TebexDiscountInfo;
+use muqsit\tebex\api\utils\TebexEffectiveInfo;
 
 /**
  * @phpstan-extends TebexGETRequest<TebexSalesList>
@@ -47,16 +49,8 @@ final class TebexSalesRequest extends TebexGETRequest{
 		]){
 			$sales[] = new TebexSale(
 				$id,
-				new TebexSaleEffectiveInfo(
-					$effective["type"],
-					$effective["packages"],
-					$effective["categories"]
-				),
-				new TebexSaleDiscountInfo(
-					$discount["type"],
-					$discount["percentage"],
-					$discount["value"]
-				),
+				TebexEffectiveInfo::fromTebexResponse($effective),
+				TebexDiscountInfo::fromTebexResponse($discount),
 				$start,
 				$expire,
 				$porder
