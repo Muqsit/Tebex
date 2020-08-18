@@ -10,6 +10,13 @@ use muqsit\tebex\api\bans\TebexBanListRequest;
 use muqsit\tebex\api\bans\TebexBanRequest;
 use muqsit\tebex\api\checkout\TebexCheckoutInfo;
 use muqsit\tebex\api\checkout\TebexCheckoutRequest;
+use muqsit\tebex\api\coupons\create\TebexCouponCreateRequest;
+use muqsit\tebex\api\coupons\create\TebexCouponCreateResponse;
+use muqsit\tebex\api\coupons\create\TebexCreatedCoupon;
+use muqsit\tebex\api\coupons\TebexCoupon;
+use muqsit\tebex\api\coupons\TebexCouponRequest;
+use muqsit\tebex\api\coupons\TebexCouponsList;
+use muqsit\tebex\api\coupons\TebexCouponsRequest;
 use muqsit\tebex\api\EmptyTebexResponse;
 use muqsit\tebex\api\information\TebexInformation;
 use muqsit\tebex\api\information\TebexInformationRequest;
@@ -46,6 +53,21 @@ final class TebexAPI extends BaseTebexAPI{
 	 */
 	public function getSales(TebexResponseHandler $callback) : void{
 		$this->request(new TebexSalesRequest(), $callback);
+	}
+
+	/**
+	 * @param TebexResponseHandler<TebexCouponsList> $callback
+	 */
+	public function getCoupons(TebexResponseHandler $callback) : void{
+		$this->request(new TebexCouponsRequest(), $callback);
+	}
+
+	/**
+	 * @param int $coupon_id
+	 * @param TebexResponseHandler<TebexCoupon> $callback
+	 */
+	public function getCoupon(int $coupon_id, TebexResponseHandler $callback) : void{
+		$this->request(new TebexCouponRequest($coupon_id), $callback);
 	}
 
 	/**
@@ -132,5 +154,13 @@ final class TebexAPI extends BaseTebexAPI{
 	 */
 	public function checkout(int $package_id, string $username, TebexResponseHandler $callback) : void{
 		$this->request(new TebexCheckoutRequest($package_id, $username), $callback);
+	}
+
+	/**
+	 * @param TebexCreatedCoupon $coupon
+	 * @param TebexResponseHandler<TebexCouponCreateResponse> $callback
+	 */
+	public function createCoupon(TebexCreatedCoupon $coupon, TebexResponseHandler $callback) : void{
+		$this->request(new TebexCouponCreateRequest($coupon), $callback);
 	}
 }

@@ -2,9 +2,29 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex\api\sales;
+namespace muqsit\tebex\api\utils;
 
-final class TebexSaleDiscountInfo{
+final class TebexDiscountInfo{
+
+	/**
+	 * @param array<string, mixed> $response
+	 * @return self
+	 */
+	public static function fromTebexResponse(array $response) : self{
+		/**
+		 * @var array{
+		 * 		type: string,
+		 * 		percentage: int,
+		 * 		value: int
+		 * } $response
+		 */
+
+		return new self(
+			$response["type"],
+			$response["percentage"],
+			$response["value"]
+		);
+	}
 
 	/** @var string */
 	private $type;
