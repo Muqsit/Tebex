@@ -48,7 +48,9 @@ final class OfflineTebexDuePlayersList extends TebexDuePlayersList{
 	}
 
 	public function onPlayerQuit(Player $player) : void{
-		$this->online[$index = self::playerIndex($player)]->destroy();
-		unset($this->online[$index]);
+		if(isset($this->online[$index = self::playerIndex($player)])){
+			$this->online[$index]->destroy();
+			unset($this->online[$index]);
+		}
 	}
 }
