@@ -79,8 +79,9 @@ final class TebexDueOfflineCommandsHandler{
 			$this->executeCommand($command, function(bool $success) use($command) : void{
 				$command_string = $command->getCommand()->asOfflineFormattedString($command->getPlayer());
 				if($success){
-					$this->handler->queueCommandDeletion($command->getId());
-					$this->logger->info("Executed offline command: {$command_string}");
+					$command_id = $command->getId();
+					$this->handler->queueCommandDeletion($command_id);
+					$this->logger->info("Executed offline command #{$command_id}: {$command_string}");
 				}else{
 					$this->logger->warning("Failed to execute offline command: {$command_string}");
 				}
