@@ -85,14 +85,15 @@ final class TebexDueCommandsHandler{
 						$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
 							$command_string = $tebex_command->getCommand()->asOnlineFormattedString($player, $holder->getPlayer());
 							if($success){
-								$handler->queueCommandDeletion($tebex_command->getId());
+								$command_id = $tebex_command->getId();
+								$handler->queueCommandDeletion($command_id);
 								if(--$total_commands === 0){
 									$current_holder = $this->list->get($player);
 									if($current_holder !== null && $current_holder->getCreated() < $timestamp){
 										$this->list->remove($current_holder);
 									}
 								}
-								$this->logger->info("Executed online command: {$command_string}");
+								$this->logger->info("Executed online command #{$command_id}: {$command_string}");
 							}else{
 								$this->logger->warning("Failed to execute online command: {$command_string}");
 							}
