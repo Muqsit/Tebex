@@ -11,7 +11,7 @@ final class TebexEffectiveInfo{
 	 * @return self
 	 */
 	public static function fromTebexResponse(array $response) : self{
-		/** @var array{type: string, packages: int[], categories: []} $response */
+		/** @phpstan-var array{type: string, packages: int[], categories: int[]} $response */
 		return new self(
 			$response["type"],
 			$response["packages"],
