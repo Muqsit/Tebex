@@ -7,6 +7,7 @@ namespace muqsit\tebex\thread;
 use muqsit\tebex\api\TebexResponse;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\Thread;
+use Throwable;
 use function is_string;
 use Logger;
 use muqsit\tebex\api\TebexRequest;
@@ -123,24 +124,28 @@ final class TebexThread extends Thread{
 				$url = TebexAPI::BASE_ENDPOINT . $request->getEndpoint();
 				$this->logger->debug("[cURL] Executing request: {$url}");
 
+				$latency = 5000;
 				$ch = curl_init($url);
 				if($ch === false){
-					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, 5000, new TebexException("cURL request failed during initialization"));
+					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException("cURL request failed during initialization"));
 				}else{
-					$curl_opts = $default_curl_opts;
-					$request->addAdditionalCurlOpts($curl_opts);
-					curl_setopt_array($ch, $curl_opts);
+					try{
+						$curl_opts = $default_curl_opts;
+						$request->addAdditionalCurlOpts($curl_opts);
+						curl_setopt_array($ch, $curl_opts);
 
-					$body = curl_exec($ch);
+						$body = curl_exec($ch);
 
-					/** @var float $latency */
-					$latency = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
+						/** @var float $latency */
+						$latency = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
 
-					if(!is_string($body)){
-						$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException("cURL request failed {" . curl_errno($ch) . "): " . curl_error($ch)));
-					}else{
+						if(!is_string($body)){
+							throw new TebexException("cURL request failed {" . curl_errno($ch) . "): " . curl_error($ch));
+						}
+
 						/** @var int $response_code */
 						$response_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
 						if($response_code !== $request->getExpectedResponseCode()){
 							try{
 								/** @var array{error_message: string} $message_body */
@@ -148,35 +153,44 @@ final class TebexThread extends Thread{
 							}catch(JsonException $e){
 								$message_body = [];
 							}
-							$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($message_body["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}"));
+							throw new TebexException($message_body["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}");
+						}
+
+						if($body === ""){
+							$result = [];
 						}else{
-							$exception = null;
-							if($body === ""){
-								$result = [];
-							}else{
+							$result = null;
+							try{
+								/** @phpstan-var array<string, mixed>|null $result */
+								$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+							}catch(JsonException $e){
 								$result = null;
-								try{
-									/** @phpstan-var array<string, mixed> $result */
-									$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-								}catch(JsonException $e){
-									$exception = $e;
-								}
+								throw new TebexException("{$e->getMessage()} during parsing JSON body: " . base64_encode($body));
 							}
+
 							if($result === null){
-								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException(($exception !== null ? $exception->getMessage() : "") . " during parsing: " . base64_encode($body)));
-							}elseif(isset($result["error_code"], $result["error_message"])){
-								assert(is_string($result["error_message"]));
-								$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException($result["error_message"]));
-							}else{
-								$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, $request->createResponse($result));
+								throw new TebexException("Error during parsing JSON body: " . base64_encode($body));
 							}
 						}
-					}
 
-					curl_close($ch);
+						if(isset($result["error_code"], $result["error_message"])){
+							assert(is_string($result["error_message"]));
+							throw new TebexException($result["error_message"]);
+						}
+
+						$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, $request->createResponse($result));
+					}catch(TebexException $e){
+						$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, $e);
+					}catch(Throwable $e){
+						$this->logger->logException($e);
+						throw $e;
+					}finally{
+						curl_close($ch);
+					}
 				}
 
 				$this->outgoing[] = igbinary_serialize($response_holder);
+				$this->notifier->wakeupSleeper();
 			}
 
 			$this->notifier->wakeupSleeper();
