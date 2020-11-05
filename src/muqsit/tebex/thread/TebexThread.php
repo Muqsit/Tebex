@@ -128,6 +128,7 @@ final class TebexThread extends Thread{
 				if($ch === false){
 					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException("cURL request failed during initialization"));
 				}else{
+					$body = false;
 					try{
 						$curl_opts = $default_curl_opts;
 						$request->addAdditionalCurlOpts($curl_opts);
@@ -181,6 +182,9 @@ final class TebexThread extends Thread{
 					}catch(TebexException $e){
 						$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, $e);
 					}catch(Throwable $e){
+						if(is_string($body)){
+							$this->logger->info("An error occurred while parsing request: " . base64_encode($body));
+						}
 						$this->logger->logException($e);
 						throw $e;
 					}finally{
