@@ -31,7 +31,6 @@ final class TebexCoupon implements TebexResponse{
 		 * } $response
 		 */
 
-		var_dump($response);
 		return new self(
 			$response["id"],
 			$response["code"],
