@@ -6,6 +6,7 @@ namespace muqsit\tebex;
 
 use muqsit\tebex\api\information\TebexInformation;
 use muqsit\tebex\handler\command\TebexCommandExecutor;
+use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\command\UnregisteredTebexCommandExecutor;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\thread\TebexException;
@@ -33,6 +34,10 @@ final class Loader extends PluginBase{
 	private $worker_limit;
 
 	protected function onEnable() : void{
+		if(!TebexCommandSender::hasInstance()){
+			TebexCommandSender::setInstance(new TebexCommandSender($this, $this->getServer()->getLanguage()));
+		}
+
 		$command = new PluginCommand("tebex", $this, new UnregisteredTebexCommandExecutor($this));
 		$command->setAliases(["tbx", "bc", "buycraft"]);
 		$command->setPermission("tebex.admin");

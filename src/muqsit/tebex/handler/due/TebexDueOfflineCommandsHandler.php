@@ -110,6 +110,6 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	private function instantlyExecuteCommand(TebexQueuedOfflineCommand $command) : bool{
-		return Server::getInstance()->dispatchCommand(TebexCommandSender::instance(), $command->getCommand()->asOfflineFormattedString($command->getPlayer()));
+		return Server::getInstance()->dispatchCommand(TebexCommandSender::getInstance(), $command->getCommand()->asOfflineFormattedString($command->getPlayer()));
 	}
 }

@@ -90,6 +90,6 @@ final class TebexPlayerSession{
 			}
 		}
 
-		return $this->player->getServer()->dispatchCommand(TebexCommandSender::instance(), $command->getCommand()->asOnlineFormattedString($this->player, $due_player));
+		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), $command->getCommand()->asOnlineFormattedString($this->player, $due_player));
 	}
 }
