@@ -7,14 +7,16 @@ namespace muqsit\tebex\api\coupons;
 use muqsit\tebex\api\TebexResponse;
 use muqsit\tebex\api\utils\TebexDiscountInfo;
 use muqsit\tebex\api\utils\TebexEffectiveInfo;
+use pocketmine\command\CommandSender;
+use pocketmine\Player;
 
-final class TebexCoupon implements TebexResponse{
+final class TebexCoupon implements TebexResponse {
 
 	/**
 	 * @param array<string, mixed> $response
 	 * @return self
 	 */
-	public static function fromTebexResponse(array $response) : self{
+	public static function fromTebexResponse(array $response): self {
 		/**
 		 * @var array{
 		 * 		id: int,
@@ -138,20 +140,22 @@ final class TebexCoupon implements TebexResponse{
 		return $this->user_limit;
 	}
 
-	public function getNote() : string{
+	public function getNote(): string {
 		return $this->note;
 	}
 
 	/**
 	 * Checks both time and the user limit count
 	 *
+	 * @param CommandSender|null $sender
 	 * @return bool
 	 */
-	public function isAvailable() : bool{
+	public function isAvailable(?CommandSender $sender = null): bool {
+		if($this->username !== null && (!$sender instanceof Player || $sender->getName() !== $this->username)) return false;
 		$ct = time();
-		if($this->start_date > $ct)return false;
-		if($this->expire->canExpire() && $this->expire->getDate() < $ct)return false;
-		if($this->expire->isRedeemLimited() && $this->expire->getLimit() < 1)return false;
+		if($this->start_date > $ct) return false;
+		if($this->expire->canExpire() && $this->expire->getDate() < $ct) return false;
+		if($this->expire->isRedeemLimited() && $this->expire->getLimit() < 1) return false;
 		return true;
 	}
 }

@@ -7,7 +7,6 @@ namespace muqsit\tebex\handler\command;
 use InvalidArgumentException;
 use muqsit\tebex\api\coupons\create\TebexCouponBuilder;
 use muqsit\tebex\api\coupons\create\TebexCouponCreateResponse;
-use muqsit\tebex\api\coupons\create\TebexCreatedCoupon;
 use muqsit\tebex\api\coupons\TebexCouponsList;
 use muqsit\tebex\api\utils\TebexDiscountInfo;
 use muqsit\tebex\api\utils\time\DurationParser;
@@ -142,14 +141,13 @@ final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
 					$currency = $this->plugin->getInformation()->getAccount()->getCurrency()->getSymbol();
 					$sender->sendMessage(TextFormat::WHITE . "Coupons ({$count}):");
 					foreach($coupons as $coupon){
-						$code = $coupon->isAvailable() ? TextFormat::GREEN . $coupon->getCode() : TextFormat::RED . $coupon->getCode();
+						$code = $coupon->isAvailable($sender) ? TextFormat::GREEN . $coupon->getCode() : TextFormat::RED . $coupon->getCode();
 						$sender->sendMessage(TextFormat::WHITE . " - {$code}: {$coupon->getNote()}");
 						$discount = $coupon->getDiscount();
 						$sender->sendMessage(TextFormat::WHITE . "   - Discount: " . ($discount->getType() == TebexDiscountInfo::DISCOUNT_TYPE_PERCENTAGE ? $discount->getPercentage() . "%" : $currency . $discount->getValue()));
-						if(($min = $coupon->getMinimum()) > 0)$sender->sendMessage(TextFormat::WHITE . "   - Minimum Spend: " . $currency . $min);
-						/* todo: other fields probably...
-						 *  Not very important as of now, but we can expand this to use the sender's username to verify if they can redeem the coupon
-						 */
+						if(($min = $coupon->getMinimum()) > 0) $sender->sendMessage(TextFormat::WHITE . "   - Minimum Spend: " . $currency . $min);
+						if($coupon->getUsername() !== null) $sender->sendMessage(TextFormat::WHITE . "   - Username: " . $coupon->getUsername());
+						// todo: other fields probably...
 					}
 				}));
 				return true;
