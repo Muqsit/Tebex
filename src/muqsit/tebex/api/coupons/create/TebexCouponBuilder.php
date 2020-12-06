@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\coupons\create;
 
+use muqsit\tebex\api\utils\TebexDiscountInfo;
+use muqsit\tebex\api\utils\TebexEffectiveInfo;
+
 final class TebexCouponBuilder{
 
 	public static function new() : self{
@@ -27,7 +30,7 @@ final class TebexCouponBuilder{
 	 * @return self
 	 */
 	public function setEffectiveOnPackages(array $packages = []) : self{
-		$this->coupon->effective_on = TebexCreatedCoupon::EFFECTIVE_ON_PACKAGE;
+		$this->coupon->effective_on = TebexEffectiveInfo::EFFECTIVE_ON_PACKAGE;
 		$this->coupon->packages = $packages;
 		return $this;
 	}
@@ -37,19 +40,19 @@ final class TebexCouponBuilder{
 	 * @return self
 	 */
 	public function setEffectiveOnCategories(array $categories = []) : self{
-		$this->coupon->effective_on = TebexCreatedCoupon::EFFECTIVE_ON_CATEGORY;
+		$this->coupon->effective_on = TebexEffectiveInfo::EFFECTIVE_ON_CATEGORY;
 		$this->coupon->packages = $categories;
 		return $this;
 	}
 
-	public function setDiscountPercentage(int $percentage) : self{
-		$this->coupon->discount_type = TebexCreatedCoupon::DISCOUNT_TYPE_PERCENTAGE;
+	public function setDiscountPercentage(float $percentage) : self{
+		$this->coupon->discount_type = TebexDiscountInfo::DISCOUNT_TYPE_PERCENTAGE;
 		$this->coupon->discount_percentage = $percentage;
 		return $this;
 	}
 
-	public function setDiscountAmount(int $amount) : self{
-		$this->coupon->discount_type = TebexCreatedCoupon::DISCOUNT_TYPE_VALUE;
+	public function setDiscountAmount(float $amount) : self{
+		$this->coupon->discount_type = TebexDiscountInfo::DISCOUNT_TYPE_VALUE;
 		$this->coupon->discount_amount = $amount;
 		return $this;
 	}
@@ -66,7 +69,7 @@ final class TebexCouponBuilder{
 	}
 
 	public function setExpiryDateFromTimestamp(int $timestamp) : self{
-		return $this->setExpiryDate(date("Y-m-d", $timestamp));
+		return $this->setExpiryDate(date("Y-m-d\TH:i:sP", $timestamp));
 	}
 
 	public function setExpireNever() : self{
@@ -100,7 +103,7 @@ final class TebexCouponBuilder{
 		return $this->setBasketType(TebexCreatedCoupon::BASKET_TYPE_BOTH);
 	}
 
-	public function setMinimumBasketValue(int $value) : self{
+	public function setMinimumBasketValue(float $value) : self{
 		$this->coupon->minimum = $value;
 		return $this;
 	}
@@ -129,6 +132,29 @@ final class TebexCouponBuilder{
 
 	public function setNote(string $note) : self{
 		$this->coupon->note = $note;
+		return $this;
+	}
+
+	/**
+	 * This is the global redeem limit
+	 *
+	 * @param int $value
+	 * @return $this
+	 */
+	public function setRedeemLimit(int $value):self {
+		$this->coupon->expire_limit = $value;
+		$this->setRedeemUnlimited(false);
+		return $this;
+	}
+
+	/**
+	 * This is the limit per-customer
+	 *
+	 * @param int $value
+	 * @return $this
+	 */
+	public function setUserLimit(int $value):self {
+		$this->coupon->redeem_limit = $value;
 		return $this;
 	}
 

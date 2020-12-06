@@ -14,6 +14,7 @@ use muqsit\tebex\api\coupons\create\TebexCouponCreateRequest;
 use muqsit\tebex\api\coupons\create\TebexCouponCreateResponse;
 use muqsit\tebex\api\coupons\create\TebexCreatedCoupon;
 use muqsit\tebex\api\coupons\TebexCoupon;
+use muqsit\tebex\api\coupons\TebexCouponDeleteRequest;
 use muqsit\tebex\api\coupons\TebexCouponRequest;
 use muqsit\tebex\api\coupons\TebexCouponsList;
 use muqsit\tebex\api\coupons\TebexCouponsRequest;
@@ -127,6 +128,14 @@ final class TebexAPI extends BaseTebexAPI{
 	 */
 	public function deleteCommands(array $command_ids, ?TebexResponseHandler $callback = null) : void{
 		$this->request(new TebexDeleteCommandRequest($command_ids), $callback ?? TebexResponseHandler::onSuccess(static function(EmptyTebexResponse $response) : void{}));
+	}
+
+	/**
+	 * @param int $coupon_id
+	 * @param TebexResponseHandler<EmptyTebexResponse>|null $callback
+	 */
+	public function deleteCoupon(int $coupon_id, ?TebexResponseHandler $callback = null) : void{
+		$this->request(new TebexCouponDeleteRequest($coupon_id), $callback ?? TebexResponseHandler::onSuccess(static function(EmptyTebexResponse $response) : void{}));
 	}
 
 	/**

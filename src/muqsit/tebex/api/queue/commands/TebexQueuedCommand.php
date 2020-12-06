@@ -17,10 +17,10 @@ abstract class TebexQueuedCommand{
 	/** @var int */
 	private $payment_id;
 
-	/** @var int */
+	/** @var int|null */
 	private $package_id;
 
-	public function __construct(int $id, string $command, int $payment_id, int $package_id){
+	public function __construct(int $id, string $command, int $payment_id, ?int $package_id){
 		$this->id = $id;
 		$this->command = new TebexCommand($command);
 		$this->payment_id = $payment_id;
@@ -39,7 +39,7 @@ abstract class TebexQueuedCommand{
 		return $this->payment_id;
 	}
 
-	final public function getPackageId() : int{
+	final public function getPackageId() : ?int{
 		return $this->package_id;
 	}
 }

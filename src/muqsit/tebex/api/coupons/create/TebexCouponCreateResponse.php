@@ -75,10 +75,10 @@ final class TebexCouponCreateResponse implements TebexResponse{
 	/** @var string */
 	public $discount_type;
 
-	/** @var int */
+	/** @var float */
 	public $discount_amount;
 
-	/** @var int */
+	/** @var float */
 	public $discount_percentage;
 
 	/** @var bool */
@@ -134,8 +134,8 @@ final class TebexCouponCreateResponse implements TebexResponse{
 		array $packages,
 		array $categories,
 		string $discount_type,
-		int $discount_amount,
-		int $discount_percentage,
+		float $discount_amount,
+		float $discount_percentage,
 		bool $redeem_unlimited,
 		bool $expire_never,
 		int $expire_limit,

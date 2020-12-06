@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\coupons\create;
 
+use muqsit\tebex\api\utils\TebexDiscountInfo;
+use muqsit\tebex\api\utils\TebexEffectiveInfo;
+
 class TebexCreatedCoupon{
-
-	public const EFFECTIVE_ON_PACKAGE = "package";
-	public const EFFECTIVE_ON_CATEGORY = "category";
-
-	public const DISCOUNT_TYPE_PERCENTAGE = "percentage";
-	public const DISCOUNT_TYPE_VALUE = "value";
 
 	public const BASKET_TYPE_SINGLE = "single";
 	public const BASKET_TYPE_SUBSCRIPTION = "subscription";
@@ -22,16 +19,17 @@ class TebexCreatedCoupon{
 
 	public static function createWithDefaultParameters() : self{
 		return new self(
-			implode("-", str_split(uniqid(), 4)),
-			self::EFFECTIVE_ON_PACKAGE,
-			self::DISCOUNT_TYPE_VALUE,
+			self::randomCode(),
+			TebexEffectiveInfo::EFFECTIVE_ON_CART,
+			TebexDiscountInfo::DISCOUNT_TYPE_VALUE,
 			0,
 			0,
 			true,
-			false,
 			0,
-			date("Y-m-d"),
-			date("Y-m-d"),
+			true,
+			0,
+			date("Y-m-d\TH:i:sP"),
+			date("Y-m-d\TH:i:sP"),
 			self::BASKET_TYPE_BOTH,
 			0,
 			self::DISCOUNT_APP_METHOD_APPLY_EACH_PACKAGE,
@@ -54,14 +52,17 @@ class TebexCreatedCoupon{
 	/** @var string */
 	public $discount_type;
 
-	/** @var int */
+	/** @var float */
 	public $discount_amount;
 
-	/** @var int */
+	/** @var float */
 	public $discount_percentage;
 
 	/** @var bool */
 	public $redeem_unlimited;
+
+	/** @var int */
+	public $redeem_limit;
 
 	/** @var bool */
 	public $expire_never;
@@ -78,7 +79,7 @@ class TebexCreatedCoupon{
 	/** @var string */
 	public $basket_type;
 
-	/** @var int */
+	/** @var float */
 	public $minimum;
 
 	/** @var int */
@@ -94,9 +95,10 @@ class TebexCreatedCoupon{
 		string $code,
 		string $effective_on,
 		string $discount_type,
-		int $discount_amount,
-		int $discount_percentage,
+		float $discount_amount,
+		float $discount_percentage,
 		bool $redeem_unlimited,
+		int $redeem_limit,
 		bool $expire_never,
 		int $expire_limit,
 		string $expire_date,
@@ -112,6 +114,7 @@ class TebexCreatedCoupon{
 		$this->discount_amount = $discount_amount;
 		$this->discount_percentage = $discount_percentage;
 		$this->redeem_unlimited = $redeem_unlimited;
+		$this->redeem_limit = $redeem_limit;
 		$this->expire_never = $expire_never;
 		$this->expire_limit = $expire_limit;
 		$this->expire_date = $expire_date;
@@ -135,6 +138,7 @@ class TebexCreatedCoupon{
 			"discount_amount" => $this->discount_amount,
 			"discount_percentage" => $this->discount_percentage,
 			"redeem_unlimited" => $this->redeem_unlimited,
+			"redeem_limit" => $this->redeem_limit,
 			"expire_never" => $this->expire_never,
 			"expire_limit" => $this->expire_limit,
 			"expire_date" => $this->expire_date,
@@ -145,5 +149,19 @@ class TebexCreatedCoupon{
 			"username" => $this->username,
 			"note" => $this->note
 		];
+	}
+
+	/**
+	 * Creates a random coupon code based on the tebex format XXXX-XXXX-XXXX
+	 *
+	 * @return string
+	 */
+	public static function randomCode():string {
+		static $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		return implode("-", [
+			substr(str_shuffle($chars), 0, 4),
+			substr(str_shuffle($chars), 0, 4),
+			substr(str_shuffle($chars), 0, 4)
+		]);
 	}
 }

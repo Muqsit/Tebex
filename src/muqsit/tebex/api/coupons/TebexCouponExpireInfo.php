@@ -19,13 +19,18 @@ final class TebexCouponExpireInfo{
 		 * 		date: string
 		 * } $response
 		 */
-
 		return new self(
-			(bool) $response["redeem_unlimited"],
-			(bool) $response["expire_never"],
+			self::fromBooleanString($response["redeem_unlimited"]),
+			self::fromBooleanString($response["expire_never"]),
 			$response["limit"],
 			(int) strtotime($response["date"])
 		);
+	}
+
+	private static function fromBooleanString(string $bool):bool{
+		if($bool === "true") return true;
+		if($bool === "false") return false;
+		throw new \UnexpectedValueException("$bool is not a valid boolean string");
 	}
 
 	/** @var bool */

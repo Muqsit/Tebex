@@ -20,7 +20,10 @@ final class TebexCouponCreateRequest extends TebexPOSTRequest{
 	}
 
 	public function getEndpoint() : string{
-		return "/coupons?" . http_build_query($this->coupon->toHTTPResponseArray());
+		return "/coupons?" . http_build_query(array_map(function($v) {
+				if(!is_bool($v)) return $v;
+				return $v ? "true" : "false";
+			}, $this->coupon->toHTTPResponseArray()));
 	}
 
 	public function getExpectedResponseCode() : int{
