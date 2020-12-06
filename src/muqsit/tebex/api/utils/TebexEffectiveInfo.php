@@ -6,6 +6,10 @@ namespace muqsit\tebex\api\utils;
 
 final class TebexEffectiveInfo{
 
+	public const EFFECTIVE_ON_PACKAGE = "package";
+	public const EFFECTIVE_ON_CATEGORY = "category";
+	public const EFFECTIVE_ON_CART = "cart";
+
 	/**
 	 * @param array<string, mixed> $response
 	 * @return self

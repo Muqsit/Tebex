@@ -129,11 +129,29 @@ final class TebexCoupon implements TebexResponse{
 		return $this->username;
 	}
 
+	/**
+	 * Returns the limit of redeeming this coupon per-customer, 0 = unlimited
+	 *
+	 * @return int
+	 */
 	public function getUserLimit() : int{
 		return $this->user_limit;
 	}
 
 	public function getNote() : string{
 		return $this->note;
+	}
+
+	/**
+	 * Checks both time and the user limit count
+	 *
+	 * @return bool
+	 */
+	public function isAvailable() : bool{
+		$ct = time();
+		if($this->start_date > $ct)return false;
+		if($this->expire->canExpire() && $this->expire->getDate() < $ct)return false;
+		if($this->expire->isRedeemLimited() && $this->expire->getLimit() < 1)return false;
+		return true;
 	}
 }

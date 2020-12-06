@@ -6,6 +6,9 @@ namespace muqsit\tebex\api\utils;
 
 final class TebexDiscountInfo{
 
+	public const DISCOUNT_TYPE_PERCENTAGE = "percentage";
+	public const DISCOUNT_TYPE_VALUE = "value";
+
 	/**
 	 * @param array<string, mixed> $response
 	 * @return self
@@ -15,7 +18,7 @@ final class TebexDiscountInfo{
 		 * @var array{
 		 * 		type: string,
 		 * 		percentage: int,
-		 * 		value: int
+		 * 		value: float
 		 * } $response
 		 */
 
@@ -32,10 +35,10 @@ final class TebexDiscountInfo{
 	/** @var int */
 	private $percentage;
 
-	/** @var int */
+	/** @var float */
 	private $value;
 
-	public function __construct(string $type, int $percentage, int $value){
+	public function __construct(string $type, int $percentage, float $value){
 		$this->type = $type;
 		$this->percentage = $percentage;
 		$this->value = $value;
@@ -49,7 +52,7 @@ final class TebexDiscountInfo{
 		return $this->percentage;
 	}
 
-	public function getValue() : int{
+	public function getValue() : float{
 		return $this->value;
 	}
 }
