@@ -12,8 +12,17 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexCouponsRequest extends TebexGETRequest{
 
+	/** @var int */
+	private $page;
+
+	public function __construct(int $page){
+		$this->page = $page;
+	}
+
 	public function getEndpoint() : string{
-		return "/coupons";
+		return "/coupons?" . http_build_query([
+			"page" => $this->page
+		]);
 	}
 
 	public function getExpectedResponseCode() : int{

@@ -152,11 +152,11 @@ class TebexCreatedCoupon{
 	}
 
 	/**
-	 * Creates a random coupon code based on the tebex format XXXX-XXXX-XXXX
+	 * Creates a random coupon code based on the Tebex format XXXX-XXXX-XXXX
 	 *
 	 * @return string
 	 */
-	public static function randomCode():string {
+	public static function randomCode() : string{
 		static $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		return implode("-", [
 			substr(str_shuffle($chars), 0, 4),

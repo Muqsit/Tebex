@@ -6,6 +6,7 @@ namespace muqsit\tebex\api\coupons\create;
 
 use muqsit\tebex\api\TebexPOSTRequest;
 use muqsit\tebex\api\TebexResponse;
+use muqsit\tebex\api\utils\TebexTypeUtils;
 
 /**
  * @phpstan-extends TebexPOSTRequest<TebexCouponCreateResponse>
@@ -20,10 +21,9 @@ final class TebexCouponCreateRequest extends TebexPOSTRequest{
 	}
 
 	public function getEndpoint() : string{
-		return "/coupons?" . http_build_query(array_map(function($v) {
-				if(!is_bool($v)) return $v;
-				return $v ? "true" : "false";
-			}, $this->coupon->toHTTPResponseArray()));
+		return "/coupons?" . http_build_query(array_map(function($v){
+			return is_bool($v) ? TebexTypeUtils::booleanToString($v) : $v;
+		}, $this->coupon->toHTTPResponseArray()));
 	}
 
 	public function getExpectedResponseCode() : int{

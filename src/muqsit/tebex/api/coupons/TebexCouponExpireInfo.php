@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\coupons;
 
+use muqsit\tebex\api\utils\TebexTypeUtils;
+
 final class TebexCouponExpireInfo{
 
 	/**
@@ -20,17 +22,11 @@ final class TebexCouponExpireInfo{
 		 * } $response
 		 */
 		return new self(
-			self::fromBooleanString($response["redeem_unlimited"]),
-			self::fromBooleanString($response["expire_never"]),
+			TebexTypeUtils::stringToBoolean($response["redeem_unlimited"]),
+			TebexTypeUtils::stringToBoolean($response["expire_never"]),
 			$response["limit"],
 			(int) strtotime($response["date"])
 		);
-	}
-
-	private static function fromBooleanString(string $bool):bool{
-		if($bool === "true") return true;
-		if($bool === "false") return false;
-		throw new \UnexpectedValueException("$bool is not a valid boolean string");
 	}
 
 	/** @var bool */

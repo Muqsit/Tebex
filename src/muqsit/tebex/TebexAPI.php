@@ -57,10 +57,11 @@ final class TebexAPI extends BaseTebexAPI{
 	}
 
 	/**
+	 * @param int $page
 	 * @param TebexResponseHandler<TebexCouponsList> $callback
 	 */
-	public function getCoupons(TebexResponseHandler $callback) : void{
-		$this->request(new TebexCouponsRequest(), $callback);
+	public function getCoupons(int $page, TebexResponseHandler $callback) : void{
+		$this->request(new TebexCouponsRequest($page), $callback);
 	}
 
 	/**

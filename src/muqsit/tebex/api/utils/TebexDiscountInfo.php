@@ -17,7 +17,7 @@ final class TebexDiscountInfo{
 		/**
 		 * @var array{
 		 * 		type: string,
-		 * 		percentage: int,
+		 * 		percentage: float,
 		 * 		value: float
 		 * } $response
 		 */
@@ -32,13 +32,13 @@ final class TebexDiscountInfo{
 	/** @var string */
 	private $type;
 
-	/** @var int */
+	/** @var float */
 	private $percentage;
 
 	/** @var float */
 	private $value;
 
-	public function __construct(string $type, int $percentage, float $value){
+	public function __construct(string $type, float $percentage, float $value){
 		$this->type = $type;
 		$this->percentage = $percentage;
 		$this->value = $value;
@@ -48,7 +48,7 @@ final class TebexDiscountInfo{
 		return $this->type;
 	}
 
-	public function getPercentage() : int{
+	public function getPercentage() : float{
 		return $this->percentage;
 	}
 

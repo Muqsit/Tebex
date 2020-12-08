@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler;
 
 use muqsit\tebex\api\EmptyTebexResponse;
+use muqsit\tebex\handler\coupon\TebexCouponHandler;
 use muqsit\tebex\Loader;
 use muqsit\tebex\handler\due\TebexDueCommandsHandler;
 use muqsit\tebex\thread\response\TebexResponseHandler;
@@ -14,6 +15,9 @@ final class TebexHandler{
 
 	/** @var Loader */
 	private $plugin;
+
+	/** @var TebexCouponHandler */
+	private $coupon_handler;
 
 	/** @var TebexDueCommandsHandler */
 	private $due_commands_handler;
@@ -27,7 +31,12 @@ final class TebexHandler{
 	}
 
 	private function init() : void{
+		$this->coupon_handler = new TebexCouponHandler($this->plugin);
 		$this->due_commands_handler = new TebexDueCommandsHandler($this->plugin, $this);
+	}
+
+	public function getCouponHandler() : TebexCouponHandler{
+		return $this->coupon_handler;
 	}
 
 	public function getDueCommandsHandler() : TebexDueCommandsHandler{

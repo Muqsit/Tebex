@@ -141,7 +141,7 @@ final class TebexCouponBuilder{
 	 * @param int $value
 	 * @return $this
 	 */
-	public function setRedeemLimit(int $value):self {
+	public function setRedeemLimit(int $value) : self{
 		$this->coupon->expire_limit = $value;
 		$this->setRedeemUnlimited(false);
 		return $this;
@@ -153,7 +153,7 @@ final class TebexCouponBuilder{
 	 * @param int $value
 	 * @return $this
 	 */
-	public function setUserLimit(int $value):self {
+	public function setUserLimit(int $value) : self{
 		$this->coupon->redeem_limit = $value;
 		return $this;
 	}

@@ -115,8 +115,8 @@ final class TebexCouponCreateResponse implements TebexResponse{
 	 * @param int[] $packages
 	 * @param int[] $categories
 	 * @param string $discount_type
-	 * @param int $discount_amount
-	 * @param int $discount_percentage
+	 * @param float $discount_amount
+	 * @param float $discount_percentage
 	 * @param bool $redeem_unlimited
 	 * @param bool $expire_never
 	 * @param int $expire_limit

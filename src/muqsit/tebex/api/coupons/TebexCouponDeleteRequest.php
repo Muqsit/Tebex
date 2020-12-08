@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace muqsit\tebex\api\coupons;
-
 
 use muqsit\tebex\api\EmptyTebexResponse;
 use muqsit\tebex\api\TebexDELETERequest;
 use muqsit\tebex\api\TebexResponse;
 
-final class TebexCouponDeleteRequest extends TebexDELETERequest {
+/**
+ * @phpstan-extends TebexDELETERequest<EmptyTebexResponse>
+ */
+final class TebexCouponDeleteRequest extends TebexDELETERequest{
 
 	/** @var int */
 	private $coupon_id;
