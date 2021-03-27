@@ -8,7 +8,7 @@ final class EmptyTebexResponse implements TebexResponse{
 
 	public static function instance() : self{
 		static $instance = null;
-		return $instance ?? $instance = new self();
+		return $instance ??= new self();
 	}
 
 	private function __construct(){
