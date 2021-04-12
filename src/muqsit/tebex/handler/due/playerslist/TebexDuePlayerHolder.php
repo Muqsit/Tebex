@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\playerslist;
 
-use muqsit\tebex\api\queue\TebexDuePlayer;
+use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 
 final class TebexDuePlayerHolder{
 

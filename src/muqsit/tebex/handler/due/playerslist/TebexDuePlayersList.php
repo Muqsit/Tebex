@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\playerslist;
 
-use muqsit\tebex\api\queue\TebexDuePlayer;
-use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use Closure;
+use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
+use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\player\Player;
 
 abstract class TebexDuePlayersList{

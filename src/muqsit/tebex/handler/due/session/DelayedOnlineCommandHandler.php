@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\session;
 
-use muqsit\tebex\api\queue\commands\online\TebexQueuedOnlineCommand;
+use muqsit\tebex\api\endpoint\queue\commands\online\TebexQueuedOnlineCommand;
 use pocketmine\scheduler\TaskHandler;
 
 final class DelayedOnlineCommandHandler{

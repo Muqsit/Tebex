@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex;
 
-use muqsit\tebex\api\TebexRequest;
+use Logger;
+use muqsit\tebex\api\connection\handler\SimpleTebexConnectionHandler;
+use muqsit\tebex\api\connection\request\TebexRequest;
+use muqsit\tebex\api\connection\response\TebexResponseHandler;
+use muqsit\tebex\api\connection\SSLConfiguration;
 use muqsit\tebex\thread\TebexThread;
 use muqsit\tebex\thread\TebexThreadPool;
-use muqsit\tebex\thread\response\TebexResponseHandler;
-use muqsit\tebex\thread\ssl\SSLConfiguration;
-use Logger;
 
 abstract class BaseTebexAPI{
 
@@ -19,10 +20,10 @@ abstract class BaseTebexAPI{
 	private SSLConfiguration $ssl_config;
 
 	public function __construct(Logger $logger, string $secret, SSLConfiguration $ssl_config, int $workers){
-		$this->pool = new TebexThreadPool();
+		$this->pool = new TebexThreadPool(new SimpleTebexConnectionHandler());
 		$this->ssl_config = $ssl_config;
 		for($i = 0; $i < $workers; $i++){
-			$this->pool->addWorker(new TebexThread($logger, $this->pool->getNotifier(), $secret, $ssl_config));
+			$this->pool->addWorker(new TebexThread($logger, $this->pool->getNotifier(), $secret, $ssl_config, $this->pool->getConnectionHandler()));
 		}
 		$this->pool->start();
 	}
@@ -31,7 +32,7 @@ abstract class BaseTebexAPI{
 	 * @param TebexRequest $request
 	 * @param TebexResponseHandler $callback
 	 *
-	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\connection\response\TebexResponse
 	 * @phpstan-param TebexRequest<TTebexResponse> $request
 	 * @phpstan-param TebexResponseHandler<TTebexResponse> $callback
 	 */

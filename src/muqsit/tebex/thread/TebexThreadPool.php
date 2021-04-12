@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\thread;
 
+use muqsit\tebex\api\connection\handler\TebexConnectionHandler;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
 use UnderflowException;
@@ -17,14 +18,20 @@ final class TebexThreadPool{
 	private array $workers = [];
 
 	private float $latency = 0.0;
+	private TebexConnectionHandler $connection_handler;
 
-	public function __construct(){
+	public function __construct(TebexConnectionHandler $connection_handler){
+		$this->connection_handler = $connection_handler;
 		$this->notifier = new SleeperNotifier();
 		Server::getInstance()->getTickSleeper()->addNotifier($this->notifier, function() : void{
 			foreach($this->workers as $thread){
 				$this->collectThread($thread);
 			}
 		});
+	}
+
+	public function getConnectionHandler() : TebexConnectionHandler{
+		return $this->connection_handler;
 	}
 
 	/**

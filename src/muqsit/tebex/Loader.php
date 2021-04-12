@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace muqsit\tebex;
 
 use InvalidStateException;
-use muqsit\tebex\api\information\TebexInformation;
+use muqsit\tebex\api\connection\response\TebexResponseHandler;
+use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\endpoint\information\TebexInformation;
+use muqsit\tebex\api\utils\TebexException;
 use muqsit\tebex\handler\command\RegisteredTebexCommandExecutor;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\command\UnregisteredTebexCommandExecutor;
 use muqsit\tebex\handler\TebexHandler;
-use muqsit\tebex\thread\TebexException;
-use muqsit\tebex\thread\response\TebexResponseHandler;
-use muqsit\tebex\thread\ssl\SSLConfiguration;
 use muqsit\tebex\utils\TypedConfig;
 use pocketmine\command\PluginCommand;
 use pocketmine\plugin\PluginBase;
+use RuntimeException;
 
 final class Loader extends PluginBase{
 
@@ -69,7 +70,18 @@ final class Loader extends PluginBase{
 		/** @var TebexInformation|TebexException $result */
 		$result = null;
 
-		$api = new TebexAPI($this->getLogger(), $secret, SSLConfiguration::recommended(), $this->worker_limit);
+		$_cacert_pem = $this->getResource("cacert.pem");
+		if($_cacert_pem === null){
+			throw new RuntimeException("Failed to locate SSL file cacert.pem");
+		}
+
+		$ssl_data = stream_get_contents($_cacert_pem);
+		fclose($_cacert_pem);
+		if($ssl_data === false){
+			throw new RuntimeException("Failed to read contents of SSL file cacert.pem");
+		}
+
+		$api = new TebexAPI($this->getLogger(), $secret, SSLConfiguration::fromData($ssl_data), $this->worker_limit);
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }

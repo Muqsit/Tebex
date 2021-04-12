@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler;
 
-use muqsit\tebex\api\EmptyTebexResponse;
-use muqsit\tebex\Loader;
+use muqsit\tebex\api\connection\response\EmptyTebexResponse;
+use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\handler\due\TebexDueCommandsHandler;
-use muqsit\tebex\thread\response\TebexResponseHandler;
+use muqsit\tebex\Loader;
 use pocketmine\scheduler\ClosureTask;
 
 final class TebexHandler{

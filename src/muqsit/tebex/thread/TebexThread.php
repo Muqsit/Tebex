@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\thread;
 
-use muqsit\tebex\api\TebexResponse;
+use Exception;
+use Generator;
+use Logger;
+use muqsit\tebex\api\connection\handler\TebexConnectionHandler;
+use muqsit\tebex\api\connection\request\TebexRequest;
+use muqsit\tebex\api\connection\request\TebexRequestHolder;
+use muqsit\tebex\api\connection\response\TebexResponse;
+use muqsit\tebex\api\connection\response\TebexResponseHandler;
+use muqsit\tebex\api\connection\response\TebexResponseHolder;
+use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\connection\TebexConnectionHelper;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\thread\Thread;
-use Throwable;
-use function is_string;
-use Logger;
-use muqsit\tebex\api\TebexRequest;
-use muqsit\tebex\TebexAPI;
-use muqsit\tebex\thread\request\TebexRequestHolder;
-use muqsit\tebex\thread\response\TebexResponseFailureHolder;
-use muqsit\tebex\thread\response\TebexResponseHandler;
-use muqsit\tebex\thread\response\TebexResponseHolder;
-use muqsit\tebex\thread\response\TebexResponseSuccessHolder;
-use muqsit\tebex\thread\ssl\SSLConfiguration;
-use Generator;
-use JsonException;
 use Threaded;
+use function is_string;
 
 final class TebexThread extends Thread{
 
@@ -47,14 +45,18 @@ final class TebexThread extends Thread{
 	private bool $running = false;
 	private string $secret;
 	private string $ca_path;
+	private string $_connection_handler;
 
 	/**
 	 * @param Logger $logger
 	 * @param SleeperNotifier<mixed> $notifier
 	 * @param string $secret
 	 * @param SSLConfiguration $ssl_config
+	 * @param TebexConnectionHandler $connection_handler
 	 */
-	public function __construct(Logger $logger, SleeperNotifier $notifier, string $secret, SSLConfiguration $ssl_config){
+	public function __construct(Logger $logger, SleeperNotifier $notifier, string $secret, SSLConfiguration $ssl_config, TebexConnectionHandler $connection_handler){
+		$this->_connection_handler = igbinary_serialize($connection_handler);
+
 		$this->notifier = $notifier;
 		$this->ca_path = $ssl_config->getCAInfoPath();
 		$this->incoming = new Threaded();
@@ -67,7 +69,7 @@ final class TebexThread extends Thread{
 	 * @param TebexRequest $request
 	 * @param TebexResponseHandler $handler
 	 *
-	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\TebexResponse
+	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\connection\response\TebexResponse
 	 * @phpstan-param TebexRequest<TTebexResponse> $request
 	 * @phpstan-param TebexResponseHandler<TTebexResponse> $handler
 	 */
@@ -81,111 +83,30 @@ final class TebexThread extends Thread{
 		});
 	}
 
-	/**
-	 * @return array<int, mixed>
-	 */
-	private function getDefaultCurlOptions() : array{
-		$curl_opts = [
-			CURLOPT_HTTPHEADER => [
-				"X-Tebex-Secret: {$this->secret}",
-				"User-Agent: Tebex"
-			],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT => 5,
-		];
-		if($this->ca_path !== ""){
-			$curl_opts[CURLOPT_CAINFO] = $this->ca_path;
-		}
-		return $curl_opts;
-	}
-
 	protected function onRun() : void{
 		$this->running = true;
-		$default_curl_opts = $this->getDefaultCurlOptions();
+
+		/** @var TebexConnectionHandler $connection_handler */
+		$connection_handler = igbinary_unserialize($this->_connection_handler);
+
+		$default_curl_opts = TebexConnectionHelper::buildDefaultCurlOptions($this->secret, $this->ca_path);
 		while($this->running){
 			while(($request_serialized = $this->incoming->shift()) !== null){
 				assert(is_string($request_serialized));
 				/** @var TebexRequestHolder $request_holder */
 				$request_holder = igbinary_unserialize($request_serialized);
+				$this->logger->debug("[cURL] Executing request: {$request_holder->request->getEndpoint()}");
 
-				$request = $request_holder->request;
-
-				$url = TebexAPI::BASE_ENDPOINT . $request->getEndpoint();
-				$this->logger->debug("[cURL] Executing request: {$url}");
-
-				$latency = 5000;
-				$ch = curl_init($url);
-				if($ch === false){
-					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, new TebexException("cURL request failed during initialization"));
-				}else{
-					$body = false;
-					try{
-						$curl_opts = $default_curl_opts;
-						$request->addAdditionalCurlOpts($curl_opts);
-						curl_setopt_array($ch, $curl_opts);
-
-						$body = curl_exec($ch);
-
-						/** @var float $latency */
-						$latency = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
-
-						if(!is_string($body)){
-							throw new TebexException("cURL request failed {" . curl_errno($ch) . "): " . curl_error($ch));
-						}
-
-						/** @var int $response_code */
-						$response_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-
-						if($response_code !== $request->getExpectedResponseCode()){
-							try{
-								/** @var array{error_message: string} $message_body */
-								$message_body = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-							}catch(JsonException $e){
-								$message_body = [];
-							}
-							throw new TebexException($message_body["error_message"] ?? "Expected response code {$request->getExpectedResponseCode()}, got {$response_code}");
-						}
-
-						if($body === ""){
-							$result = [];
-						}else{
-							$result = null;
-							try{
-								/** @phpstan-var array<string, mixed>|null $result */
-								$result = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-							}catch(JsonException $e){
-								$result = null;
-								throw new TebexException("{$e->getMessage()} during parsing JSON body: " . base64_encode($body));
-							}
-
-							if($result === null){
-								throw new TebexException("Error during parsing JSON body: " . base64_encode($body));
-							}
-						}
-
-						if(isset($result["error_code"], $result["error_message"])){
-							assert(is_string($result["error_message"]));
-							throw new TebexException($result["error_message"]);
-						}
-
-						$response_holder = new TebexResponseSuccessHolder($request_holder->handler_id, $latency, $request->createResponse($result));
-					}catch(TebexException $e){
-						$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $latency, $e);
-					}catch(Throwable $e){
-						if(is_string($body)){
-							$this->logger->info("An error occurred while parsing request: " . base64_encode($body));
-						}
-						$this->logger->logException($e);
-						throw $e;
-					}finally{
-						curl_close($ch);
-					}
+				try{
+					$response_holder = $connection_handler->handle($request_holder, $default_curl_opts);
+				}catch(Exception $e){
+					$this->logger->logException($e);
+					throw $e;
 				}
 
 				$this->outgoing[] = igbinary_serialize($response_holder);
 				$this->notifier->wakeupSleeper();
 			}
-
 			$this->sleep();
 		}
 	}

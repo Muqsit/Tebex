@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\session;
 
-use muqsit\tebex\api\queue\TebexDuePlayer;
-use muqsit\tebex\api\queue\commands\online\TebexQueuedOnlineCommand;
+use Closure;
+use muqsit\tebex\api\endpoint\queue\commands\online\TebexQueuedOnlineCommand;
+use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\TebexAPIUtils;
 use muqsit\tebex\Loader;
-use Closure;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskScheduler;
