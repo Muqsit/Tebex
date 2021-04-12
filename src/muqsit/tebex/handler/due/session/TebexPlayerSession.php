@@ -7,6 +7,7 @@ namespace muqsit\tebex\handler\due\session;
 use muqsit\tebex\api\queue\TebexDuePlayer;
 use muqsit\tebex\api\queue\commands\online\TebexQueuedOnlineCommand;
 use muqsit\tebex\handler\command\TebexCommandSender;
+use muqsit\tebex\handler\TebexAPIUtils;
 use muqsit\tebex\Loader;
 use Closure;
 use pocketmine\player\Player;
@@ -88,6 +89,6 @@ final class TebexPlayerSession{
 			}
 		}
 
-		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), $command->getCommand()->asOnlineFormattedString($this->player, $due_player));
+		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), TebexAPIUtils::onlineFormatCommand($command->getCommand(), $this->player, $due_player));
 	}
 }

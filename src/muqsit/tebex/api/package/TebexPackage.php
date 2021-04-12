@@ -7,7 +7,6 @@ namespace muqsit\tebex\api\package;
 use muqsit\tebex\api\TebexResponse;
 use muqsit\tebex\api\utils\TebexGUIItem;
 use muqsit\tebex\api\utils\time\TebexTime;
-use pocketmine\item\Item;
 
 final class TebexPackage implements TebexResponse{
 
@@ -240,8 +239,8 @@ final class TebexPackage implements TebexResponse{
 		return $this->show_until;
 	}
 
-	public function getGuiItem() : ?Item{
-		return $this->gui_item->asItem();
+	public function getGuiItem() : TebexGUIItem{
+		return $this->gui_item;
 	}
 
 	public function isDisabled() : bool{

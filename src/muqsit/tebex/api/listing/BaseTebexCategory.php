@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\listing;
 
-use pocketmine\item\Item;
 use muqsit\tebex\api\utils\sort\Sortable;
 use muqsit\tebex\api\utils\TebexGUIItem;
 
@@ -53,7 +52,7 @@ abstract class BaseTebexCategory implements Sortable{
 		return $this->packages;
 	}
 
-	final public function getGuiItem() : ?Item{
-		return $this->gui_item->asItem();
+	final public function getGuiItem() : TebexGUIItem{
+		return $this->gui_item;
 	}
 }

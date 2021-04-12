@@ -7,6 +7,7 @@ namespace muqsit\tebex\handler\due;
 use muqsit\tebex\api\queue\commands\offline\TebexQueuedOfflineCommand;
 use muqsit\tebex\api\queue\commands\offline\TebexQueuedOfflineCommandsInfo;
 use muqsit\tebex\handler\command\TebexCommandSender;
+use muqsit\tebex\handler\TebexAPIUtils;
 use muqsit\tebex\Loader;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\thread\response\TebexResponseHandler;
@@ -70,7 +71,7 @@ final class TebexDueOfflineCommandsHandler{
 
 		foreach($commands as $command){
 			$this->executeCommand($command, function(bool $success) use($command) : void{
-				$command_string = $command->getCommand()->asOfflineFormattedString($command->getPlayer());
+				$command_string = TebexAPIUtils::offlineFormatCommand($command->getCommand(), $command->getPlayer());
 				if($success){
 					$command_id = $command->getId();
 					$this->handler->queueCommandDeletion($command_id);
@@ -103,6 +104,6 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	private function instantlyExecuteCommand(TebexQueuedOfflineCommand $command) : bool{
-		return Server::getInstance()->dispatchCommand(TebexCommandSender::getInstance(), $command->getCommand()->asOfflineFormattedString($command->getPlayer()));
+		return Server::getInstance()->dispatchCommand(TebexCommandSender::getInstance(), TebexAPIUtils::offlineFormatCommand($command->getCommand(), $command->getPlayer()));
 	}
 }

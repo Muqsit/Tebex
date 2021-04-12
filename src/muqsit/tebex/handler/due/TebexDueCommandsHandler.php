@@ -8,6 +8,7 @@ use muqsit\tebex\api\queue\TebexDuePlayersInfo;
 use muqsit\tebex\api\queue\commands\online\TebexQueuedOnlineCommandsInfo;
 use muqsit\tebex\handler\due\playerslist\TebexDuePlayerHolder;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
+use muqsit\tebex\handler\TebexAPIUtils;
 use muqsit\tebex\Loader;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\handler\due\playerslist\TebexDuePlayersList;
@@ -72,7 +73,7 @@ final class TebexDueCommandsHandler{
 					$timestamp = microtime(true);
 					foreach($commands as $tebex_command){
 						$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
-							$command_string = $tebex_command->getCommand()->asOnlineFormattedString($player, $holder->getPlayer());
+							$command_string = TebexAPIUtils::onlineFormatCommand($tebex_command->getCommand(), $player, $holder->getPlayer());
 							if($success){
 								$command_id = $tebex_command->getId();
 								$handler->queueCommandDeletion($command_id);

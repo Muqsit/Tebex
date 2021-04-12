@@ -6,7 +6,6 @@ namespace muqsit\tebex\api\listing;
 
 use muqsit\tebex\api\utils\sort\Sortable;
 use muqsit\tebex\api\utils\TebexGUIItem;
-use pocketmine\item\Item;
 
 final class TebexPackage implements Sortable{
 
@@ -81,7 +80,7 @@ final class TebexPackage implements Sortable{
 		return $this->image;
 	}
 
-	public function getGuiItem() : ?Item{
-		return $this->gui_item->asItem();
+	public function getGuiItem() : TebexGUIItem{
+		return $this->gui_item;
 	}
 }
