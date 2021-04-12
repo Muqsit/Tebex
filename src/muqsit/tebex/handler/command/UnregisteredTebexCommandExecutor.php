@@ -10,7 +10,7 @@ use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 use muqsit\tebex\thread\TebexException;
 
-class UnregisteredTebexCommandExecutor implements CommandExecutor{
+final class UnregisteredTebexCommandExecutor implements CommandExecutor{
 
 	protected Loader $plugin;
 
@@ -18,27 +18,17 @@ class UnregisteredTebexCommandExecutor implements CommandExecutor{
 		$this->plugin = $plugin;
 	}
 
-	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
-		if(isset($args[0], $args[1]) && $args[0] === "secret"){
-			$this->onTypeSecret($sender, $command, $label, $args[1]);
-			return true;
-		}
-
-		$sender->sendMessage("Usage: /{$label} secret <secret>");
-		return false;
-	}
-
-	protected function onTypeSecret(CommandSender $sender, Command $command, string $label, string $secret) : void{
+	public static function handleTypeSecret(Loader $loader, CommandSender $sender, string $secret) : void{
 		$info = null;
 
 		try{
-			$info = $this->plugin->setSecret($secret);
+			$info = $loader->setSecret($secret);
 		}catch(TebexException $e){
 			$sender->sendMessage($e->getMessage());
 		}
 
 		if($info !== null){
-			$config = $this->plugin->getConfig();
+			$config = $loader->getConfig();
 			$config->set("secret", $secret);
 			$config->save();
 
@@ -46,5 +36,15 @@ class UnregisteredTebexCommandExecutor implements CommandExecutor{
 			$server = $info->getServer();
 			$sender->sendMessage("Successfully logged in to server (#{$server->getId()}) {$server->getName()} as (#{$account->getId()}) {$account->getName()}!");
 		}
+	}
+
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
+		if(isset($args[0], $args[1]) && $args[0] === "secret"){
+			self::handleTypeSecret($this->plugin, $sender, $args[1]);
+			return true;
+		}
+
+		$sender->sendMessage("Usage: /{$label} secret <secret>");
+		return false;
 	}
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\coupons\create;
 
-class TebexCreatedCoupon{
+final class TebexCreatedCoupon{
 
 	public const EFFECTIVE_ON_PACKAGE = "package";
 	public const EFFECTIVE_ON_CATEGORY = "category";

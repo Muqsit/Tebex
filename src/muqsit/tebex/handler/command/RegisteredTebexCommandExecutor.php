@@ -10,12 +10,14 @@ use muqsit\tebex\handler\command\utils\TebexSubCommand;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
 use pocketmine\command\Command;
+use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
+final class RegisteredTebexCommandExecutor implements CommandExecutor{
 
+	protected Loader $plugin;
 	private TebexHandler $handler;
 
 	/** @var array<string, TebexSubCommand> */
@@ -25,7 +27,7 @@ final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
 	private array $aliases = [];
 
 	public function __construct(Loader $plugin, TebexHandler $handler){
-		parent::__construct($plugin);
+		$this->plugin = $plugin;
 		$this->handler = $handler;
 		$this->registerDefaultSubCommands();
 	}
@@ -34,7 +36,7 @@ final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
 		$this->registerSubCommand(new TebexSubCommand("secret", "Set Tebex server secret", new ClosureCommandExecutor(
 			function(CommandSender $sender, Command $command, string $label, array $args) : bool{
 				if(isset($args[1])){
-					$this->onTypeSecret($sender, $command, $label, $args[1]);
+					UnregisteredTebexCommandExecutor::handleTypeSecret($this->plugin, $sender, $args[1]);
 				}else{
 					$sender->sendMessage("Usage: /{$label} {$args[0]} <secret>");
 				}
@@ -154,7 +156,6 @@ final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
 		}
 
 		$help = TextFormat::BOLD . TextFormat::WHITE . "Tebex Commands" . TextFormat::RESET . TextFormat::EOL;
-		/** @var TebexSubCommand $sub_command */
 		foreach($this->sub_commands as $sub_command){
 			$help .= TextFormat::WHITE . "/{$label} {$sub_command->name}" . TextFormat::GRAY . " - {$sub_command->description}" . TextFormat::EOL;
 		}

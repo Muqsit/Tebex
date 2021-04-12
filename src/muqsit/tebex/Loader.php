@@ -6,7 +6,7 @@ namespace muqsit\tebex;
 
 use InvalidStateException;
 use muqsit\tebex\api\information\TebexInformation;
-use muqsit\tebex\handler\command\TebexCommandExecutor;
+use muqsit\tebex\handler\command\RegisteredTebexCommandExecutor;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\command\UnregisteredTebexCommandExecutor;
 use muqsit\tebex\handler\TebexHandler;
@@ -98,7 +98,7 @@ final class Loader extends PluginBase{
 		$this->information = $information;
 		$this->handler = new TebexHandler($this);
 
-		$executor = new TebexCommandExecutor($this, $this->handler);
+		$executor = new RegisteredTebexCommandExecutor($this, $this->handler);
 		foreach((new TypedConfig($this->getConfig()))->getStringList("disabled-sub-commands", []) as $disabled_sub_command){
 			$executor->unregisterSubCommand($disabled_sub_command);
 		}

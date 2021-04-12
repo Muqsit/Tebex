@@ -15,18 +15,18 @@ class TebexCommandSender extends ConsoleCommandSender{
 
 	private static ?TebexCommandSender $instance = null;
 
-	public static function hasInstance() : bool{
+	final public static function hasInstance() : bool{
 		return self::$instance !== null;
 	}
 
-	public static function getInstance() : TebexCommandSender{
+	final public static function getInstance() : TebexCommandSender{
 		if(self::$instance === null){
 			throw new InvalidStateException("No instance of " . self::class . " has been set");
 		}
 		return self::$instance;
 	}
 
-	public static function setInstance(TebexCommandSender $instance) : void{
+	final public static function setInstance(TebexCommandSender $instance) : void{
 		self::$instance = $instance;
 	}
 

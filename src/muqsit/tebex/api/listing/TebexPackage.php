@@ -8,7 +8,7 @@ use muqsit\tebex\api\utils\sort\Sortable;
 use muqsit\tebex\api\utils\TebexGUIItem;
 use pocketmine\item\Item;
 
-class TebexPackage implements Sortable{
+final class TebexPackage implements Sortable{
 
 	/**
 	 * @param array<string, mixed> $response
