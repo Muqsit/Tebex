@@ -25,7 +25,7 @@ final class TebexPackage implements Sortable{
 	 * } $response
 	 */
 	public static function fromTebexData(array $response) : self{
-		return new static(
+		return new self(
 			$response["id"],
 			$response["order"],
 			$response["name"],
@@ -47,7 +47,7 @@ final class TebexPackage implements Sortable{
 	private ?string $image;
 	private TebexGUIItem $gui_item;
 
-	final public function __construct(int $id, int $order, string $name, string $price, TebexPackageSaleInfo $sale, ?string $image, TebexGUIItem $gui_item){
+	public function __construct(int $id, int $order, string $name, string $price, TebexPackageSaleInfo $sale, ?string $image, TebexGUIItem $gui_item){
 		$this->id = $id;
 		$this->order = $order;
 		$this->name = $name;
@@ -57,31 +57,31 @@ final class TebexPackage implements Sortable{
 		$this->gui_item = $gui_item;
 	}
 
-	final public function getId() : int{
+	public function getId() : int{
 		return $this->id;
 	}
 
-	final public function getOrder() : int{
+	public function getOrder() : int{
 		return $this->order;
 	}
 
-	final public function getName() : string{
+	public function getName() : string{
 		return $this->name;
 	}
 
-	final public function getPrice() : string{
+	public function getPrice() : string{
 		return $this->price;
 	}
 
-	final public function getSale() : TebexPackageSaleInfo{
+	public function getSale() : TebexPackageSaleInfo{
 		return $this->sale;
 	}
 
-	final public function getImage() : ?string{
+	public function getImage() : ?string{
 		return $this->image;
 	}
 
-	final public function getGuiItem() : ?Item{
+	public function getGuiItem() : ?Item{
 		return $this->gui_item->asItem();
 	}
 }
