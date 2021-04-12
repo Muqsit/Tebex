@@ -37,23 +37,12 @@ final class TebexBanEntry implements TebexResponse{
 		);
 	}
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $time;
-
-	/** @var string */
-	private $ip;
-
-	/** @var string */
-	private $payment_email;
-
-	/** @var string */
-	private $reason;
-
-	/** @var TebexBanEntryUser|null */
-	private $user;
+	private int $id;
+	private string $time;
+	private string $ip;
+	private string $payment_email;
+	private string $reason;
+	private ?TebexBanEntryUser $user;
 
 	public function __construct(int $id, string $time, string $ip, string $payment_email, string $reason, ?TebexBanEntryUser $user){
 		$this->id = $id;

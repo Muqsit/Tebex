@@ -6,11 +6,8 @@ namespace muqsit\tebex\api\listing;
 
 final class TebexPackageSaleInfo{
 
-	/** @var bool */
-	private $active;
-
-	/** @var string */
-	private $discount;
+	private bool $active;
+	private string $discount;
 
 	public function __construct(bool $active, string $discount){
 		$this->active = $active;

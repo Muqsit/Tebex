@@ -10,8 +10,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 
 final class TebexDuePlayersListListener implements Listener{
 
-	/** @var TebexDuePlayersList */
-	private $list;
+	private TebexDuePlayersList $list;
 
 	public function __construct(TebexDuePlayersList $list){
 		$this->list = $list;

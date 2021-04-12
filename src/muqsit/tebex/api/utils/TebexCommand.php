@@ -9,8 +9,7 @@ use pocketmine\player\Player;
 
 final class TebexCommand{
 
-	/** @var string */
-	private $string;
+	private string $string;
 
 	public function __construct(string $string){
 		$this->string = $string;

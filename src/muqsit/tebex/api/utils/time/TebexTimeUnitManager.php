@@ -6,11 +6,10 @@ namespace muqsit\tebex\api\utils\time;
 
 final class TebexTimeUnitManager{
 
-	/** @var bool */
-	private static $init = false;
+	private static bool $init = false;
 
 	/** @var TebexTimeUnit[] */
-	private static $known_units = [];
+	private static array $known_units = [];
 
 	public static function init() : void{
 		self::$init = true;

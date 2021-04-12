@@ -8,8 +8,7 @@ use muqsit\tebex\api\queue\commands\TebexQueuedCommandConditions;
 
 final class TebexQueuedOnlineCommandConditions extends TebexQueuedCommandConditions{
 
-	/** @var int */
-	private $slots;
+	private int $slots;
 
 	public function __construct(int $delay, int $slots){
 		parent::__construct($delay);

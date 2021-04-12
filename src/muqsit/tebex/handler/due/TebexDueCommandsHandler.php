@@ -46,23 +46,12 @@ final class TebexDueCommandsHandler{
 		}
 	}
 
-	/** @var Loader */
-	private $plugin;
-
-	/** @var TebexHandler */
-	private $handler;
-
-	/** @var TebexDueOfflineCommandsHandler */
-	private $offline_commands_handler;
-
-	/** @var TebexDuePlayersList */
-	private $list;
-
-	/** @var Logger */
-	private $logger;
-
-	/** @var bool */
-	private $is_idle = true;
+	private Loader $plugin;
+	private TebexHandler $handler;
+	private TebexDueOfflineCommandsHandler $offline_commands_handler;
+	private TebexDuePlayersList $list;
+	private Logger $logger;
+	private bool $is_idle = true;
 
 	public function __construct(Loader $plugin, TebexHandler $handler){
 		TebexPlayerSession::init($plugin);

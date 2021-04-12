@@ -27,36 +27,26 @@ final class TebexThread extends Thread{
 	/**
 	 * @var TebexResponseHandler[]
 	 *
-	 * @phpstan-var TebexResponseHandler<\muqsit\tebex\api\TebexResponse>[]
+	 * @phpstan-var TebexResponseHandler<TebexResponse>[]
 	 */
-	private static $handlers = [];
+	private static array $handlers = [];
 
-	/** @var int */
-	private static $handler_ids = 0;
+	private static int $handler_ids = 0;
 
 	/** @var SleeperNotifier<mixed> */
-	private $notifier;
+	private SleeperNotifier $notifier;
 
 	/** @var Threaded<string> */
-	private $incoming;
+	private Threaded $incoming;
 
 	/** @var Threaded<string> */
-	private $outgoing;
+	private Threaded $outgoing;
 
-	/** @var Logger */
-	private $logger;
-
-	/** @var int */
-	public $busy_score = 0;
-
-	/** @var bool */
-	private $running = false;
-
-	/** @var string */
-	private $secret;
-
-	/** @var string */
-	private $ca_path;
+	private Logger $logger;
+	public int $busy_score = 0;
+	private bool $running = false;
+	private string $secret;
+	private string $ca_path;
 
 	/**
 	 * @param Logger $logger

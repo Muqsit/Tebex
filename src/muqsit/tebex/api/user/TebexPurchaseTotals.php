@@ -7,7 +7,7 @@ namespace muqsit\tebex\api\user;
 final class TebexPurchaseTotals{
 
 	/** @var array<string, float> */
-	private $purchase_totals;
+	private array $purchase_totals;
 
 	/**
 	 * @param array<string, float> $purchase_totals

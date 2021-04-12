@@ -6,11 +6,8 @@ namespace muqsit\tebex\api\bans;
 
 final class TebexBanEntryUser{
 
-	/** @var string */
-	private $username;
-
-	/** @var string */
-	private $uuid;
+	private string $username;
+	private string $uuid;
 
 	public function __construct(string $username, string $uuid){
 		$this->username = $username;

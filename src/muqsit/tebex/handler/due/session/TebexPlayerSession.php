@@ -15,18 +15,16 @@ use pocketmine\scheduler\TaskScheduler;
 
 final class TebexPlayerSession{
 
-	/** @var TaskScheduler */
-	private static $scheduler;
+	private static TaskScheduler $scheduler;
 
 	public static function init(Loader $plugin) : void{
 		self::$scheduler = $plugin->getScheduler();
 	}
 
-	/** @var Player */
-	private $player;
+	private Player $player;
 
 	/** @var DelayedOnlineCommandHandler[] */
-	private $delayed_online_command_handlers = [];
+	private array $delayed_online_command_handlers = [];
 
 	public function __construct(Player $player){
 		$this->player = $player;

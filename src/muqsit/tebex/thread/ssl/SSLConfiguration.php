@@ -32,8 +32,7 @@ final class SSLConfiguration{
 		return new self(stream_get_meta_data($resource)["uri"], $resource);
 	}
 
-	/** @var string */
-	private $cainfo_path;
+	private string $cainfo_path;
 
 	/** @var resource|null */
 	private $resource;

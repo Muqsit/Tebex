@@ -17,17 +17,12 @@ use pocketmine\Server;
 
 final class TebexDueOfflineCommandsHandler{
 
-	/** @var Loader */
-	private $plugin;
-	
-	/** @var Logger */
-	private $logger;
-
-	/** @var TebexHandler */
-	private $handler;
+	private Loader $plugin;
+	private Logger $logger;
+	private TebexHandler $handler;
 
 	/** @var int[] */
-	private $delayed = [];
+	private array $delayed = [];
 
 	public function __construct(Loader $plugin, TebexHandler $handler, int $check_period = 60 * 20){
 		$this->plugin = $plugin;

@@ -6,11 +6,8 @@ namespace muqsit\tebex\api\utils\time;
 
 final class SimpleTebexTimeUnit implements TebexTimeUnit{
 
-	/** @var string */
-	private $name;
-
-	/** @var int */
-	private $factor;
+	private string $name;
+	private int $factor;
 
 	public function __construct(string $name, int $factor){
 		$this->name = $name;

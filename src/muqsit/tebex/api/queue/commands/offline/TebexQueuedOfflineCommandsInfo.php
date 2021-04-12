@@ -8,11 +8,10 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexQueuedOfflineCommandsInfo implements TebexResponse{
 
-	/** @var TebexQueuedOfflineCommandsMeta */
-	private $meta;
+	private TebexQueuedOfflineCommandsMeta $meta;
 
 	/** @var TebexQueuedOfflineCommand[] */
-	private $commands;
+	private array $commands;
 
 	/**
 	 * @param TebexQueuedOfflineCommandsMeta $meta

@@ -16,11 +16,8 @@ final class TebexTime{
 		return new self($value, $time_unit);
 	}
 
-	/** @var int */
-	private $value;
-
-	/** @var TebexTimeUnit */
-	private $unit;
+	private int $value;
+	private TebexTimeUnit $unit;
 
 	public function __construct(int $value, TebexTimeUnit $unit){
 		$this->value = $value;

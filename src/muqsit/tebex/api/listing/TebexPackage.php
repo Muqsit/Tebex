@@ -39,26 +39,13 @@ class TebexPackage implements Sortable{
 		);
 	}
 
-	/** @var int */
-	private $id;
-
-	/** @var int */
-	private $order;
-
-	/** @var string */
-	private $name;
-
-	/** @var string */
-	private $price;
-
-	/** @var TebexPackageSaleInfo */
-	private $sale;
-
-	/** @var string|null */
-	private $image;
-
-	/** @var TebexGUIItem */
-	private $gui_item;
+	private int $id;
+	private int $order;
+	private string $name;
+	private string $price;
+	private TebexPackageSaleInfo $sale;
+	private ?string $image;
+	private TebexGUIItem $gui_item;
 
 	final public function __construct(int $id, int $order, string $name, string $price, TebexPackageSaleInfo $sale, ?string $image, TebexGUIItem $gui_item){
 		$this->id = $id;

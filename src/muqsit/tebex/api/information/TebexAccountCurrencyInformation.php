@@ -6,11 +6,8 @@ namespace muqsit\tebex\api\information;
 
 final class TebexAccountCurrencyInformation{
 
-	/** @var string */
-	private $iso_4217;
-
-	/** @var string */
-	private $symbol;
+	private string $iso_4217;
+	private string $symbol;
 
 	public function __construct(string $iso_4217, string $symbol){
 		$this->iso_4217 = $iso_4217;

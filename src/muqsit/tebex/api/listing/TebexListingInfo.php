@@ -9,7 +9,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexListingInfo implements TebexResponse{
 
 	/** @var TebexCategory[] */
-	private $categories;
+	private array $categories;
 
 	/**
 	 * @param TebexCategory[] $categories

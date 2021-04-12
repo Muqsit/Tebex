@@ -16,14 +16,13 @@ use pocketmine\utils\TextFormat;
 
 final class TebexCommandExecutor extends UnregisteredTebexCommandExecutor{
 
-	/** @var TebexHandler */
-	private $handler;
+	private TebexHandler $handler;
 
 	/** @var array<string, TebexSubCommand> */
-	private $sub_commands = [];
+	private array $sub_commands = [];
 
 	/** @var array<string, string> */
-	private $aliases = [];
+	private array $aliases = [];
 
 	public function __construct(Loader $plugin, TebexHandler $handler){
 		parent::__construct($plugin);

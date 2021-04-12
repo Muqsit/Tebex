@@ -8,11 +8,8 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexCheckoutInfo implements TebexResponse{
 
-	/** @var string */
-	private $url;
-
-	/** @var string */
-	private $expires;
+	private string $url;
+	private string $expires;
 
 	public function __construct(string $url, string $expires){
 		$this->url = $url;

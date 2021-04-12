@@ -6,8 +6,7 @@ namespace muqsit\tebex\api\queue\commands\offline;
 
 final class TebexQueuedOfflineCommandsMeta{
 
-	/** @var bool */
-	private $limited;
+	private bool $limited;
 
 	public function __construct(bool $limited){
 		$this->limited = $limited;

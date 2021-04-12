@@ -12,14 +12,11 @@ use pocketmine\scheduler\ClosureTask;
 
 final class TebexHandler{
 
-	/** @var Loader */
-	private $plugin;
-
-	/** @var TebexDueCommandsHandler */
-	private $due_commands_handler;
+	private Loader $plugin;
+	private TebexDueCommandsHandler $due_commands_handler;
 
 	/** @var int[]|null */
-	private $command_ids;
+	private ?array $command_ids = null;
 
 	public function __construct(Loader $plugin){
 		$this->plugin = $plugin;

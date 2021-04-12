@@ -15,11 +15,8 @@ abstract class BaseTebexAPI{
 
 	public const BASE_ENDPOINT = "https://plugin.tebex.io";
 
-	/** @var TebexThreadPool */
-	private $pool;
-
-	/** @var SSLConfiguration */
-	private $ssl_config;
+	private TebexThreadPool $pool;
+	private SSLConfiguration $ssl_config;
 
 	public function __construct(Logger $logger, string $secret, SSLConfiguration $ssl_config, int $workers){
 		$this->pool = new TebexThreadPool();

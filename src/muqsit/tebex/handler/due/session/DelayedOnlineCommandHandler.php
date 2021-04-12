@@ -9,11 +9,8 @@ use pocketmine\scheduler\TaskHandler;
 
 final class DelayedOnlineCommandHandler{
 
-	/** @var TebexQueuedOnlineCommand */
-	private $command;
-
-	/** @var TaskHandler */
-	private $handler;
+	private TebexQueuedOnlineCommand $command;
+	private TaskHandler $handler;
 
 	public function __construct(TebexQueuedOnlineCommand $command, TaskHandler $handler){
 		$this->command = $command;

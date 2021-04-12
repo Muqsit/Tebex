@@ -10,8 +10,7 @@ final class TebexCouponBuilder{
 		return new self();
 	}
 
-	/** @var TebexCreatedCoupon */
-	private $coupon;
+	private TebexCreatedCoupon $coupon;
 
 	public function __construct(){
 		$this->coupon = TebexCreatedCoupon::createWithDefaultParameters();

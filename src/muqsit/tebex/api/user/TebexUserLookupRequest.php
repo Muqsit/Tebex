@@ -12,8 +12,7 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexUserLookupRequest extends TebexGETRequest{
 
-	/** @var string */
-	private $username_or_uuid;
+	private string $username_or_uuid;
 
 	public function __construct(string $username_or_uuid){
 		$this->username_or_uuid = $username_or_uuid;

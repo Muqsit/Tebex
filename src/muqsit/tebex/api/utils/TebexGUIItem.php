@@ -12,8 +12,7 @@ use muqsit\tebex\Loader;
 
 final class TebexGUIItem{
 
-	/** @var string */
-	private $value;
+	private string $value;
 
 	public function __construct(string $value){
 		$this->value = $value;
@@ -24,22 +23,18 @@ final class TebexGUIItem{
 	}
 
 	public function asItem() : ?Item{
-		if($this->value !== null){
-			try{
-				$item = VanillaItems::fromString($this->value);
-			}catch(InvalidArgumentException $e){
-				$plugin = Server::getInstance()->getPluginManager()->getPlugin("Tebex");
-				if($plugin instanceof Loader){
-					$plugin->getLogger()->warning("Failed to parse GUI item \"{$this->value}\", using PAPER as fallback");
-				}else{
-					throw $e;
-				}
-				return VanillaItems::PAPER();
+		$item = null;
+		try{
+			$item = VanillaItems::fromString($this->value);
+		}catch(InvalidArgumentException $e){
+			$plugin = Server::getInstance()->getPluginManager()->getPlugin("Tebex");
+			if($plugin instanceof Loader){
+				$plugin->getLogger()->warning("Failed to parse GUI item \"{$this->value}\", using PAPER as fallback");
+			}else{
+				throw $e;
 			}
-			assert($item instanceof Item);
-			return $item;
+			return VanillaItems::PAPER();
 		}
-
-		return null;
+		return $item;
 	}
 }

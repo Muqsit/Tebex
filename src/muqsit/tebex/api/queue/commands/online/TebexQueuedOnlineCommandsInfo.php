@@ -9,7 +9,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexQueuedOnlineCommandsInfo implements TebexResponse{
 
 	/** @var TebexQueuedOnlineCommand[] */
-	private $commands;
+	private array $commands;
 
 	/**
 	 * @param TebexQueuedOnlineCommand[] $commands

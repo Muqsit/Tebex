@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex;
 
+use InvalidStateException;
 use muqsit\tebex\api\information\TebexInformation;
 use muqsit\tebex\handler\command\TebexCommandExecutor;
 use muqsit\tebex\handler\command\TebexCommandSender;
@@ -18,20 +19,11 @@ use pocketmine\plugin\PluginBase;
 
 final class Loader extends PluginBase{
 
-	/** @var TebexInformation */
-	private $information;
-
-	/** @var TebexHandler */
-	private $handler;
-
-	/** @var TebexAPI */
-	private $api;
-
-	/** @var PluginCommand */
-	private $command;
-
-	/** @var int */
-	private $worker_limit;
+	private TebexInformation $information;
+	private ?TebexHandler $handler = null;
+	private ?TebexAPI $api = null;
+	private PluginCommand $command;
+	private int $worker_limit;
 
 	protected function onEnable() : void{
 		if(!TebexCommandSender::hasInstance()){
@@ -118,6 +110,10 @@ final class Loader extends PluginBase{
 	}
 
 	public function getApi() : TebexAPI{
+		if($this->api === null){
+			throw new InvalidStateException("API is not ready");
+		}
+
 		return $this->api;
 	}
 

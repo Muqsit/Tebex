@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\command;
 
+use InvalidStateException;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\lang\Language;
 use pocketmine\permission\DefaultPermissions;
@@ -12,14 +13,16 @@ use pocketmine\Server;
 
 class TebexCommandSender extends ConsoleCommandSender{
 
-	/** @var TebexCommandSender|null */
-	private static $instance;
+	private static ?TebexCommandSender $instance = null;
 
 	public static function hasInstance() : bool{
 		return self::$instance !== null;
 	}
 
 	public static function getInstance() : TebexCommandSender{
+		if(self::$instance === null){
+			throw new InvalidStateException("No instance of " . self::class . " has been set");
+		}
 		return self::$instance;
 	}
 

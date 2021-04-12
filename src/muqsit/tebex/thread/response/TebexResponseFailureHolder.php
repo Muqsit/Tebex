@@ -12,8 +12,7 @@ use muqsit\tebex\thread\TebexException;
  */
 final class TebexResponseFailureHolder extends TebexResponseHolder{
 
-	/** @var TebexException */
-	private $exception;
+	private TebexException $exception;
 
 	public function __construct(int $handler_id, float $latency, TebexException $exception){
 		parent::__construct($handler_id, $latency);

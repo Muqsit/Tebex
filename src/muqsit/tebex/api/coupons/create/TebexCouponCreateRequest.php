@@ -12,8 +12,7 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexCouponCreateRequest extends TebexPOSTRequest{
 
-	/** @var TebexCreatedCoupon */
-	private $coupon;
+	private TebexCreatedCoupon $coupon;
 
 	public function __construct(TebexCreatedCoupon $coupon){
 		$this->coupon = $coupon;

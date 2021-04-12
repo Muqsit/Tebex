@@ -6,20 +6,11 @@ namespace muqsit\tebex\api\user;
 
 final class TebexPayment{
 
-	/** @var string */
-	private $transaction_id;
-
-	/** @var int */
-	private $time;
-
-	/** @var float */
-	private $price;
-
-	/** @var string */
-	private $currency;
-
-	/** @var int */
-	private $status;
+	private string $transaction_id;
+	private int $time;
+	private float $price;
+	private string $currency;
+	private int $status;
 
 	public function __construct(string $transaction_id, int $time, float $price, string $currency, int $status){
 		$this->transaction_id = $transaction_id;

@@ -8,11 +8,8 @@ use muqsit\tebex\api\queue\TebexDuePlayer;
 
 final class TebexDuePlayerHolder{
 
-	/** @var float */
-	private $created;
-
-	/** @var TebexDuePlayer */
-	private $player;
+	private float $created;
+	private TebexDuePlayer $player;
 
 	public function __construct(TebexDuePlayer $player){
 		$this->player = $player;

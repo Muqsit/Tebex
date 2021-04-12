@@ -9,7 +9,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexSalesList implements TebexResponse{
 
 	/** @var TebexSale[] */
-	private $sales;
+	private array $sales;
 
 	/**
 	 * @param TebexSale[] $sales

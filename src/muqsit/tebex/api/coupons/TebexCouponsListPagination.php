@@ -24,20 +24,11 @@ final class TebexCouponsListPagination{
 		return new self($response["totalResults"], $response["currentPage"], $response["lastPage"], $response["previous"], $response["next"]);
 	}
 
-	/** @var int */
-	private $total;
-
-	/** @var int */
-	private $current_page;
-
-	/** @var int */
-	private $last_page;
-
-	/** @var int|null */
-	private $previous;
-
-	/** @var string|null */
-	private $next_url;
+	private int $total;
+	private int $current_page;
+	private int $last_page;
+	private ?int $previous;
+	private ?string $next_url;
 
 	public function __construct(int $total, int $current_page, int $last_page, ?int $previous, ?string $next_url){
 		$this->total = $total;

@@ -55,17 +55,11 @@ final class TebexResponseHandler{
 		});
 	}
 
-	/**
-	 * @var Closure
-	 * @phpstan-var Closure(TTebexResponse) : void
-	 */
-	public $on_success;
+	/** @phpstan-var Closure(TTebexResponse) : void */
+	public Closure $on_success;
 
-	/**
-	 * @var Closure
-	 * @phpstan-var Closure(TebexException) : void
-	 */
-	public $on_failure;
+	/** @phpstan-var Closure(TebexException) : void */
+	public Closure $on_failure;
 
 	/**
 	 * @param Closure $on_success

@@ -9,11 +9,10 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexRequestHolder{
 
-	/** @var int */
-	public $handler_id;
+	public int $handler_id;
 
-	/** @var TebexRequest<TebexResponse> */
-	public $request;
+	/** @phpstan-var TebexRequest<TebexResponse> */
+	public TebexRequest $request;
 
 	/**
 	 * @param TebexRequest<TebexResponse> $request

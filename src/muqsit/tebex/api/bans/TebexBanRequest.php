@@ -12,14 +12,9 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexBanRequest extends TebexPOSTRequest{
 
-	/** @var string */
-	private $username_or_uuid;
-
-	/** @var string|null */
-	private $reason;
-
-	/** @var string|null */
-	private $ip;
+	private string $username_or_uuid;
+	private ?string $reason;
+	private ?string $ip;
 
 	public function __construct(string $username_or_uuid, ?string $reason = null, ?string $ip = null){
 		$this->username_or_uuid = $username_or_uuid;

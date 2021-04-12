@@ -9,23 +9,12 @@ use muqsit\tebex\api\utils\TebexEffectiveInfo;
 
 final class TebexSale{
 
-	/** @var int */
-	private $id;
-
-	/** @var TebexEffectiveInfo */
-	private $effective;
-
-	/** @var TebexDiscountInfo */
-	private $discount;
-
-	/** @var int */
-	private $start;
-
-	/** @var int */
-	private $expire;
-
-	/** @var int */
-	private $order;
+	private int $id;
+	private TebexEffectiveInfo $effective;
+	private TebexDiscountInfo $discount;
+	private int $start;
+	private int $expire;
+	private int $order;
 
 	public function __construct(int $id, TebexEffectiveInfo $effective, TebexDiscountInfo $discount, int $start, int $expire, int $order){
 		$this->id = $id;

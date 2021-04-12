@@ -8,11 +8,8 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexInformation implements TebexResponse{
 
-	/** @var TebexAccountInformation */
-	private $account;
-
-	/** @var TebexServerInformation */
-	private $server;
+	private TebexAccountInformation $account;
+	private TebexServerInformation $server;
 
 	public function __construct(TebexAccountInformation $account, TebexServerInformation $server){
 		$this->account = $account;

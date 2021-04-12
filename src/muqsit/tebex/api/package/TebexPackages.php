@@ -9,7 +9,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexPackages implements TebexResponse{
 
 	/** @var TebexPackage[] */
-	private $packages;
+	private array $packages;
 
 	/**
 	 * @param TebexPackage[] $packages

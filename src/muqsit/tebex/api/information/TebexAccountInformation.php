@@ -6,26 +6,13 @@ namespace muqsit\tebex\api\information;
 
 final class TebexAccountInformation{
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $domain;
-
-	/** @var string */
-	private $name;
-
-	/** @var TebexAccountCurrencyInformation */
-	private $currency;
-
-	/** @var bool */
-	private $online_mode;
-
-	/** @var string */
-	private $game_type;
-
-	/** @var bool */
-	private $log_events;
+	private int $id;
+	private string $domain;
+	private string $name;
+	private TebexAccountCurrencyInformation $currency;
+	private bool $online_mode;
+	private string $game_type;
+	private bool $log_events;
 
 	public function __construct(int $id, string $domain, string $name, TebexAccountCurrencyInformation $currency, bool $online_mode, string $game_type, bool $log_events){
 		$this->id = $id;

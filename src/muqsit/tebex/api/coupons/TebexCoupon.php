@@ -46,38 +46,17 @@ final class TebexCoupon implements TebexResponse{
 		);
 	}
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $code;
-
-	/** @var TebexEffectiveInfo */
-	private $effective;
-
-	/** @var TebexDiscountInfo */
-	private $discount;
-
-	/** @var TebexCouponExpireInfo */
-	private $expire;
-
-	/** @var string */
-	private $basket_type;
-
-	/** @var int */
-	private $start_date;
-
-	/** @var int */
-	private $user_limit;
-
-	/** @var int */
-	private $minimum;
-
-	/** @var string|null */
-	private $username;
-
-	/** @var string */
-	private $note;
+	private int $id;
+	private string $code;
+	private TebexEffectiveInfo $effective;
+	private TebexDiscountInfo $discount;
+	private TebexCouponExpireInfo $expire;
+	private string $basket_type;
+	private int $start_date;
+	private int $user_limit;
+	private int $minimum;
+	private ?string $username;
+	private string $note;
 
 	public function __construct(int $id, string $code, TebexEffectiveInfo $effective, TebexDiscountInfo $discount, TebexCouponExpireInfo $expire, string $basket_type, int $start_date, int $user_limit, int $minimum, ?string $username, string $note){
 		$this->id = $id;

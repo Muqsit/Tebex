@@ -9,7 +9,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexBanList implements TebexResponse{
 
 	/** @var TebexBanEntry[] */
-	private $entries;
+	private array $entries;
 
 	/**
 	 * @param TebexBanEntry[] $entries

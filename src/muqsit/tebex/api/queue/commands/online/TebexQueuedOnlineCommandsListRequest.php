@@ -12,8 +12,7 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexQueuedOnlineCommandsListRequest extends TebexGETRequest{
 
-	/** @var int */
-	private $player_id;
+	private int $player_id;
 
 	public function __construct(int $player_id){
 		$this->player_id = $player_id;

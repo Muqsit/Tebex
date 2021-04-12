@@ -15,14 +15,9 @@ final class TebexDuePlayer{
 		return new self((int) $data["id"], $data["name"], $data["uuid"]);
 	}
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $name;
-
-	/** @var string */
-	private $uuid;
+	private int $id;
+	private string $name;
+	private string $uuid;
 
 	public function __construct(int $id, string $name, string $uuid){
 		$this->id = $id;

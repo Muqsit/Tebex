@@ -6,11 +6,8 @@ namespace muqsit\tebex\api\information;
 
 final class TebexServerInformation{
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $name;
+	private int $id;
+	private string $name;
 
 	public function __construct(int $id, string $name){
 		$this->id = $id;

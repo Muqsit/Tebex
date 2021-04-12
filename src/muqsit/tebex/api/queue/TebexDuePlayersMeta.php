@@ -6,14 +6,9 @@ namespace muqsit\tebex\api\queue;
 
 final class TebexDuePlayersMeta{
 
-	/** @var bool */
-	private $execute_offline;
-
-	/** @var int */
-	private $next_check;
-
-	/** @var bool */
-	private $more;
+	private bool $execute_offline;
+	private int $next_check;
+	private bool $more;
 
 	public function __construct(bool $execute_offline, int $next_check, bool $more){
 		$this->execute_offline = $execute_offline;

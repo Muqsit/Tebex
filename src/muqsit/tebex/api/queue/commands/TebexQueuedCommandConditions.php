@@ -6,8 +6,7 @@ namespace muqsit\tebex\api\queue\commands;
 
 abstract class TebexQueuedCommandConditions{
 
-	/** @var int */
-	private $delay;
+	private int $delay;
 
 	public function __construct(int $delay){
 		$this->delay = $delay;

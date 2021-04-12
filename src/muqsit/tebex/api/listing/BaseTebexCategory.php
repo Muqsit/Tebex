@@ -10,20 +10,14 @@ use muqsit\tebex\api\utils\TebexGUIItem;
 
 abstract class BaseTebexCategory implements Sortable{
 
-	/** @var int */
-	private $id;
-
-	/** @var int */
-	private $order;
-
-	/** @var string */
-	private $name;
+	private int $id;
+	private int $order;
+	private string $name;
 
 	/** @var TebexPackage[] */
-	private $packages;
+	private array $packages;
 
-	/** @var TebexGUIItem */
-	private $gui_item;
+	private TebexGUIItem $gui_item;
 
 	/**
 	 * @param int $id

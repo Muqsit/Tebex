@@ -8,20 +8,14 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexUser implements TebexResponse{
 
-	/** @var TebexPlayer */
-	private $player;
-
-	/** @var int */
-	private $ban_count;
-
-	/** @var int */
-	private $chargeback_rate;
+	private TebexPlayer $player;
+	private int $ban_count;
+	private int $chargeback_rate;
 
 	/** @var TebexPayment[] */
-	private $payments;
+	private array $payments;
 
-	/** @var TebexPurchaseTotals */
-	private $purchase_totals;
+	private TebexPurchaseTotals $purchase_totals;
 
 	/**
 	 * @param TebexPlayer $player

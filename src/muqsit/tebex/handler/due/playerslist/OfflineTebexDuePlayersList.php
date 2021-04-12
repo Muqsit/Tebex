@@ -10,10 +10,10 @@ use pocketmine\player\Player;
 final class OfflineTebexDuePlayersList extends TebexDuePlayersList{
 
 	/** @var int[] */
-	private $players = [];
+	private array $players = [];
 
 	/** @var TebexPlayerSession[] */
-	private $online = [];
+	private array $online = [];
 
 	private static function playerIndex(Player $player) : string{
 		return strtolower($player->getName());

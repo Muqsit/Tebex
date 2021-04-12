@@ -12,11 +12,8 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexCheckoutRequest extends TebexPOSTRequest{
 
-	/** @var int */
-	private $package_id;
-
-	/** @var string */
-	private $username;
+	private int $package_id;
+	private string $username;
 
 	public function __construct(int $package_id, string $username){
 		$this->package_id = $package_id;

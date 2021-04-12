@@ -12,8 +12,7 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexPackageRequest extends TebexGETRequest{
 
-	/** @var int */
-	private $package_id;
+	private int $package_id;
 
 	public function __construct(int $package_id){
 		$this->package_id = $package_id;

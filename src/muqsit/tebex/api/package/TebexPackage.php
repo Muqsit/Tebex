@@ -78,74 +78,35 @@ final class TebexPackage implements TebexResponse{
 		);
 	}
 
-	/** @var int */
-	private $id;
-
-	/** @var string */
-	private $name;
-
-	/** @var string|null */
-	private $image;
-
-	/** @var float */
-	private $price;
-
-	/** @var TebexTime */
-	private $expiry;
-
-	/** @var string */
-	private $type;
-
-	/** @var TebexPackageCategory */
-	private $category;
-
-	/** @var TebexTime */
-	private $global_limit;
-
-	/** @var TebexTime */
-	private $user_limit;
+	private int $id;
+	private string $name;
+	private ?string $image;
+	private float $price;
+	private TebexTime $expiry;
+	private string $type;
+	private TebexPackageCategory $category;
+	private TebexTime $global_limit;
+	private TebexTime $user_limit;
 
 	/** @var TebexPackageServer[] */
-	private $servers;
+	private array $servers;
 
 	/** @var int[] */
-	private $required_package_ids;
+	private array $required_package_ids;
 
-	/** @var bool */
-	private $require_any;
-
-	/** @var bool */
-	private $create_giftcard;
-
-	/** @var int|null */
-	private $show_until;
-
-	/** @var TebexGUIItem */
-	private $gui_item;
-
-	/** @var bool */
-	private $disabled;
-
-	/** @var bool */
-	private $disabled_quantity;
-
-	/** @var bool */
-	private $custom_price;
-
-	/** @var bool */
-	private $choose_server;
-
-	/** @var bool */
-	private $limit_expires;
-
-	/** @var bool */
-	private $inherit_commands;
-
-	/** @var bool */
-	private $variable_giftcard;
+	private bool $require_any;
+	private bool $create_giftcard;
+	private ?int $show_until;
+	private TebexGUIItem $gui_item;
+	private bool $disabled;
+	private bool $disabled_quantity;
+	private bool $custom_price;
+	private bool $choose_server;
+	private bool $limit_expires;
+	private bool $inherit_commands;
+	private bool $variable_giftcard;
 
 	/**
-	 * TebexPackage constructor.
 	 * @param int $id
 	 * @param string $name
 	 * @param string|null $image

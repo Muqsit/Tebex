@@ -9,11 +9,8 @@ namespace muqsit\tebex\thread\response;
  */
 abstract class TebexResponseHolder{
 
-	/** @var int */
-	public $handler_id;
-
-	/** @var float */
-	public $latency;
+	public int $handler_id;
+	public float $latency;
 
 	public function __construct(int $handler_id, float $latency){
 		$this->handler_id = $handler_id;

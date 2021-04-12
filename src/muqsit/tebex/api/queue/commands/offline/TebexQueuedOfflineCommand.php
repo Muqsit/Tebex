@@ -9,11 +9,8 @@ use muqsit\tebex\api\queue\commands\TebexQueuedCommand;
 
 final class TebexQueuedOfflineCommand extends TebexQueuedCommand{
 
-	/** @var TebexQueuedOfflineCommandConditions */
-	private $conditions;
-
-	/** @var TebexDuePlayer */
-	private $player;
+	private TebexQueuedOfflineCommandConditions $conditions;
+	private TebexDuePlayer $player;
 
 	public function __construct(int $id, string $command, int $payment_id, int $package_id, TebexQueuedOfflineCommandConditions $conditions, TebexDuePlayer $player){
 		parent::__construct($id, $command, $payment_id, $package_id);

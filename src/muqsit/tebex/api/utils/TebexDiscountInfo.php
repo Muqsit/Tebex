@@ -26,14 +26,9 @@ final class TebexDiscountInfo{
 		);
 	}
 
-	/** @var string */
-	private $type;
-
-	/** @var int */
-	private $percentage;
-
-	/** @var int */
-	private $value;
+	private string $type;
+	private int $percentage;
+	private int $value;
 
 	public function __construct(string $type, int $percentage, int $value){
 		$this->type = $type;

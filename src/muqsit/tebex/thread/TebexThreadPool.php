@@ -11,13 +11,12 @@ use UnderflowException;
 final class TebexThreadPool{
 
 	/** @var SleeperNotifier<mixed> */
-	private $notifier;
+	private SleeperNotifier $notifier;
 
 	/** @var TebexThread[] */
-	private $workers = [];
+	private array $workers = [];
 
-	/** @var float */
-	private $latency = 0.0;
+	private float $latency = 0.0;
 
 	public function __construct(){
 		$this->notifier = new SleeperNotifier();

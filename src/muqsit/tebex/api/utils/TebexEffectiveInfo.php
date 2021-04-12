@@ -19,14 +19,13 @@ final class TebexEffectiveInfo{
 		);
 	}
 
-	/** @var string */
-	private $type;
+	private string $type;
 
 	/** @var int[] */
-	private $package_ids;
+	private array $package_ids;
 
 	/** @var int[] */
-	private $category_ids;
+	private array $category_ids;
 
 	/**
 	 * @param string $type

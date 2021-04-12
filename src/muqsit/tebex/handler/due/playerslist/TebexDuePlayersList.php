@@ -12,13 +12,10 @@ use pocketmine\player\Player;
 abstract class TebexDuePlayersList{
 
 	/** @var TebexDuePlayerHolder[] */
-	protected $due_players = [];
+	protected array $due_players = [];
 
-	/**
-	 * @var Closure
-	 * @phpstan-var Closure(Player, TebexDuePlayerHolder) : void
-	 */
-	private $on_match;
+	/** @phpstan-var Closure(Player, TebexDuePlayerHolder) : void */
+	private Closure $on_match;
 
 	/**
 	 * @param Closure $on_match

@@ -57,56 +57,28 @@ final class TebexCouponCreateResponse implements TebexResponse{
 		);
 	}
 
-	/** @var int */
-	public $id;
-
-	/** @var string */
-	public $code;
-
-	/** @var string */
-	public $effective_on;
+	public int $id;
+	public string $code;
+	public string $effective_on;
 
 	/** @var int[] */
-	public $packages;
+	public array $packages;
 
 	/** @var int[] */
-	public $categories;
+	public array $categories;
 
-	/** @var string */
-	public $discount_type;
-
-	/** @var int */
-	public $discount_amount;
-
-	/** @var int */
-	public $discount_percentage;
-
-	/** @var bool */
-	public $redeem_unlimited;
-
-	/** @var bool */
-	public $expire_never;
-
-	/** @var int */
-	public $expire_limit;
-
-	/** @var string */
-	public $expire_date; // yyyy-mm-dd
-
-	/** @var string */
-	public $start_date;
-
-	/** @var string */
-	public $basket_type;
-
-	/** @var int */
-	public $minimum;
-
-	/** @var string */
-	public $username = "";
-
-	/** @var string */
-	public $note;
+	public string $discount_type;
+	public int $discount_amount;
+	public int $discount_percentage;
+	public bool $redeem_unlimited;
+	public bool $expire_never;
+	public int $expire_limit;
+	public string $expire_date; // yyyy-mm-dd
+	public string $start_date;
+	public string $basket_type;
+	public int $minimum;
+	public string $username = "";
+	public string $note;
 
 	/**
 	 * @param int $id

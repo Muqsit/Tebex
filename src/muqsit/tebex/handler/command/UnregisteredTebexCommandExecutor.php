@@ -12,8 +12,7 @@ use muqsit\tebex\thread\TebexException;
 
 class UnregisteredTebexCommandExecutor implements CommandExecutor{
 
-	/** @var Loader */
-	protected $plugin;
+	protected Loader $plugin;
 
 	public function __construct(Loader $plugin){
 		$this->plugin = $plugin;

@@ -11,8 +11,7 @@ use pocketmine\command\CommandSender;
 
 final class ClosureCommandExecutor implements CommandExecutor{
 
-	/** @var Closure */
-	private $executor;
+	private Closure $executor;
 
 	/**
 	 * @param Closure $executor

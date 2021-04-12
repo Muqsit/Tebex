@@ -8,11 +8,10 @@ use muqsit\tebex\api\utils\TebexGUIItem;
 
 final class TebexCategory extends BaseTebexCategory{
 
-	/** @var bool */
-	private $only_subcategories;
+	private bool $only_subcategories;
 
 	/** @var TebexSubCategory[] */
-	private $subcategories;
+	private array $subcategories;
 
 	/**
 	 * @param int $id

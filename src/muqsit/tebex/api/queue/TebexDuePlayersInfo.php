@@ -8,11 +8,10 @@ use muqsit\tebex\api\TebexResponse;
 
 final class TebexDuePlayersInfo implements TebexResponse{
 
-	/** @var TebexDuePlayersMeta */
-	private $meta;
+	private TebexDuePlayersMeta $meta;
 
 	/** @var TebexDuePlayer[] */
-	private $players;
+	private array $players;
 
 	/**
 	 * @param TebexDuePlayersMeta $meta

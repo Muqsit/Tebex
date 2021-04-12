@@ -30,11 +30,10 @@ final class TebexCouponsList implements TebexResponse{
 		return new self(TebexCouponsListPagination::fromTebexResponse($response["pagination"]), $coupons);
 	}
 
-	/** @var TebexCouponsListPagination */
-	private $pagination;
+	private TebexCouponsListPagination $pagination;
 
 	/** @var TebexCoupon[] */
-	private $coupons;
+	private array $coupons;
 
 	/**
 	 * @param TebexCouponsListPagination $pagination

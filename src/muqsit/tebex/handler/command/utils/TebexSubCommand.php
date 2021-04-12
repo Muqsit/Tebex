@@ -8,17 +8,13 @@ use pocketmine\command\CommandExecutor;
 
 final class TebexSubCommand{
 
-	/** @var string */
-	public $name;
-
-	/** @var string */
-	public $description;
+	public string $name;
+	public string $description;
 
 	/** @var string[] */
-	public $aliases;
+	public array $aliases;
 
-	/** @var CommandExecutor */
-	public $executor;
+	public CommandExecutor $executor;
 
 	/**
 	 * @param string $name

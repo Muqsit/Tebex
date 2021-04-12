@@ -12,11 +12,8 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexResponseSuccessHolder extends TebexResponseHolder{
 
-	/**
-	 * @var TebexResponse
-	 * @phpstan-var TTebexResponse
-	 */
-	private $response;
+	/** @phpstan-var TTebexResponse */
+	private TebexResponse $response;
 
 	/**
 	 * @param int $handler_id

@@ -14,7 +14,7 @@ use muqsit\tebex\api\TebexResponse;
 final class TebexDeleteCommandRequest extends TebexDELETERequest{
 
 	/** @var int[] */
-	private $command_ids;
+	private array $command_ids;
 
 	/**
 	 * @param int[] $command_ids

@@ -8,17 +8,10 @@ use muqsit\tebex\api\utils\TebexCommand;
 
 abstract class TebexQueuedCommand{
 
-	/** @var int */
-	private $id;
-
-	/** @var TebexCommand */
-	private $command;
-
-	/** @var int */
-	private $payment_id;
-
-	/** @var int */
-	private $package_id;
+	private int $id;
+	private TebexCommand $command;
+	private int $payment_id;
+	private int $package_id;
 
 	public function __construct(int $id, string $command, int $payment_id, int $package_id){
 		$this->id = $id;

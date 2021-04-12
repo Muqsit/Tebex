@@ -8,8 +8,7 @@ use pocketmine\utils\Config;
 
 final class TypedConfig{
 
-	/** @var Config */
-	private $config;
+	private Config $config;
 
 	public function __construct(Config $config){
 		$this->config = $config;

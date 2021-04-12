@@ -28,17 +28,10 @@ final class TebexCouponExpireInfo{
 		);
 	}
 
-	/** @var bool */
-	private $redeem_unlimited;
-
-	/** @var bool */
-	private $expire_never;
-
-	/** @var int */
-	private $limit;
-
-	/** @var int */
-	private $date;
+	private bool $redeem_unlimited;
+	private bool $expire_never;
+	private int $limit;
+	private int $date;
 
 	public function __construct(bool $redeem_unlimited, bool $expire_never, int $limit, int $date){
 		$this->redeem_unlimited = $redeem_unlimited;

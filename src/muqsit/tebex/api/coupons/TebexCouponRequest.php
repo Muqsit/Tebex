@@ -12,8 +12,7 @@ use muqsit\tebex\api\TebexResponse;
  */
 final class TebexCouponRequest extends TebexGETRequest{
 
-	/** @var int */
-	private $coupon_id;
+	private int $coupon_id;
 
 	public function __construct(int $coupon_id){
 		$this->coupon_id = $coupon_id;
