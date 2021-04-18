@@ -17,9 +17,9 @@ final class TebexDuePlayer{
 
 	private int $id;
 	private string $name;
-	private string $uuid;
+	private ?string $uuid;
 
-	public function __construct(int $id, string $name, string $uuid){
+	public function __construct(int $id, string $name, ?string $uuid){
 		$this->id = $id;
 		$this->name = $name;
 		$this->uuid = $uuid;
@@ -33,7 +33,7 @@ final class TebexDuePlayer{
 		return $this->name;
 	}
 
-	public function getUuid() : string{
+	public function getUuid() : ?string{
 		return $this->uuid;
 	}
 }

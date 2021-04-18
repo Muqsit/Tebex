@@ -4,10 +4,20 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\playerslist;
 
+use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\player\Player;
+use RuntimeException;
 
 final class OnlineTebexDuePlayersList extends TebexDuePlayersList{
+
+	private static function getUuidFromTebexPlayer(TebexDuePlayer $player) : string{
+		$uuid = $player->getUuid();
+		if($uuid === null){
+			throw new RuntimeException("Expected UUID to be non-null in Online Mode");
+		}
+		return $uuid;
+	}
 
 	/** @var int[] */
 	private array $players = [];
@@ -21,14 +31,14 @@ final class OnlineTebexDuePlayersList extends TebexDuePlayersList{
 
 	protected function onDuePlayerSet(TebexDuePlayerHolder $holder) : void{
 		$player = $holder->getPlayer();
-		$this->players[$index = $player->getUuid()] = $holder->getPlayer()->getId();
+		$this->players[$index = self::getUuidFromTebexPlayer($player)] = $holder->getPlayer()->getId();
 		if(isset($this->online[$index])){
 			$this->onMatch($this->online[$index]->getPlayer(), $holder);
 		}
 	}
 
 	protected function onDuePlayerRemove(TebexDuePlayerHolder $holder) : void{
-		unset($this->players[$holder->getPlayer()->getUuid()]);
+		unset($this->players[self::getUuidFromTebexPlayer($holder->getPlayer())]);
 	}
 
 	public function get(Player $player) : ?TebexDuePlayerHolder{

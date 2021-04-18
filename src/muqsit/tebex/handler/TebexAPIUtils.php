@@ -47,7 +47,7 @@ final class TebexAPIUtils{
 			"{name}" => $gamertag,
 			"{player}" => $gamertag,
 			"{username}" => $gamertag,
-			"{id}" => $due_player->getUuid()
+			"{id}" => $due_player->getUuid() ?? ""
 		]);
 	}
 }
