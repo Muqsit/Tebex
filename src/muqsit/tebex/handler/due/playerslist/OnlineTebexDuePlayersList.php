@@ -6,6 +6,7 @@ namespace muqsit\tebex\handler\due\playerslist;
 
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\Player;
+use RuntimeException;
 
 final class OnlineTebexDuePlayersList extends TebexDuePlayersList{
 
@@ -21,14 +22,22 @@ final class OnlineTebexDuePlayersList extends TebexDuePlayersList{
 
 	protected function onDuePlayerSet(TebexDuePlayerHolder $holder) : void{
 		$player = $holder->getPlayer();
-		$this->players[$index = $player->getUuid()] = $holder->getPlayer()->getId();
+		$index = $player->getUuid();
+		if($index === null){
+			throw new RuntimeException("Expected UUID to be non-null in Online Mode");
+		}
+		$this->players[$index] = $holder->getPlayer()->getId();
 		if(isset($this->online[$index])){
 			$this->onMatch($this->online[$index]->getPlayer(), $holder);
 		}
 	}
 
 	protected function onDuePlayerRemove(TebexDuePlayerHolder $holder) : void{
-		unset($this->players[$holder->getPlayer()->getUuid()]);
+		$index = $holder->getPlayer()->getUuid();
+		if($index === null){
+			throw new RuntimeException("Expected UUID to be non-null in Online Mode");
+		}
+		unset($this->players[$index]);
 	}
 
 	public function get(Player $player) : ?TebexDuePlayerHolder{
