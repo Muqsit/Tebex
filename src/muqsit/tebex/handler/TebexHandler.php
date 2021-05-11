@@ -52,7 +52,7 @@ final class TebexHandler{
 			$this->plugin->getApi()->deleteCommands($command_ids, new TebexResponseHandler(function(EmptyTebexResponse $_) use($batch_id) : void{
 				$this->plugin->getLogger()->info("Successfully executed pending command deletion batch #{$batch_id}");
 			}, function(TebexException $e) use($batch_id, $command_ids) : void{
-				$this->plugin->getLogger()->info("Failed executed pending command deletion batch #{$batch_id} due to: {$e->getMessage()}, queueing into next batch");
+				$this->plugin->getLogger()->info("Failed to execute pending command deletion batch #{$batch_id} due to: {$e->getMessage()}, queueing into next batch");
 				$this->queueCommandDeletion(...$command_ids);
 			}));
 		}
