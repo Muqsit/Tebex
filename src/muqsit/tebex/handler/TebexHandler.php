@@ -6,6 +6,7 @@ namespace muqsit\tebex\handler;
 
 use muqsit\tebex\api\connection\response\EmptyTebexResponse;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
+use muqsit\tebex\api\utils\TebexException;
 use muqsit\tebex\handler\due\TebexDueCommandsHandler;
 use muqsit\tebex\Loader;
 use pocketmine\scheduler\ClosureTask;
@@ -17,6 +18,8 @@ final class TebexHandler{
 
 	/** @var int[]|null */
 	private ?array $command_ids = null;
+
+	private int $pending_commands_batch_counter = 0;
 
 	public function __construct(Loader $plugin){
 		$this->plugin = $plugin;
@@ -42,12 +45,15 @@ final class TebexHandler{
 
 	private function deletePendingCommands() : void{
 		if($this->command_ids !== null){
-			$this->plugin->getApi()->deleteCommands($this->command_ids, TebexResponseHandler::onSuccess(function(EmptyTebexResponse $_) : void{
-				if($this->command_ids !== null){
-					$commands_c = count($this->command_ids);
-					$this->plugin->getLogger()->debug("Deleted {$commands_c} command" . ($commands_c > 1 ? "s" : "") . ": [" . implode(", ", $this->command_ids) . "]");
-					$this->command_ids = null;
-				}
+			$command_ids = $this->command_ids;
+			$this->command_ids = null;
+			$batch_id = ++$this->pending_commands_batch_counter;
+			$this->plugin->getLogger()->info("Executing pending command deletion batch #{$batch_id} consisting of: (" . count($command_ids) . ") [" . implode(", ", $command_ids) . "]");
+			$this->plugin->getApi()->deleteCommands($command_ids, new TebexResponseHandler(function(EmptyTebexResponse $_) use($batch_id) : void{
+				$this->plugin->getLogger()->info("Successfully executed pending command deletion batch #{$batch_id}");
+			}, function(TebexException $e) use($batch_id, $command_ids) : void{
+				$this->plugin->getLogger()->info("Failed executed pending command deletion batch #{$batch_id} due to: {$e->getMessage()}, queueing into next batch");
+				$this->queueCommandDeletion(...$command_ids);
 			}));
 		}
 	}
