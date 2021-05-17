@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex\handler\due\playerslist;
+namespace muqsit\tebex\handler\due\playerlist;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 
-final class TebexDuePlayersListListener implements Listener{
+final class TebexDuePlayerListListener implements Listener{
 
-	private TebexDuePlayersList $list;
+	private TebexDuePlayerList $list;
 
-	public function __construct(TebexDuePlayersList $list){
+	public function __construct(TebexDuePlayerList $list){
 		$this->list = $list;
 	}
 

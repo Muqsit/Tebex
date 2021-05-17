@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex\handler\due\playerslist;
+namespace muqsit\tebex\handler\due\playerlist;
 
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 

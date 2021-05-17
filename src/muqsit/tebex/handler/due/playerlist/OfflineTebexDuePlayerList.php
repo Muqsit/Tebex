@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex\handler\due\playerslist;
+namespace muqsit\tebex\handler\due\playerlist;
 
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\player\Player;
 
-final class OfflineTebexDuePlayersList extends TebexDuePlayersList{
+final class OfflineTebexDuePlayerList extends TebexDuePlayerList{
 
 	/** @var int[] */
 	private array $players = [];

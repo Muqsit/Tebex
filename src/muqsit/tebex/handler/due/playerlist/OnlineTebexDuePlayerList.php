@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex\handler\due\playerslist;
+namespace muqsit\tebex\handler\due\playerlist;
 
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\player\Player;
 use RuntimeException;
 
-final class OnlineTebexDuePlayersList extends TebexDuePlayersList{
+final class OnlineTebexDuePlayerList extends TebexDuePlayerList{
 
 	private static function getUuidFromTebexPlayer(TebexDuePlayer $player) : string{
 		$uuid = $player->getUuid();

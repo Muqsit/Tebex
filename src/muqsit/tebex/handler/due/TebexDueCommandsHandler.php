@@ -10,11 +10,11 @@ use Logger;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\api\endpoint\queue\commands\online\TebexQueuedOnlineCommandsInfo;
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayersInfo;
-use muqsit\tebex\handler\due\playerslist\OfflineTebexDuePlayersList;
-use muqsit\tebex\handler\due\playerslist\OnlineTebexDuePlayersList;
-use muqsit\tebex\handler\due\playerslist\TebexDuePlayerHolder;
-use muqsit\tebex\handler\due\playerslist\TebexDuePlayersList;
-use muqsit\tebex\handler\due\playerslist\TebexDuePlayersListListener;
+use muqsit\tebex\handler\due\playerlist\OfflineTebexDuePlayerList;
+use muqsit\tebex\handler\due\playerlist\OnlineTebexDuePlayerList;
+use muqsit\tebex\handler\due\playerlist\TebexDuePlayerHolder;
+use muqsit\tebex\handler\due\playerlist\TebexDuePlayerList;
+use muqsit\tebex\handler\due\playerlist\TebexDuePlayerListListener;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use muqsit\tebex\handler\TebexAPIUtils;
 use muqsit\tebex\handler\TebexHandler;
@@ -31,17 +31,17 @@ final class TebexDueCommandsHandler{
 	 *
 	 * @phpstan-param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 *
-	 * @return TebexDuePlayersList
+	 * @return TebexDuePlayerList
 	 */
-	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayersList{
+	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
 		switch($game_type){
 			case "Minecraft (Bedrock)":
 				if(!Server::getInstance()->getOnlineMode()){
 					throw new InvalidArgumentException("xbox-auth must be enabled in server.properties");
 				}
-				return new OnlineTebexDuePlayersList($on_match);
+				return new OnlineTebexDuePlayerList($on_match);
 			case "Minecraft Offline":
-				return new OfflineTebexDuePlayersList($on_match);
+				return new OfflineTebexDuePlayerList($on_match);
 			default:
 				throw new InvalidArgumentException("Unsupported game server type {$game_type}");
 		}
@@ -50,7 +50,7 @@ final class TebexDueCommandsHandler{
 	private Loader $plugin;
 	private TebexHandler $handler;
 	private TebexDueOfflineCommandsHandler $offline_commands_handler;
-	private TebexDuePlayersList $list;
+	private TebexDuePlayerList $list;
 	private Logger $logger;
 	private bool $is_idle = true;
 
@@ -93,7 +93,7 @@ final class TebexDueCommandsHandler{
 			}));
 		});
 
-		$plugin->getServer()->getPluginManager()->registerEvents(new TebexDuePlayersListListener($this->list), $plugin);
+		$plugin->getServer()->getPluginManager()->registerEvents(new TebexDuePlayerListListener($this->list), $plugin);
 		$plugin->getServer()->getPluginManager()->registerEvents(new TebexLazyDueCommandsListener($this), $plugin);
 	}
 
@@ -147,7 +147,7 @@ final class TebexDueCommandsHandler{
 		return false;
 	}
 
-	public function getList() : TebexDuePlayersList{
+	public function getList() : TebexDuePlayerList{
 		return $this->list;
 	}
 
