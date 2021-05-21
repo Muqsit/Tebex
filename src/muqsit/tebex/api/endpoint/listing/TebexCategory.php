@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\listing;
 
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 
 final class TebexCategory extends BaseTebexCategory{
 
@@ -18,11 +18,11 @@ final class TebexCategory extends BaseTebexCategory{
 	 * @param int $order
 	 * @param string $name
 	 * @param TebexPackage[] $packages
-	 * @param TebexGUIItem $gui_item
+	 * @param TebexGuiItem $gui_item
 	 * @param bool $only_subcategories
 	 * @param TebexSubCategory[] $subcategories
 	 */
-	public function __construct(int $id, int $order, string $name, array $packages, TebexGUIItem $gui_item, bool $only_subcategories, array $subcategories){
+	public function __construct(int $id, int $order, string $name, array $packages, TebexGuiItem $gui_item, bool $only_subcategories, array $subcategories){
 		parent::__construct($id, $order, $name, $packages, $gui_item);
 		$this->only_subcategories = $only_subcategories;
 		$this->subcategories = $subcategories;

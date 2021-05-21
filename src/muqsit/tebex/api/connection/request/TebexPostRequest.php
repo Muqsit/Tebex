@@ -8,7 +8,7 @@ namespace muqsit\tebex\api\connection\request;
  * @phpstan-template TTebexResponse of \muqsit\tebex\api\connection\response\TebexResponse
  * @phpstan-implements TebexRequest<TTebexResponse>
  */
-abstract class TebexPOSTRequest implements TebexRequest{
+abstract class TebexPostRequest implements TebexRequest{
 
 	public function addAdditionalCurlOpts(array &$curl_opts) : void{
 		$data = $this->getPOSTFields();

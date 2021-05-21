@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\api\endpoint\listing;
 
 use muqsit\tebex\api\utils\sort\Sortable;
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 
 final class TebexPackage implements Sortable{
 
@@ -34,7 +34,7 @@ final class TebexPackage implements Sortable{
 				(string) $response["sale"]["discount"]
 			),
 			$response["image"] !== false ? $response["image"] : null,
-			new TebexGUIItem((string) $response["gui_item"])
+			new TebexGuiItem((string) $response["gui_item"])
 		);
 	}
 
@@ -44,9 +44,9 @@ final class TebexPackage implements Sortable{
 	private string $price;
 	private TebexPackageSaleInfo $sale;
 	private ?string $image;
-	private TebexGUIItem $gui_item;
+	private TebexGuiItem $gui_item;
 
-	public function __construct(int $id, int $order, string $name, string $price, TebexPackageSaleInfo $sale, ?string $image, TebexGUIItem $gui_item){
+	public function __construct(int $id, int $order, string $name, string $price, TebexPackageSaleInfo $sale, ?string $image, TebexGuiItem $gui_item){
 		$this->id = $id;
 		$this->order = $order;
 		$this->name = $name;
@@ -80,7 +80,7 @@ final class TebexPackage implements Sortable{
 		return $this->image;
 	}
 
-	public function getGuiItem() : TebexGUIItem{
+	public function getGuiItem() : TebexGuiItem{
 		return $this->gui_item;
 	}
 }

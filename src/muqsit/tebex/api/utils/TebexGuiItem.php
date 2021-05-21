@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\utils;
 
-final class TebexGUIItem{
+final class TebexGuiItem{
 
 	private string $value;
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\queue\commands\offline;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexQueuedOfflineCommandsInfo>
+ * @phpstan-extends TebexGetRequest<TebexQueuedOfflineCommandsInfo>
  */
-final class TebexQueuedOfflineCommandsListRequest extends TebexGETRequest{
+final class TebexQueuedOfflineCommandsListRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/queue/offline-commands";

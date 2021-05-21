@@ -8,7 +8,7 @@ use Closure;
 use muqsit\tebex\api\endpoint\queue\commands\online\TebexQueuedOnlineCommand;
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\command\TebexCommandSender;
-use muqsit\tebex\handler\TebexAPIUtils;
+use muqsit\tebex\handler\TebexApiUtils;
 use muqsit\tebex\Loader;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
@@ -89,6 +89,6 @@ final class TebexPlayerSession{
 			}
 		}
 
-		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), TebexAPIUtils::onlineFormatCommand($command->getCommand(), $this->player, $due_player));
+		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), TebexApiUtils::onlineFormatCommand($command->getCommand(), $this->player, $due_player));
 	}
 }

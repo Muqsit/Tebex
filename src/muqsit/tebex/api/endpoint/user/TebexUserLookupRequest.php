@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\user;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexUser>
+ * @phpstan-extends TebexGetRequest<TebexUser>
  */
-final class TebexUserLookupRequest extends TebexGETRequest{
+final class TebexUserLookupRequest extends TebexGetRequest{
 
 	private string $username_or_uuid;
 

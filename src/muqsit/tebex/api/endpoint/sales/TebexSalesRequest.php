@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\sales;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 use muqsit\tebex\api\utils\TebexDiscountInfo;
 use muqsit\tebex\api\utils\TebexEffectiveInfo;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexSalesList>
+ * @phpstan-extends TebexGetRequest<TebexSalesList>
  */
-final class TebexSalesRequest extends TebexGETRequest{
+final class TebexSalesRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/sales";

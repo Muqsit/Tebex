@@ -8,7 +8,7 @@ use Logger;
 use muqsit\tebex\api\connection\handler\SimpleTebexConnectionHandler;
 use muqsit\tebex\api\connection\request\TebexRequest;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
-use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\connection\SslConfiguration;
 use muqsit\tebex\api\connection\TebexConnection;
 use muqsit\tebex\thread\TebexThread;
 use muqsit\tebex\thread\TebexThreadPool;
@@ -16,9 +16,9 @@ use muqsit\tebex\thread\TebexThreadPool;
 final class ThreadedTebexConnection implements TebexConnection{
 
 	private TebexThreadPool $pool;
-	private SSLConfiguration $ssl_config;
+	private SslConfiguration $ssl_config;
 
-	public function __construct(Logger $logger, string $secret, SSLConfiguration $ssl_config, int $workers){
+	public function __construct(Logger $logger, string $secret, SslConfiguration $ssl_config, int $workers){
 		$this->pool = new TebexThreadPool(new SimpleTebexConnectionHandler());
 		$this->ssl_config = $ssl_config;
 		for($i = 0; $i < $workers; $i++){

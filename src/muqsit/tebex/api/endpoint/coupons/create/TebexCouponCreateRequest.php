@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\coupons\create;
 
-use muqsit\tebex\api\connection\request\TebexPOSTRequest;
+use muqsit\tebex\api\connection\request\TebexPostRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexPOSTRequest<TebexCouponCreateResponse>
+ * @phpstan-extends TebexPostRequest<TebexCouponCreateResponse>
  */
-final class TebexCouponCreateRequest extends TebexPOSTRequest{
+final class TebexCouponCreateRequest extends TebexPostRequest{
 
 	private TebexCreatedCoupon $coupon;
 

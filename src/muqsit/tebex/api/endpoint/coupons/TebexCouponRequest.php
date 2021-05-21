@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\coupons;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexCoupon>
+ * @phpstan-extends TebexGetRequest<TebexCoupon>
  */
-final class TebexCouponRequest extends TebexGETRequest{
+final class TebexCouponRequest extends TebexGetRequest{
 
 	private int $coupon_id;
 

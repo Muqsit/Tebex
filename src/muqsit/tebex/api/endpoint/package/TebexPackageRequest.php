@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\package;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexPackage>
+ * @phpstan-extends TebexGetRequest<TebexPackage>
  */
-final class TebexPackageRequest extends TebexGETRequest{
+final class TebexPackageRequest extends TebexGetRequest{
 
 	private int $package_id;
 

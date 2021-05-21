@@ -13,7 +13,7 @@ use muqsit\tebex\api\connection\request\TebexRequestHolder;
 use muqsit\tebex\api\connection\response\TebexResponse;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\api\connection\response\TebexResponseHolder;
-use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\connection\SslConfiguration;
 use muqsit\tebex\api\connection\TebexConnectionHelper;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\thread\Thread;
@@ -51,10 +51,10 @@ final class TebexThread extends Thread{
 	 * @param Logger $logger
 	 * @param SleeperNotifier<mixed> $notifier
 	 * @param string $secret
-	 * @param SSLConfiguration $ssl_config
+	 * @param SslConfiguration $ssl_config
 	 * @param TebexConnectionHandler $connection_handler
 	 */
-	public function __construct(Logger $logger, SleeperNotifier $notifier, string $secret, SSLConfiguration $ssl_config, TebexConnectionHandler $connection_handler){
+	public function __construct(Logger $logger, SleeperNotifier $notifier, string $secret, SslConfiguration $ssl_config, TebexConnectionHandler $connection_handler){
 		$this->_connection_handler = igbinary_serialize($connection_handler);
 
 		$this->notifier = $notifier;

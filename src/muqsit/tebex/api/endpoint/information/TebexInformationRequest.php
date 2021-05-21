@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\information;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexInformation>
+ * @phpstan-extends TebexGetRequest<TebexInformation>
  */
-final class TebexInformationRequest extends TebexGETRequest{
+final class TebexInformationRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/information";

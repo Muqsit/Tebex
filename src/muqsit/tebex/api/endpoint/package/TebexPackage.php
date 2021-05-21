@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\api\endpoint\package;
 
 use muqsit\tebex\api\connection\response\TebexResponse;
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 use muqsit\tebex\api\utils\time\TebexTime;
 
 final class TebexPackage implements TebexResponse{
@@ -66,7 +66,7 @@ final class TebexPackage implements TebexResponse{
 			$data["require_any"],
 			$data["create_giftcard"],
 			$data["show_until"] !== false ? $data["show_until"] : null,
-			new TebexGUIItem($data["gui_item"]),
+			new TebexGuiItem($data["gui_item"]),
 			$data["disabled"],
 			$data["disable_quantity"],
 			$data["custom_price"],
@@ -96,7 +96,7 @@ final class TebexPackage implements TebexResponse{
 	private bool $require_any;
 	private bool $create_giftcard;
 	private ?int $show_until;
-	private TebexGUIItem $gui_item;
+	private TebexGuiItem $gui_item;
 	private bool $disabled;
 	private bool $disabled_quantity;
 	private bool $custom_price;
@@ -120,7 +120,7 @@ final class TebexPackage implements TebexResponse{
 	 * @param bool $require_any
 	 * @param bool $create_giftcard
 	 * @param int|null $show_until
-	 * @param TebexGUIItem $gui_item
+	 * @param TebexGuiItem $gui_item
 	 * @param bool $disabled
 	 * @param bool $disabled_quantity
 	 * @param bool $custom_price
@@ -144,7 +144,7 @@ final class TebexPackage implements TebexResponse{
 		bool $require_any,
 		bool $create_giftcard,
 		?int $show_until,
-		TebexGUIItem $gui_item,
+		TebexGuiItem $gui_item,
 		bool $disabled,
 		bool $disabled_quantity,
 		bool $custom_price,
@@ -239,7 +239,7 @@ final class TebexPackage implements TebexResponse{
 		return $this->show_until;
 	}
 
-	public function getGuiItem() : TebexGUIItem{
+	public function getGuiItem() : TebexGuiItem{
 		return $this->gui_item;
 	}
 

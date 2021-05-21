@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\bans;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexBanList>
+ * @phpstan-extends TebexGetRequest<TebexBanList>
  */
-final class TebexBanListRequest extends TebexGETRequest{
+final class TebexBanListRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/bans";

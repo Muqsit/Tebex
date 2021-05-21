@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\queue;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexDuePlayersInfo>
+ * @phpstan-extends TebexGetRequest<TebexDuePlayersInfo>
  */
-final class TebexDuePlayersListRequest extends TebexGETRequest{
+final class TebexDuePlayersListRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/queue";

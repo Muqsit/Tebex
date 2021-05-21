@@ -7,16 +7,16 @@ namespace muqsit\tebex\handler;
 use InvalidArgumentException;
 use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\api\utils\TebexCommand;
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 use muqsit\tebex\Loader;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\Server;
 
-final class TebexAPIUtils{
+final class TebexApiUtils{
 
-	public static function convertGuiItemToItem(TebexGUIItem $gui_item) : Item{
+	public static function convertGuiItemToItem(TebexGuiItem $gui_item) : Item{
 		try{
 			$item = VanillaItems::fromString($gui_item->getValue());
 		}catch(InvalidArgumentException $e){

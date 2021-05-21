@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\bans;
 
-use muqsit\tebex\api\connection\request\TebexPOSTRequest;
+use muqsit\tebex\api\connection\request\TebexPostRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexPOSTRequest<TebexBanEntry>
+ * @phpstan-extends TebexPostRequest<TebexBanEntry>
  */
-final class TebexBanRequest extends TebexPOSTRequest{
+final class TebexBanRequest extends TebexPostRequest{
 
 	private string $username_or_uuid;
 	private ?string $reason;

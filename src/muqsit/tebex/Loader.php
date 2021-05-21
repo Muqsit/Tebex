@@ -6,7 +6,7 @@ namespace muqsit\tebex;
 
 use InvalidStateException;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
-use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\connection\SslConfiguration;
 use muqsit\tebex\api\ConnectionBasedTebexApi;
 use muqsit\tebex\api\endpoint\information\TebexInformation;
 use muqsit\tebex\api\TebexApi;
@@ -88,7 +88,7 @@ final class Loader extends PluginBase{
 			throw new RuntimeException("Failed to read contents of SSL file cacert.pem");
 		}
 
-		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getLogger(), $secret, SSLConfiguration::fromData($ssl_data), $this->worker_limit));
+		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getLogger(), $secret, SslConfiguration::fromData($ssl_data), $this->worker_limit));
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }

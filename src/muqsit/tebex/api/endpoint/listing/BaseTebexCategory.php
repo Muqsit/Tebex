@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\api\endpoint\listing;
 
 use muqsit\tebex\api\utils\sort\Sortable;
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 
 abstract class BaseTebexCategory implements Sortable{
 
@@ -16,16 +16,16 @@ abstract class BaseTebexCategory implements Sortable{
 	/** @var TebexPackage[] */
 	private array $packages;
 
-	private TebexGUIItem $gui_item;
+	private TebexGuiItem $gui_item;
 
 	/**
 	 * @param int $id
 	 * @param int $order
 	 * @param string $name
 	 * @param TebexPackage[] $packages
-	 * @param TebexGUIItem $gui_item
+	 * @param TebexGuiItem $gui_item
 	 */
-	public function __construct(int $id, int $order, string $name, array $packages, TebexGUIItem $gui_item){
+	public function __construct(int $id, int $order, string $name, array $packages, TebexGuiItem $gui_item){
 		$this->id = $id;
 		$this->order = $order;
 		$this->name = $name;
@@ -52,7 +52,7 @@ abstract class BaseTebexCategory implements Sortable{
 		return $this->packages;
 	}
 
-	final public function getGuiItem() : TebexGUIItem{
+	final public function getGuiItem() : TebexGuiItem{
 		return $this->gui_item;
 	}
 }

@@ -6,23 +6,23 @@ namespace muqsit\tebex\api\connection;
 
 use RuntimeException;
 
-final class SSLConfiguration{
+final class SslConfiguration{
 
-	public static function empty() : SSLConfiguration{
+	public static function empty() : SslConfiguration{
 		return new self("");
 	}
 
-	public static function recommended() : SSLConfiguration{
+	public static function recommended() : SslConfiguration{
 		return self::fromFileName(__DIR__ . "/cacert.pem");
 	}
 
-	public static function fromFileName(string $filename) : SSLConfiguration{
+	public static function fromFileName(string $filename) : SslConfiguration{
 		$data = file_get_contents($filename);
 		assert($data !== false);
 		return self::fromData($data);
 	}
 
-	public static function fromData(string $data) : SSLConfiguration{
+	public static function fromData(string $data) : SslConfiguration{
 		$resource = tmpfile();
 		if($resource === false){
 			throw new RuntimeException("Failed to create temporary file");

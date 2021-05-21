@@ -19,8 +19,8 @@ use SplQueue;
  */
 final class SimpleTebexConnection implements TebexConnection{
 
-	public static function create(string $secret, ?SSLConfiguration $configuration = null, ?TebexConnectionHandler $handler = null) : self{
-		$configuration ??= SSLConfiguration::empty();
+	public static function create(string $secret, ?SslConfiguration $configuration = null, ?TebexConnectionHandler $handler = null) : self{
+		$configuration ??= SslConfiguration::empty();
 		$handler ??= new SimpleTebexConnectionHandler();
 
 		$instance = new self($handler, TebexConnectionHelper::buildDefaultCurlOptions($secret, $configuration->getCAInfoPath()));

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\listing;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
-use muqsit\tebex\api\utils\TebexGUIItem;
+use muqsit\tebex\api\utils\TebexGuiItem;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexListingInfo>
+ * @phpstan-extends TebexGetRequest<TebexListingInfo>
  */
-final class TebexListingRequest extends TebexGETRequest{
+final class TebexListingRequest extends TebexGetRequest{
 
 	public function getEndpoint() : string{
 		return "/listing";
@@ -58,7 +58,7 @@ final class TebexListingRequest extends TebexGETRequest{
 					$subcategory["order"],
 					$subcategory["name"],
 					$subcategory_packages,
-					new TebexGUIItem((string) $subcategory["gui_item"])
+					new TebexGuiItem((string) $subcategory["gui_item"])
 				);
 			}
 
@@ -67,7 +67,7 @@ final class TebexListingRequest extends TebexGETRequest{
 				$entry["order"],
 				$entry["name"],
 				$packages,
-				new TebexGUIItem((string) $entry["gui_item"]),
+				new TebexGuiItem((string) $entry["gui_item"]),
 				$entry["only_subcategories"],
 				$subcategories
 			);

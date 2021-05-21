@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\api\endpoint\queue\commands\online;
 
-use muqsit\tebex\api\connection\request\TebexGETRequest;
+use muqsit\tebex\api\connection\request\TebexGetRequest;
 use muqsit\tebex\api\connection\response\TebexResponse;
 
 /**
- * @phpstan-extends TebexGETRequest<TebexQueuedOnlineCommandsInfo>
+ * @phpstan-extends TebexGetRequest<TebexQueuedOnlineCommandsInfo>
  */
-final class TebexQueuedOnlineCommandsListRequest extends TebexGETRequest{
+final class TebexQueuedOnlineCommandsListRequest extends TebexGetRequest{
 
 	private int $player_id;
 
