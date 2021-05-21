@@ -7,6 +7,10 @@ namespace muqsit\tebex\api\connection;
 use muqsit\tebex\api\connection\request\TebexRequest;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 
+/**
+ * TebexConnection handles requesting and answering of Tebex's API
+ * endpoints in the form of TebexRequest.
+ */
 interface TebexConnection{
 
 	/**
@@ -23,16 +27,16 @@ interface TebexConnection{
 	public function request(TebexRequest $request, TebexResponseHandler $callback) : void;
 
 	/**
-	 * Processes queued requests.
-	 */
-	public function process() : void;
-
-	/**
 	 * Returns last known latency with Tebex API (in seconds).
 	 *
 	 * @return float
 	 */
 	public function getLatency() : float;
+
+	/**
+	 * Processes queued requests.
+	 */
+	public function process() : void;
 
 	/**
 	 * Blocks thread until all scheduled requests are fulfilled.

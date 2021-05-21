@@ -9,8 +9,8 @@ use muqsit\tebex\api\connection\request\TebexRequestHolder;
 use muqsit\tebex\api\connection\response\TebexResponseFailureHolder;
 use muqsit\tebex\api\connection\response\TebexResponseHolder;
 use muqsit\tebex\api\connection\response\TebexResponseSuccessHolder;
+use muqsit\tebex\api\TebexApiStatics;
 use muqsit\tebex\api\utils\TebexException;
-use muqsit\tebex\TebexAPI;
 use RuntimeException;
 use Throwable;
 
@@ -22,7 +22,7 @@ final class SimpleTebexConnectionHandler implements TebexConnectionHandler{
 	public function handle(TebexRequestHolder $request_holder, array $default_curl_options) : TebexResponseHolder{
 		$request = $request_holder->request;
 
-		$url = TebexAPI::BASE_ENDPOINT . $request->getEndpoint();
+		$url = TebexApiStatics::ENDPOINT . $request->getEndpoint();
 
 		$latency = 5000;
 		$ch = curl_init($url);

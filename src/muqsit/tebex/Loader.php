@@ -7,12 +7,17 @@ namespace muqsit\tebex;
 use InvalidStateException;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\ConnectionBasedTebexApi;
 use muqsit\tebex\api\endpoint\information\TebexInformation;
+use muqsit\tebex\api\TebexApi;
+use muqsit\tebex\api\TebexApiStatics;
 use muqsit\tebex\api\utils\TebexException;
 use muqsit\tebex\handler\command\RegisteredTebexCommandExecutor;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\command\UnregisteredTebexCommandExecutor;
+use muqsit\tebex\handler\PmmpTebexLogger;
 use muqsit\tebex\handler\TebexHandler;
+use muqsit\tebex\handler\ThreadedTebexConnection;
 use muqsit\tebex\utils\TypedConfig;
 use pocketmine\command\PluginCommand;
 use pocketmine\plugin\PluginBase;
@@ -22,7 +27,7 @@ final class Loader extends PluginBase{
 
 	private TebexInformation $information;
 	private ?TebexHandler $handler = null;
-	private ?TebexAPI $api = null;
+	private ?ConnectionBasedTebexApi $api = null;
 	private PluginCommand $command;
 	private int $worker_limit;
 
@@ -30,6 +35,8 @@ final class Loader extends PluginBase{
 		if(!TebexCommandSender::hasInstance()){
 			TebexCommandSender::setInstance(new TebexCommandSender($this, $this->getServer()->getLanguage()));
 		}
+
+		TebexApiStatics::setLogger(new PmmpTebexLogger($this->getLogger()));
 
 		$command = new PluginCommand("tebex", $this, new UnregisteredTebexCommandExecutor($this));
 		$command->setAliases(["tbx", "bc", "buycraft"]);
@@ -57,7 +64,7 @@ final class Loader extends PluginBase{
 		}
 
 		if($this->api !== null){
-			$this->api->shutdown();
+			$this->api->disconnect();
 		}
 	}
 
@@ -81,15 +88,15 @@ final class Loader extends PluginBase{
 			throw new RuntimeException("Failed to read contents of SSL file cacert.pem");
 		}
 
-		$api = new TebexAPI($this->getLogger(), $secret, SSLConfiguration::fromData($ssl_data), $this->worker_limit);
+		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getLogger(), $secret, SSLConfiguration::fromData($ssl_data), $this->worker_limit));
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }
 		));
-		$api->waitAll();
+		$api->wait();
 
 		if($result instanceof TebexException){
-			$api->shutdown();
+			$api->disconnect();
 			throw $result;
 		}
 
@@ -97,13 +104,13 @@ final class Loader extends PluginBase{
 		return $this->information;
 	}
 
-	private function init(TebexAPI $api, TebexInformation $information) : void{
+	private function init(ConnectionBasedTebexApi $api, TebexInformation $information) : void{
 		if($this->handler !== null){
 			$this->handler->shutdown();
 		}
 
 		if($this->api !== null){
-			$this->api->shutdown();
+			$this->api->disconnect();
 		}
 
 		$this->api = $api;
@@ -121,7 +128,7 @@ final class Loader extends PluginBase{
 		$this->getLogger()->debug("Listening to events of \"{$server->getName()}\"[#{$server->getId()}] server as \"{$account->getName()}\"[#{$account->getId()}] (latency: " . round($this->getApi()->getLatency() * 1000) . "ms)");
 	}
 
-	public function getApi() : TebexAPI{
+	public function getApi() : TebexApi{
 		if($this->api === null){
 			throw new InvalidStateException("API is not ready");
 		}

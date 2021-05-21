@@ -15,7 +15,7 @@ use RuntimeException;
 use SplQueue;
 
 /**
- * A simple implementation of TebexConnection.
+ * A simple blocking-IO implementation of TebexConnection.
  */
 final class SimpleTebexConnection implements TebexConnection{
 
@@ -79,6 +79,10 @@ final class SimpleTebexConnection implements TebexConnection{
 		$this->callbacks[$request_holder->handler_id] = $callback;
 	}
 
+	public function getLatency() : float{
+		return $this->latency;
+	}
+
 	public function process() : void{
 		while(true){
 			try{
@@ -93,10 +97,6 @@ final class SimpleTebexConnection implements TebexConnection{
 
 			$this->latency = $response_holder->latency;
 		}
-	}
-
-	public function getLatency() : float{
-		return $this->latency;
 	}
 
 	public function wait() : void{

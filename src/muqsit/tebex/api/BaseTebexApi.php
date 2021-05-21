@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex;
+namespace muqsit\tebex\api;
 
+use muqsit\tebex\api\connection\request\TebexRequest;
 use muqsit\tebex\api\connection\response\EmptyTebexResponse;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\api\endpoint\bans\TebexBanEntry;
@@ -39,26 +40,36 @@ use muqsit\tebex\api\endpoint\sales\TebexSalesRequest;
 use muqsit\tebex\api\endpoint\user\TebexUser;
 use muqsit\tebex\api\endpoint\user\TebexUserLookupRequest;
 
-final class TebexAPI extends BaseTebexAPI{
+abstract class BaseTebexApi implements TebexApi{
+
+	/**
+	 * @param TebexRequest $request
+	 * @param TebexResponseHandler $callback
+	 *
+	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\connection\response\TebexResponse
+	 * @phpstan-param TebexRequest<TTebexResponse> $request
+	 * @phpstan-param TebexResponseHandler<TTebexResponse> $callback
+	 */
+	abstract public function request(TebexRequest $request, TebexResponseHandler $callback) : void;
 
 	/**
 	 * @param TebexResponseHandler<TebexInformation> $callback
 	 */
-	public function getInformation(TebexResponseHandler $callback) : void{
+	final public function getInformation(TebexResponseHandler $callback) : void{
 		$this->request(new TebexInformationRequest(), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexSalesList> $callback
 	 */
-	public function getSales(TebexResponseHandler $callback) : void{
+	final public function getSales(TebexResponseHandler $callback) : void{
 		$this->request(new TebexSalesRequest(), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexCouponsList> $callback
 	 */
-	public function getCoupons(TebexResponseHandler $callback) : void{
+	final public function getCoupons(TebexResponseHandler $callback) : void{
 		$this->request(new TebexCouponsRequest(), $callback);
 	}
 
@@ -66,28 +77,28 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param int $coupon_id
 	 * @param TebexResponseHandler<TebexCoupon> $callback
 	 */
-	public function getCoupon(int $coupon_id, TebexResponseHandler $callback) : void{
+	final public function getCoupon(int $coupon_id, TebexResponseHandler $callback) : void{
 		$this->request(new TebexCouponRequest($coupon_id), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexBanList> $callback
 	 */
-	public function getBanList(TebexResponseHandler $callback) : void{
+	final public function getBanList(TebexResponseHandler $callback) : void{
 		$this->request(new TebexBanListRequest(), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexQueuedOfflineCommandsInfo> $callback
 	 */
-	public function getQueuedOfflineCommands(TebexResponseHandler $callback) : void{
+	final public function getQueuedOfflineCommands(TebexResponseHandler $callback) : void{
 		$this->request(new TebexQueuedOfflineCommandsListRequest(), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexDuePlayersInfo> $callback
 	 */
-	public function getDuePlayersList(TebexResponseHandler $callback) : void{
+	final public function getDuePlayersList(TebexResponseHandler $callback) : void{
 		$this->request(new TebexDuePlayersListRequest(), $callback);
 	}
 
@@ -95,14 +106,14 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param int $player_id
 	 * @param TebexResponseHandler<TebexQueuedOnlineCommandsInfo> $callback
 	 */
-	public function getQueuedOnlineCommands(int $player_id, TebexResponseHandler $callback) : void{
+	final public function getQueuedOnlineCommands(int $player_id, TebexResponseHandler $callback) : void{
 		$this->request(new TebexQueuedOnlineCommandsListRequest($player_id), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexListingInfo> $callback
 	 */
-	public function getListing(TebexResponseHandler $callback) : void{
+	final public function getListing(TebexResponseHandler $callback) : void{
 		$this->request(new TebexListingRequest(), $callback);
 	}
 
@@ -110,14 +121,14 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param int $package_id
 	 * @param TebexResponseHandler<TebexPackage> $callback
 	 */
-	public function getPackage(int $package_id, TebexResponseHandler $callback) : void{
+	final public function getPackage(int $package_id, TebexResponseHandler $callback) : void{
 		$this->request(new TebexPackageRequest($package_id), $callback);
 	}
 
 	/**
 	 * @param TebexResponseHandler<TebexPackages> $callback
 	 */
-	public function getPackages(TebexResponseHandler $callback) : void{
+	final public function getPackages(TebexResponseHandler $callback) : void{
 		$this->request(new TebexPackagesRequest(), $callback);
 	}
 
@@ -125,7 +136,7 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param int[] $command_ids
 	 * @param TebexResponseHandler<EmptyTebexResponse>|null $callback
 	 */
-	public function deleteCommands(array $command_ids, ?TebexResponseHandler $callback = null) : void{
+	final public function deleteCommands(array $command_ids, ?TebexResponseHandler $callback = null) : void{
 		$this->request(new TebexDeleteCommandRequest($command_ids), $callback ?? TebexResponseHandler::onSuccess(static function(EmptyTebexResponse $response) : void{}));
 	}
 
@@ -133,7 +144,7 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param string $username_or_uuid
 	 * @param TebexResponseHandler<TebexUser> $callback
 	 */
-	public function lookup(string $username_or_uuid, TebexResponseHandler $callback) : void{
+	final public function lookup(string $username_or_uuid, TebexResponseHandler $callback) : void{
 		$this->request(new TebexUserLookupRequest($username_or_uuid), $callback);
 	}
 
@@ -143,7 +154,7 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param string|null $ip
 	 * @param TebexResponseHandler<TebexBanEntry>|null $callback
 	 */
-	public function ban(string $username_or_uuid, ?string $reason = null, ?string $ip = null, ?TebexResponseHandler $callback = null) : void{ // TODO: test this
+	final public function ban(string $username_or_uuid, ?string $reason = null, ?string $ip = null, ?TebexResponseHandler $callback = null) : void{
 		$this->request(new TebexBanRequest($username_or_uuid, $reason, $ip), $callback ?? TebexResponseHandler::onSuccess(static function(TebexBanEntry $response) : void{}));
 	}
 
@@ -152,7 +163,7 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param string $username
 	 * @param TebexResponseHandler<TebexCheckoutInfo> $callback
 	 */
-	public function checkout(int $package_id, string $username, TebexResponseHandler $callback) : void{
+	final public function checkout(int $package_id, string $username, TebexResponseHandler $callback) : void{
 		$this->request(new TebexCheckoutRequest($package_id, $username), $callback);
 	}
 
@@ -160,7 +171,7 @@ final class TebexAPI extends BaseTebexAPI{
 	 * @param TebexCreatedCoupon $coupon
 	 * @param TebexResponseHandler<TebexCouponCreateResponse> $callback
 	 */
-	public function createCoupon(TebexCreatedCoupon $coupon, TebexResponseHandler $callback) : void{
+	final public function createCoupon(TebexCreatedCoupon $coupon, TebexResponseHandler $callback) : void{
 		$this->request(new TebexCouponCreateRequest($coupon), $callback);
 	}
 }

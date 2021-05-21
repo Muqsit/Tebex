@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace muqsit\tebex;
+namespace muqsit\tebex\handler;
 
 use Logger;
 use muqsit\tebex\api\connection\handler\SimpleTebexConnectionHandler;
 use muqsit\tebex\api\connection\request\TebexRequest;
 use muqsit\tebex\api\connection\response\TebexResponseHandler;
 use muqsit\tebex\api\connection\SSLConfiguration;
+use muqsit\tebex\api\connection\TebexConnection;
 use muqsit\tebex\thread\TebexThread;
 use muqsit\tebex\thread\TebexThreadPool;
 
-abstract class BaseTebexAPI{
-
-	public const BASE_ENDPOINT = "https://plugin.tebex.io";
+final class ThreadedTebexConnection implements TebexConnection{
 
 	private TebexThreadPool $pool;
 	private SSLConfiguration $ssl_config;
@@ -48,7 +47,15 @@ abstract class BaseTebexAPI{
 		$this->pool->waitAll($sleep_duration_ms);
 	}
 
-	public function shutdown() : void{
+	public function process() : void{
+		// NOOP, done on child thread
+	}
+
+	public function wait() : void{
+		$this->pool->waitAll(50_000);
+	}
+
+	public function disconnect() : void{
 		$this->pool->shutdown();
 		$this->ssl_config->close();
 	}

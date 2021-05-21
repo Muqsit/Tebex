@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace muqsit\tebex\api\connection\response;
 
 use Closure;
-use Logger;
+use muqsit\tebex\api\TebexApiStatics;
 use muqsit\tebex\api\utils\TebexException;
-use muqsit\tebex\Loader;
-use pocketmine\Server;
 
 /**
  * @phpstan-template TTebexResponse of TebexResponse
@@ -29,17 +27,6 @@ final class TebexResponseHandler{
 		return self::onSuccess($on_success);
 	}
 
-	private static function getLogger() : Logger{
-		static $logger = null;
-		if($logger === null){
-			$plugin = Server::getInstance()->getPluginManager()->getPlugin("Tebex");
-			if($plugin instanceof Loader){
-				$logger = $plugin->getLogger();
-			}
-		}
-		return $logger;
-	}
-
 	/**
 	 * @param Closure $on_success
 	 * @return TebexResponseHandler
@@ -50,7 +37,7 @@ final class TebexResponseHandler{
 	 */
 	public static function onSuccess(Closure $on_success) : self{
 		return new self($on_success, static function(TebexException $exception) : void{
-			self::getLogger()->logException($exception);
+			TebexApiStatics::getLogger()->exception($exception);
 		});
 	}
 
