@@ -6,4 +6,7 @@ branches:
 projects:
   Tebex:
     path: ""
+    libs:
+      - src: muqsit/tebexapi/TebexApi
+        version: ^0.0.1
 ...

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\due\playerlist;
 
-use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
+use muqsit\tebexapi\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use pocketmine\player\Player;
 use RuntimeException;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler\command;
 
-use muqsit\tebex\api\utils\TebexException;
+use muqsit\tebexapi\utils\TebexException;
 use muqsit\tebex\Loader;
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;

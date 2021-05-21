@@ -6,9 +6,9 @@ namespace muqsit\tebex\handler\due;
 
 use Closure;
 use Logger;
-use muqsit\tebex\api\connection\response\TebexResponseHandler;
-use muqsit\tebex\api\endpoint\queue\commands\offline\TebexQueuedOfflineCommand;
-use muqsit\tebex\api\endpoint\queue\commands\offline\TebexQueuedOfflineCommandsInfo;
+use muqsit\tebexapi\connection\response\TebexResponseHandler;
+use muqsit\tebexapi\endpoint\queue\commands\offline\TebexQueuedOfflineCommand;
+use muqsit\tebexapi\endpoint\queue\commands\offline\TebexQueuedOfflineCommandsInfo;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\TebexApiUtils;
 use muqsit\tebex\handler\TebexHandler;

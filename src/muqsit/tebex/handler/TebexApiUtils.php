@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler;
 
 use InvalidArgumentException;
-use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
-use muqsit\tebex\api\utils\TebexCommand;
-use muqsit\tebex\api\utils\TebexGuiItem;
+use muqsit\tebexapi\endpoint\queue\TebexDuePlayer;
+use muqsit\tebexapi\utils\TebexCommand;
+use muqsit\tebexapi\utils\TebexGuiItem;
 use muqsit\tebex\Loader;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;

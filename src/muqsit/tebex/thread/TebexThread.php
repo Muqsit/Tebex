@@ -7,14 +7,14 @@ namespace muqsit\tebex\thread;
 use Exception;
 use Generator;
 use Logger;
-use muqsit\tebex\api\connection\handler\TebexConnectionHandler;
-use muqsit\tebex\api\connection\request\TebexRequest;
-use muqsit\tebex\api\connection\request\TebexRequestHolder;
-use muqsit\tebex\api\connection\response\TebexResponse;
-use muqsit\tebex\api\connection\response\TebexResponseHandler;
-use muqsit\tebex\api\connection\response\TebexResponseHolder;
-use muqsit\tebex\api\connection\SslConfiguration;
-use muqsit\tebex\api\connection\TebexConnectionHelper;
+use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
+use muqsit\tebexapi\connection\request\TebexRequest;
+use muqsit\tebexapi\connection\request\TebexRequestHolder;
+use muqsit\tebexapi\connection\response\TebexResponse;
+use muqsit\tebexapi\connection\response\TebexResponseHandler;
+use muqsit\tebexapi\connection\response\TebexResponseHolder;
+use muqsit\tebexapi\connection\SslConfiguration;
+use muqsit\tebexapi\connection\TebexConnectionHelper;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\thread\Thread;
 use Threaded;
@@ -69,7 +69,7 @@ final class TebexThread extends Thread{
 	 * @param TebexRequest $request
 	 * @param TebexResponseHandler $handler
 	 *
-	 * @phpstan-template TTebexResponse of \muqsit\tebex\api\connection\response\TebexResponse
+	 * @phpstan-template TTebexResponse of \muqsit\tebexapi\connection\response\TebexResponse
 	 * @phpstan-param TebexRequest<TTebexResponse> $request
 	 * @phpstan-param TebexResponseHandler<TTebexResponse> $handler
 	 */

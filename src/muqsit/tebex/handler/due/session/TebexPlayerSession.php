@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler\due\session;
 
 use Closure;
-use muqsit\tebex\api\endpoint\queue\commands\online\TebexQueuedOnlineCommand;
-use muqsit\tebex\api\endpoint\queue\TebexDuePlayer;
+use muqsit\tebexapi\endpoint\queue\commands\online\TebexQueuedOnlineCommand;
+use muqsit\tebexapi\endpoint\queue\TebexDuePlayer;
 use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\TebexApiUtils;
 use muqsit\tebex\Loader;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\thread;
 
-use muqsit\tebex\api\connection\handler\TebexConnectionHandler;
+use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
 use UnderflowException;

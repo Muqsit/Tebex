@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace muqsit\tebex\handler;
 
 use Logger;
-use muqsit\tebex\api\utils\logger\TebexLogger;
+use muqsit\tebexapi\utils\logger\TebexLogger;
 use Throwable;
 
 final class PmmpTebexLogger implements TebexLogger{

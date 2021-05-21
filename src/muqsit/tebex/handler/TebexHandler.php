@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler;
 
-use muqsit\tebex\api\connection\response\EmptyTebexResponse;
-use muqsit\tebex\api\connection\response\TebexResponseHandler;
-use muqsit\tebex\api\utils\TebexException;
+use muqsit\tebexapi\connection\response\EmptyTebexResponse;
+use muqsit\tebexapi\connection\response\TebexResponseHandler;
+use muqsit\tebexapi\utils\TebexException;
 use muqsit\tebex\handler\due\TebexDueCommandsHandler;
 use muqsit\tebex\Loader;
 use pocketmine\scheduler\ClosureTask;
