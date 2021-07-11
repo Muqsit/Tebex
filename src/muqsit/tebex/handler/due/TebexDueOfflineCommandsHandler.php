@@ -11,7 +11,6 @@ use muqsit\tebex\Loader;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\thread\response\TebexResponseHandler;
 use Closure;
-use Ds\Set;
 use Logger;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
@@ -27,11 +26,10 @@ final class TebexDueOfflineCommandsHandler{
 	/** @var TebexHandler */
 	private $handler;
 
-	/** @var Set<int> */
-	private $delayed;
+	/** @var array<int> */
+	private $delayed = [];
 
 	public function __construct(Loader $plugin, TebexHandler $handler, int $check_period = 60 * 20){
-		$this->delayed = new Set();
 		$this->plugin = $plugin;
 		$this->logger = $plugin->getLogger();
 		$this->handler = $handler;
@@ -98,8 +96,8 @@ final class TebexDueOfflineCommandsHandler{
 	private function executeCommand(TebexQueuedOfflineCommand $command, Closure $callback) : void{
 		$delay = $command->getConditions()->getDelay();
 		if($delay > 0){
-			if(!$this->delayed->contains($id = $command->getId())){
-				$this->delayed->add($id);
+			if(!isset($this->delayed[$id = $command->getId()])){
+				$this->delayed[$id] = true;
 				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function(int $currentTick) use($command, $callback) : void{
 					$callback($this->instantlyExecuteCommand($command));
 				}), $delay * 20);
