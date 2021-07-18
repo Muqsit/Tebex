@@ -24,20 +24,20 @@ final class ThreadedTebexConnection implements TebexConnection{
 		$this->pool = new TebexThreadPool(new SimpleTebexConnectionHandler());
 		$this->ssl_config = $ssl_config;
 
+		$class_loaders = [];
 		$devirion = Server::getInstance()->getPluginManager()->getPlugin("DEVirion");
 		if($devirion !== null){
 			if(!method_exists($devirion, "getVirionClassLoader")){
 				throw new RuntimeException();
 			}
-			$cl = $devirion->getVirionClassLoader();
-		}else{
-			$cl = null;
+			$class_loaders[] = Server::getInstance()->getLoader();
+			$class_loaders[] = $devirion->getVirionClassLoader();
 		}
 
 		for($i = 0; $i < $workers; $i++){
 			$thread = new TebexThread($logger, $this->pool->getNotifier(), $secret, $ssl_config, $this->pool->getConnectionHandler());
-			if($cl !== null){
-				$thread->setClassLoader($cl);
+			if(count($class_loaders) > 0){
+				$thread->setClassLoaders($class_loaders);
 			}
 			$this->pool->addWorker($thread);
 		}
