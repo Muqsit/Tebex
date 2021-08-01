@@ -8,22 +8,11 @@ use InvalidArgumentException;
 
 final class TypeValidator{
 
-	/**
-	 * @param mixed $value
-	 * @return string
-	 */
-	private static function printValue($value) : string{
+	private static function printValue(mixed $value) : string{
 		return var_export($value, true) ?? "";
 	}
 
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $min
-	 * @param int $max
-	 * @return int
-	 */
-	public static function validateInt(string $key, $value, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX) : int{
+	public static function validateInt(string $key, mixed $value, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX) : int{
 		if(!is_int($value)){
 			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		}
@@ -33,12 +22,7 @@ final class TypeValidator{
 		return $value;
 	}
 
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @return string
-	 */
-	public static function validateString(string $key, $value) : string{
+	public static function validateString(string $key, mixed $value) : string{
 		if(!is_string($value)){
 			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		}
@@ -50,7 +34,7 @@ final class TypeValidator{
 	 * @param mixed $value
 	 * @return string[]
 	 */
-	public static function validateStringList(string $key, $value) : array{
+	public static function validateStringList(string $key, mixed $value) : array{
 		if(!is_array($value)){
 			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		}

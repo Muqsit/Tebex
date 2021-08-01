@@ -34,17 +34,11 @@ final class TebexDueCommandsHandler{
 	 * @return TebexDuePlayerList
 	 */
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
-		switch($game_type){
-			case "Minecraft (Bedrock)":
-				if(!Server::getInstance()->getOnlineMode()){
-					throw new InvalidArgumentException("xbox-auth must be enabled in server.properties");
-				}
-				return new OnlineTebexDuePlayerList($on_match);
-			case "Minecraft Offline":
-				return new OfflineTebexDuePlayerList($on_match);
-			default:
-				throw new InvalidArgumentException("Unsupported game server type {$game_type}");
-		}
+		return match($game_type){
+			"Minecraft (Bedrock)" => new OnlineTebexDuePlayerList($on_match),
+			"Minecraft Offline" => new OfflineTebexDuePlayerList($on_match),
+			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
+		};
 	}
 
 	private Loader $plugin;

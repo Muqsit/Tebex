@@ -59,13 +59,8 @@ final class Loader extends PluginBase{
 	}
 
 	protected function onDisable() : void{
-		if($this->handler !== null){
-			$this->handler->shutdown();
-		}
-
-		if($this->api !== null){
-			$this->api->disconnect();
-		}
+		$this->handler?->shutdown();
+		$this->api?->disconnect();
 	}
 
 	/**
@@ -105,13 +100,8 @@ final class Loader extends PluginBase{
 	}
 
 	private function init(ConnectionBasedTebexApi $api, TebexInformation $information) : void{
-		if($this->handler !== null){
-			$this->handler->shutdown();
-		}
-
-		if($this->api !== null){
-			$this->api->disconnect();
-		}
+		$this->handler?->shutdown();
+		$this->api?->disconnect();
 
 		$this->api = $api;
 		$this->information = $information;
