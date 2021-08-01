@@ -28,7 +28,7 @@ final class OfflineTebexDuePlayersList extends TebexDuePlayersList{
 	}
 
 	public function get(Player $player) : ?TebexDuePlayerHolder{
-		return isset($this->players[$index = self::playerIndex($player)]) ? $this->due_players[$this->players[$index]] : null;
+		return isset($this->players[$index = self::playerIndex($player)]) ? $this->due_players[$this->players[$index]] ?? null : null;
 	}
 
 	protected function onDuePlayerRemove(TebexDuePlayerHolder $holder) : void{
