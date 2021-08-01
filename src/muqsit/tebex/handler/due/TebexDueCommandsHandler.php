@@ -35,9 +35,6 @@ final class TebexDueCommandsHandler{
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayersList{
 		switch($game_type){
 			case "Minecraft (Bedrock)":
-				if(!Server::getInstance()->getOnlineMode()){
-					throw new InvalidArgumentException("xbox-auth must be enabled in server.properties");
-				}
 				return new OnlineTebexDuePlayersList($on_match);
 			case "Minecraft Offline":
 				return new OfflineTebexDuePlayersList($on_match);
@@ -102,6 +99,10 @@ final class TebexDueCommandsHandler{
 				}
 			}));
 		});
+
+		if($this->list instanceof OnlineTebexDuePlayersList && !$plugin->getServer()->getOnlineMode()){
+			$plugin->getLogger()->warning("Your server is running with 'xbox-auth' disabled with a webstore of type '{$plugin->getInformation()->getAccount()->getGameType()}'");
+		}
 
 		$plugin->getServer()->getPluginManager()->registerEvents(new TebexDuePlayersListListener($this->list), $plugin);
 		$plugin->getServer()->getPluginManager()->registerEvents(new TebexLazyDueCommandsListener($this), $plugin);
