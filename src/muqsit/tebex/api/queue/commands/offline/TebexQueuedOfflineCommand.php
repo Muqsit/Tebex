@@ -15,7 +15,7 @@ final class TebexQueuedOfflineCommand extends TebexQueuedCommand{
 	/** @var TebexDuePlayer */
 	private $player;
 
-	public function __construct(int $id, string $command, int $payment_id, ?int $package_id, TebexQueuedOfflineCommandConditions $conditions, TebexDuePlayer $player){
+	public function __construct(int $id, string $command, ?int $payment_id, ?int $package_id, TebexQueuedOfflineCommandConditions $conditions, TebexDuePlayer $player){
 		parent::__construct($id, $command, $payment_id, $package_id);
 		$this->conditions = $conditions;
 		$this->player = $player;
