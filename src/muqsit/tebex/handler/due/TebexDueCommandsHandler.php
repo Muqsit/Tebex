@@ -7,11 +7,11 @@ namespace muqsit\tebex\handler\due;
 use Closure;
 use InvalidArgumentException;
 use Logger;
+use muqsit\tebex\handler\due\playerlist\indexer\NameBasedPlayerIndexer;
+use muqsit\tebex\handler\due\playerlist\indexer\XuidBasedPlayerIndexer;
 use muqsit\tebexapi\connection\response\TebexResponseHandler;
 use muqsit\tebexapi\endpoint\queue\commands\online\TebexQueuedOnlineCommandsInfo;
 use muqsit\tebexapi\endpoint\queue\TebexDuePlayersInfo;
-use muqsit\tebex\handler\due\playerlist\OfflineTebexDuePlayerList;
-use muqsit\tebex\handler\due\playerlist\OnlineTebexDuePlayerList;
 use muqsit\tebex\handler\due\playerlist\TebexDuePlayerHolder;
 use muqsit\tebex\handler\due\playerlist\TebexDuePlayerList;
 use muqsit\tebex\handler\due\playerlist\TebexDuePlayerListListener;
@@ -21,24 +21,22 @@ use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
-use pocketmine\Server;
 
 final class TebexDueCommandsHandler{
 
 	/**
 	 * @param string $game_type
 	 * @param Closure $on_match
+	 * @return TebexDuePlayerList
 	 *
 	 * @phpstan-param Closure(Player, TebexDuePlayerHolder) : void $on_match
-	 *
-	 * @return TebexDuePlayerList
 	 */
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
-		return match($game_type){
-			"Minecraft (Bedrock)" => new OnlineTebexDuePlayerList($on_match),
-			"Minecraft Offline" => new OfflineTebexDuePlayerList($on_match),
+		return new TebexDuePlayerList(match($game_type){
+			"Minecraft (Bedrock)" => new XuidBasedPlayerIndexer(),
+			"Minecraft Offline" => new NameBasedPlayerIndexer(),
 			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
-		};
+		}, $on_match);
 	}
 
 	private Loader $plugin;
@@ -58,7 +56,7 @@ final class TebexDueCommandsHandler{
 
 		$api = $plugin->getApi();
 		$this->list = self::getListFromGameType($plugin->getInformation()->getAccount()->getGameType(), function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
-			$session = $this->list->getSession($player);
+			$session = $this->list->getOnlinePlayer($player);
 			assert($session !== null);
 			$api->getQueuedOnlineCommands($holder->getPlayer()->getId(), TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
 				if($player->isOnline()){
@@ -72,7 +70,7 @@ final class TebexDueCommandsHandler{
 								$command_id = $tebex_command->getId();
 								$handler->queueCommandDeletion($command_id);
 								if(--$total_commands === 0){
-									$current_holder = $this->list->get($player);
+									$current_holder = $this->list->getTebexAwaitingPlayer($player);
 									if($current_holder !== null && $current_holder->getCreated() < $timestamp){
 										$this->list->remove($current_holder);
 									}
