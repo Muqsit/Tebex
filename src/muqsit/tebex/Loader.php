@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace muqsit\tebex;
 
-use InvalidStateException;
+use LogicException;
 use muqsit\tebexapi\connection\response\TebexResponseHandler;
 use muqsit\tebexapi\connection\SslConfiguration;
 use muqsit\tebexapi\ConnectionBasedTebexApi;
@@ -120,7 +120,7 @@ final class Loader extends PluginBase{
 
 	public function getApi() : TebexApi{
 		if($this->api === null){
-			throw new InvalidStateException("API is not ready");
+			throw new LogicException("API is not ready");
 		}
 
 		return $this->api;
