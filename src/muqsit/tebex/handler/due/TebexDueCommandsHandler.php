@@ -36,7 +36,7 @@ final class TebexDueCommandsHandler{
 		switch($game_type){
 			case "Minecraft (Bedrock)":
 				return new OnlineTebexDuePlayersList($on_match);
-			case "Minecraft Offline":
+			case "Minecraft (Offline/Geyser)":
 				return new OfflineTebexDuePlayersList($on_match);
 			default:
 				throw new InvalidArgumentException("Unsupported game server type {$game_type}");
