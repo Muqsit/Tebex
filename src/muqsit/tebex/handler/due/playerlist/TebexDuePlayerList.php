@@ -17,7 +17,7 @@ final class TebexDuePlayerList{
 	 *
 	 * @phpstan-var array<int, TebexDuePlayerHolder>
 	 */
-	protected array $tebex_due_players_by_id = []; // indexes pending customers by TebexPlayerId => TebexDuePlayerHolder
+	private array $tebex_due_players_by_id = []; // indexes pending customers by TebexPlayerId => TebexDuePlayerHolder
 
 	/**
 	 * @var int[]
