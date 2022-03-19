@@ -72,11 +72,7 @@ final class Loader extends PluginBase{
 		/** @var TebexInformation|TebexException $result */
 		$result = null;
 
-		$_cacert_pem = $this->getResource("cacert.pem");
-		if($_cacert_pem === null){
-			throw new RuntimeException("Failed to locate SSL file cacert.pem");
-		}
-
+		$_cacert_pem = $this->getResource("cacert.pem") ?? throw new RuntimeException("Failed to locate SSL file cacert.pem");
 		$ssl_data = stream_get_contents($_cacert_pem);
 		fclose($_cacert_pem);
 		if($ssl_data === false){
@@ -119,11 +115,7 @@ final class Loader extends PluginBase{
 	}
 
 	public function getApi() : TebexApi{
-		if($this->api === null){
-			throw new LogicException("API is not ready");
-		}
-
-		return $this->api;
+		return $this->api ?? throw new LogicException("API is not ready");
 	}
 
 	public function getInformation() : TebexInformation{
