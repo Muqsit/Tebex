@@ -18,10 +18,10 @@ final class TebexThreadPool{
 	private array $workers = [];
 
 	private float $latency = 0.0;
-	private TebexConnectionHandler $connection_handler;
 
-	public function __construct(TebexConnectionHandler $connection_handler){
-		$this->connection_handler = $connection_handler;
+	public function __construct(
+		private TebexConnectionHandler $connection_handler
+	){
 		$this->notifier = new SleeperNotifier();
 		Server::getInstance()->getTickSleeper()->addNotifier($this->notifier, function() : void{
 			foreach($this->workers as $thread){

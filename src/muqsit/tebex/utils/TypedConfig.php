@@ -8,11 +8,9 @@ use pocketmine\utils\Config;
 
 final class TypedConfig{
 
-	private Config $config;
-
-	public function __construct(Config $config){
-		$this->config = $config;
-	}
+	public function __construct(
+		private Config $config
+	){}
 
 	public function getInt(string $key, int $default = 0, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX) : int{
 		return TypeValidator::validateInt($key, $this->config->get($key, $default), $min, $max);
