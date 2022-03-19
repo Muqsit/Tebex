@@ -12,11 +12,9 @@ use pocketmine\command\CommandSender;
 
 final class UnregisteredTebexCommandExecutor implements CommandExecutor{
 
-	protected Loader $plugin;
-
-	public function __construct(Loader $plugin){
-		$this->plugin = $plugin;
-	}
+	public function __construct(
+		private Loader $plugin
+	){}
 
 	public static function handleTypeSecret(Loader $loader, CommandSender $sender, string $secret) : void{
 		$info = null;

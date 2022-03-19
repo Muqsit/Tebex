@@ -20,10 +20,7 @@ class TebexCommandSender extends ConsoleCommandSender{
 	}
 
 	final public static function getInstance() : TebexCommandSender{
-		if(self::$instance === null){
-			throw new LogicException("No instance of " . self::class . " has been set");
-		}
-		return self::$instance;
+		return self::$instance ?? throw new LogicException("No instance of " . self::class . " has been set");;
 	}
 
 	final public static function setInstance(TebexCommandSender $instance) : void{

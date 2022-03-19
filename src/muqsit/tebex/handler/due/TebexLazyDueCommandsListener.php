@@ -9,11 +9,9 @@ use pocketmine\event\player\PlayerLoginEvent;
 
 final class TebexLazyDueCommandsListener implements Listener{
 
-	private TebexDueCommandsHandler $handler;
-
-	public function __construct(TebexDueCommandsHandler $handler){
-		$this->handler = $handler;
-	}
+	public function __construct(
+		private TebexDueCommandsHandler $handler
+	){}
 
 	/**
 	 * @param PlayerLoginEvent $event

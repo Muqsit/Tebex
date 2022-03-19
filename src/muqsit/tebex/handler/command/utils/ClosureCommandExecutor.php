@@ -11,24 +11,15 @@ use pocketmine\command\CommandSender;
 
 final class ClosureCommandExecutor implements CommandExecutor{
 
-	private Closure $executor;
-
 	/**
 	 * @param Closure $executor
 	 *
 	 * @phpstan-param Closure(CommandSender, Command, string, string[]) : bool $executor
 	 */
-	public function __construct(Closure $executor){
-		$this->executor = $executor;
-	}
+	public function __construct(
+		private Closure $executor
+	){}
 
-	/**
-	 * @param CommandSender $sender
-	 * @param Command $command
-	 * @param string $label
-	 * @param string[] $args
-	 * @return bool
-	 */
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		return ($this->executor)($sender, $command, $label, $args);
 	}

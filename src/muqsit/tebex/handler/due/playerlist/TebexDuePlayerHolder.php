@@ -9,10 +9,10 @@ use muqsit\tebexapi\endpoint\queue\TebexDuePlayer;
 final class TebexDuePlayerHolder{
 
 	private float $created;
-	private TebexDuePlayer $player;
 
-	public function __construct(TebexDuePlayer $player){
-		$this->player = $player;
+	public function __construct(
+		private TebexDuePlayer $player
+	){
 		$this->created = microtime(true);
 	}
 

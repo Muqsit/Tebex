@@ -17,18 +17,16 @@ use pocketmine\utils\TextFormat;
 
 final class RegisteredTebexCommandExecutor implements CommandExecutor{
 
-	protected Loader $plugin;
-	private TebexHandler $handler;
-
 	/** @var array<string, TebexSubCommand> */
 	private array $sub_commands = [];
 
 	/** @var array<string, string> */
 	private array $aliases = [];
 
-	public function __construct(Loader $plugin, TebexHandler $handler){
-		$this->plugin = $plugin;
-		$this->handler = $handler;
+	public function __construct(
+		private Loader $plugin,
+		private TebexHandler $handler
+	){
 		$this->registerDefaultSubCommands();
 	}
 

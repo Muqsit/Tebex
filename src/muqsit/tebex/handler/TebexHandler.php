@@ -13,7 +13,6 @@ use pocketmine\scheduler\ClosureTask;
 
 final class TebexHandler{
 
-	private Loader $plugin;
 	private TebexDueCommandsHandler $due_commands_handler;
 
 	/** @var int[]|null */
@@ -21,8 +20,9 @@ final class TebexHandler{
 
 	private int $pending_commands_batch_counter = 0;
 
-	public function __construct(Loader $plugin){
-		$this->plugin = $plugin;
+	public function __construct(
+		private Loader $plugin
+	){
 		$this->init();
 	}
 

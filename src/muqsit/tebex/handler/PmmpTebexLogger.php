@@ -10,11 +10,9 @@ use Throwable;
 
 final class PmmpTebexLogger implements TebexLogger{
 
-	private Logger $logger;
-
-	public function __construct(Logger $logger){
-		$this->logger = $logger;
-	}
+	public function __construct(
+		private Logger $logger
+	){}
 
 	public function exception(Throwable $t) : void{
 		$this->logger->logException($t);

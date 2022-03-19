@@ -12,11 +12,6 @@ use pocketmine\player\Player;
 
 final class TebexDuePlayerList{
 
-	private PlayerIndexer $indexer;
-
-	/** @phpstan-var Closure(Player, TebexDuePlayerHolder) : void */
-	private Closure $on_match;
-
 	/**
 	 * @var TebexDuePlayerHolder[]
 	 *
@@ -44,10 +39,10 @@ final class TebexDuePlayerList{
 	 *
 	 * @phpstan-param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 */
-	public function __construct(PlayerIndexer $indexer, Closure $on_match){
-		$this->indexer = $indexer;
-		$this->on_match = $on_match;
-	}
+	public function __construct(
+		private PlayerIndexer $indexer,
+		private Closure $on_match
+	){}
 
 	private function onMatch(Player $player, TebexDuePlayerHolder $holder) : void{
 		($this->on_match)($player, $holder);

@@ -34,23 +34,22 @@ final class TebexDueCommandsHandler{
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
 		return new TebexDuePlayerList(match($game_type){
 			"Minecraft (Bedrock)" => new XuidBasedPlayerIndexer(),
-			"Minecraft (Offline/Geyser)" => new NameBasedPlayerIndexer(),
+			"Minecraft Offline" => new NameBasedPlayerIndexer(),
 			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
 		}, $on_match);
 	}
 
-	private Loader $plugin;
-	private TebexHandler $handler;
 	private TebexDueOfflineCommandsHandler $offline_commands_handler;
 	private TebexDuePlayerList $list;
 	private Logger $logger;
 	private bool $is_idle = true;
 
-	public function __construct(Loader $plugin, TebexHandler $handler){
+	public function __construct(
+		private Loader $plugin,
+		private TebexHandler $handler
+	){
 		TebexPlayerSession::init($plugin);
 
-		$this->plugin = $plugin;
-		$this->handler = $handler;
 		$this->logger = $plugin->getLogger();
 		$this->offline_commands_handler = new TebexDueOfflineCommandsHandler($plugin, $handler);
 

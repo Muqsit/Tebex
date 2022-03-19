@@ -23,9 +23,6 @@ final class XuidBasedPlayerIndexer implements PlayerIndexer{
 
 	public function fromTebexDuePlayer(TebexDuePlayer $player) : string{
 		$xuid = $player->getUuid(); // Tebex player uuids in Minecraft: Bedrock Edition (Online) mode is xbox's xuid
-		if($xuid === null){
-			throw new InvalidArgumentException("Cannot retrieve XUID of Tebex due player: {$player->getName()}");
-		}
-		return $xuid;
+		return $xuid ?? throw new InvalidArgumentException("Cannot retrieve XUID of Tebex due player: {$player->getName()}");
 	}
 }

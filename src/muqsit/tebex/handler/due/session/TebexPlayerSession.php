@@ -22,14 +22,12 @@ final class TebexPlayerSession{
 		self::$scheduler = $plugin->getScheduler();
 	}
 
-	private Player $player;
-
 	/** @var DelayedOnlineCommandHandler[] */
 	private array $delayed_online_command_handlers = [];
 
-	public function __construct(Player $player){
-		$this->player = $player;
-	}
+	public function __construct(
+		private Player $player
+	){}
 
 	public function getPlayer() : Player{
 		return $this->player;
