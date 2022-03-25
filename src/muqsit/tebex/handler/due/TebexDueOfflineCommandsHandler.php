@@ -94,8 +94,9 @@ final class TebexDueOfflineCommandsHandler{
 		if($delay > 0){
 			if(!isset($this->delayed[$id = $command->getId()])){
 				$this->delayed[$id] = $id;
-				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($command, $callback) : void{
+				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($id, $command, $callback) : void{
 					$callback($this->instantlyExecuteCommand($command));
+					unset($this->delayed[$id]);
 				}), $delay * 20);
 			}
 		}else{

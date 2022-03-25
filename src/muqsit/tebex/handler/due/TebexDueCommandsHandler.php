@@ -58,28 +58,31 @@ final class TebexDueCommandsHandler{
 			$session = $this->list->getOnlinePlayer($player);
 			assert($session !== null);
 			$api->getQueuedOnlineCommands($holder->getPlayer()->getId(), TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
-				if($player->isOnline()){
-					$commands = $info->getCommands();
-					$total_commands = count($commands);
-					$timestamp = microtime(true);
-					foreach($commands as $tebex_command){
-						$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
-							$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->getCommand(), $player, $holder->getPlayer());
-							if($success){
-								$command_id = $tebex_command->getId();
-								$handler->queueCommandDeletion($command_id);
-								if(--$total_commands === 0){
-									$current_holder = $this->list->getTebexAwaitingPlayer($player);
-									if($current_holder !== null && $current_holder->getCreated() < $timestamp){
-										$this->list->remove($current_holder);
-									}
-								}
-								$this->logger->info("Executed online command #{$command_id}: {$command_string}");
-							}else{
-								$this->logger->warning("Failed to execute online command: {$command_string}");
+				if(!$player->isOnline()){
+					return;
+				}
+
+				$commands = $info->getCommands();
+				$total_commands = count($commands);
+				$timestamp = microtime(true);
+				foreach($commands as $tebex_command){
+					$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
+						$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->getCommand(), $player, $holder->getPlayer());
+						if(!$success){
+							$this->logger->warning("Failed to execute online command: {$command_string}");
+							return;
+						}
+
+						$command_id = $tebex_command->getId();
+						$handler->queueCommandDeletion($command_id);
+						if(--$total_commands === 0){
+							$current_holder = $this->list->getTebexAwaitingPlayer($player);
+							if($current_holder !== null && $current_holder->getCreated() < $timestamp){
+								$this->list->remove($current_holder);
 							}
-						});
-					}
+						}
+						$this->logger->info("Executed online command #{$command_id}: {$command_string}");
+					});
 				}
 			}));
 		});

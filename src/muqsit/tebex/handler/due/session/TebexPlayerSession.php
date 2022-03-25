@@ -68,8 +68,9 @@ final class TebexPlayerSession{
 	 */
 	private function scheduleCommandForDelay(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, int $delay, Closure $callback) : bool{
 		if(!isset($this->delayed_online_command_handlers[$id = $command->getId()])){
-			$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function() use($command, $due_player, $callback) : void{
+			$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function() use($id, $command, $due_player, $callback) : void{
 				$callback($this->instantlyExecuteOnlineCommand($command, $due_player));
+				unset($this->delayed_online_command_handlers[$id]);
 			}), $delay));
 			return true;
 		}
