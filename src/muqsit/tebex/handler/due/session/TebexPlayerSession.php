@@ -67,14 +67,15 @@ final class TebexPlayerSession{
 	 * @phpstan-param Closure(bool) : void $callback
 	 */
 	private function scheduleCommandForDelay(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, int $delay, Closure $callback) : bool{
-		if(!isset($this->delayed_online_command_handlers[$id = $command->getId()])){
-			$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function() use($id, $command, $due_player, $callback) : void{
-				$callback($this->instantlyExecuteOnlineCommand($command, $due_player));
-				unset($this->delayed_online_command_handlers[$id]);
-			}), $delay));
-			return true;
+		if(isset($this->delayed_online_command_handlers[$id = $command->getId()])){
+			return false;
 		}
-		return false;
+
+		$this->delayed_online_command_handlers[$id] = new DelayedOnlineCommandHandler($command, self::$scheduler->scheduleDelayedTask(new ClosureTask(function() use($id, $command, $due_player, $callback) : void{
+			$callback($this->instantlyExecuteOnlineCommand($command, $due_player));
+			unset($this->delayed_online_command_handlers[$id]);
+		}), $delay));
+		return true;
 	}
 
 	private function instantlyExecuteOnlineCommand(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player) : bool{

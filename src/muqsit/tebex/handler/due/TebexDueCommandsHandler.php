@@ -125,20 +125,21 @@ final class TebexDueCommandsHandler{
 	}
 
 	private function scheduleDuePlayersCheck() : bool{
-		if($this->is_idle){
-			$this->is_idle = false;
-			$server = $this->plugin->getServer();
-			$this->checkDuePlayers(function() use($server) : bool{
-				if(count($server->getOnlinePlayers()) === 0){
-					$this->is_idle = true;
-					$this->logger->debug("Online commands handler is now idle");
-					return false;
-				}
-				return true;
-			});
-			return true;
+		if(!$this->is_idle){
+			return false;
 		}
-		return false;
+
+		$this->is_idle = false;
+		$server = $this->plugin->getServer();
+		$this->checkDuePlayers(function() use($server) : bool{
+			if(count($server->getOnlinePlayers()) === 0){
+				$this->is_idle = true;
+				$this->logger->debug("Online commands handler is now idle");
+				return false;
+			}
+			return true;
+		});
+		return true;
 	}
 
 	public function getList() : TebexDuePlayerList{
