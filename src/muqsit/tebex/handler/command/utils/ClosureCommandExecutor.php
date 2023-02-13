@@ -12,9 +12,7 @@ use pocketmine\command\CommandSender;
 final class ClosureCommandExecutor implements CommandExecutor{
 
 	/**
-	 * @param Closure $executor
-	 *
-	 * @phpstan-param Closure(CommandSender, Command, string, string[]) : bool $executor
+	 * @param Closure(CommandSender, Command, string, string[]) : bool $executor
 	 */
 	public function __construct(
 		private Closure $executor

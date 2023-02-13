@@ -43,9 +43,7 @@ final class TebexPlayerSession{
 	/**
 	 * @param TebexQueuedOnlineCommand $command
 	 * @param TebexDuePlayer $due_player
-	 * @param Closure $callback
-	 *
-	 * @phpstan-param Closure(bool) : void $callback
+	 * @param Closure(bool) : void $callback
 	 */
 	public function executeOnlineCommand(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, Closure $callback) : void{
 		$conditions = $command->getConditions();
@@ -61,10 +59,8 @@ final class TebexPlayerSession{
 	 * @param TebexQueuedOnlineCommand $command
 	 * @param TebexDuePlayer $due_player
 	 * @param int $delay
-	 * @param Closure $callback
+	 * @param Closure(bool) : void $callback
 	 * @return bool
-	 *
-	 * @phpstan-param Closure(bool) : void $callback
 	 */
 	private function scheduleCommandForDelay(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, int $delay, Closure $callback) : bool{
 		if(isset($this->delayed_online_command_handlers[$id = $command->getId()])){

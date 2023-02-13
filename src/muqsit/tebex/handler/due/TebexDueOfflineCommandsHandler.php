@@ -33,9 +33,7 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	/**
-	 * @param Closure|null $callback
-	 *
-	 * @phpstan-param Closure(int) : void $callback
+	 * @param (Closure(int) : void)|null $callback
 	 */
 	public function check(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getQueuedOfflineCommands(TebexResponseHandler::onSuccess(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
@@ -47,9 +45,7 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	/**
-	 * @param Closure|null $callback
-	 *
-	 * @phpstan-param Closure(int) : void $callback
+	 * @param (Closure(int) : void)|null $callback
 	 */
 	public function markAllAsExecuted(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getQueuedOfflineCommands(TebexResponseHandler::onSuccess(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
@@ -85,9 +81,7 @@ final class TebexDueOfflineCommandsHandler{
 
 	/**
 	 * @param TebexQueuedOfflineCommand $command
-	 * @param Closure $callback
-	 *
-	 * @phpstan-param Closure(bool) : void $callback
+	 * @param Closure(bool) : void $callback
 	 */
 	private function executeCommand(TebexQueuedOfflineCommand $command, Closure $callback) : void{
 		$delay = $command->getConditions()->getDelay();

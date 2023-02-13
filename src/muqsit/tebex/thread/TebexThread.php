@@ -22,11 +22,7 @@ use function is_string;
 
 final class TebexThread extends Thread{
 
-	/**
-	 * @var TebexResponseHandler[]
-	 *
-	 * @phpstan-var TebexResponseHandler<TebexResponse>[]
-	 */
+	/** @var TebexResponseHandler<TebexResponse>[] */
 	private static array $handlers = [];
 
 	private static int $handler_ids = 0;
@@ -66,12 +62,9 @@ final class TebexThread extends Thread{
 	}
 
 	/**
-	 * @param TebexRequest $request
-	 * @param TebexResponseHandler $handler
-	 *
-	 * @phpstan-template TTebexResponse of \muqsit\tebexapi\connection\response\TebexResponse
-	 * @phpstan-param TebexRequest<TTebexResponse> $request
-	 * @phpstan-param TebexResponseHandler<TTebexResponse> $handler
+	 * @template TTebexResponse of TebexResponse
+	 * @param TebexRequest<TTebexResponse> $request
+	 * @param TebexResponseHandler<TTebexResponse> $handler
 	 */
 	public function push(TebexRequest $request, TebexResponseHandler $handler) : void{
 		$handler_id = ++self::$handler_ids;

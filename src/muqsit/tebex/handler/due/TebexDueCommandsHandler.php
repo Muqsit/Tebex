@@ -26,10 +26,8 @@ final class TebexDueCommandsHandler{
 
 	/**
 	 * @param string $game_type
-	 * @param Closure $on_match
+	 * @param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 * @return TebexDuePlayerList
-	 *
-	 * @phpstan-param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 */
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
 		return new TebexDuePlayerList(match($game_type){
@@ -92,9 +90,7 @@ final class TebexDueCommandsHandler{
 	}
 
 	/**
-	 * @param Closure|null $callback
-	 *
-	 * @phpstan-param Closure(int) : void $callback
+	 * @param (Closure(int) : void)|null $callback
 	 */
 	public function markAllAsExecuted(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($callback) : void{
@@ -147,9 +143,7 @@ final class TebexDueCommandsHandler{
 	}
 
 	/**
-	 * @param Closure|null $callback
-	 *
-	 * @phpstan-param Closure(int, int) : void $callback
+	 * @param (Closure(int, int) : void)|null $callback
 	 */
 	public function refresh(?Closure $callback = null) : void{
 		$this->offline_commands_handler->check(function(int $offline_cmds_count) use($callback) : void{
@@ -162,11 +156,8 @@ final class TebexDueCommandsHandler{
 	}
 
 	/**
-	 * @param Closure|null $reschedule_condition
-	 * @param Closure|null $callback
-	 *
-	 * @phpstan-param Closure() : bool $reschedule_condition
-	 * @phpstan-param Closure(int) : void $callback
+	 * @param (Closure() : bool)|null $reschedule_condition
+	 * @param (Closure(int) : void)|null $callback
 	 */
 	public function checkDuePlayers(?Closure $reschedule_condition = null, ?Closure $callback = null) : void{
 		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($reschedule_condition, $callback) : void{

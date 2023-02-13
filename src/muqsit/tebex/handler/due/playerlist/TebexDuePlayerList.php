@@ -12,32 +12,18 @@ use pocketmine\player\Player;
 
 final class TebexDuePlayerList{
 
-	/**
-	 * @var TebexDuePlayerHolder[]
-	 *
-	 * @phpstan-var array<int, TebexDuePlayerHolder>
-	 */
+	/** @var array<int, TebexDuePlayerHolder> */
 	private array $tebex_due_players_by_id = []; // indexes pending customers by TebexPlayerId => TebexDuePlayerHolder
 
-	/**
-	 * @var int[]
-	 *
-	 * @phpstan-var array<string, int>
-	 */
+	/** @var array<string, int> */
 	private array $tebex_due_players_by_index = []; // indexes pending customers by TebexDuePlayerList::$indexer => TebexPlayerId
 
-	/**
-	 * @var TebexPlayerSession[]
-	 *
-	 * @phpstan-var array<string, TebexPlayerSession>
-	 */
+	/** @var array<string, TebexPlayerSession> */
 	private array $online_players = []; // indexes online players on the server by TebexDuePlayerList::$indexer => TebexPlayerSession
 
 	/**
-	 * @param Closure $on_match
+	 * @param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 * @param PlayerIndexer $indexer
-	 *
-	 * @phpstan-param Closure(Player, TebexDuePlayerHolder) : void $on_match
 	 */
 	public function __construct(
 		private PlayerIndexer $indexer,
