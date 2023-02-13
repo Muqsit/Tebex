@@ -30,9 +30,9 @@ final class UnregisteredTebexCommandExecutor implements CommandExecutor{
 			$config->set("secret", $secret);
 			$config->save();
 
-			$account = $info->getAccount();
-			$server = $info->getServer();
-			$sender->sendMessage("Successfully logged in to server (#{$server->getId()}) {$server->getName()} as (#{$account->getId()}) {$account->getName()}!");
+			$account = $info->account;
+			$server = $info->server;
+			$sender->sendMessage("Successfully logged in to server (#{$server->id}) {$server->name} as (#{$account->id}) {$account->name}!");
 		}
 	}
 

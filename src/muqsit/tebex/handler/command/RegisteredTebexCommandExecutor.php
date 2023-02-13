@@ -45,23 +45,23 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 		$this->registerSubCommand(new TebexSubCommand("info", "Fetch Tebex account, server and API info", new ClosureCommandExecutor(
 			function(CommandSender $sender, Command $command, string $label, array $args) : bool{
 				$info = $this->plugin->getInformation();
-				$account = $info->getAccount();
-				$server = $info->getServer();
+				$account = $info->account;
+				$server = $info->server;
 
 				$sender->sendMessage(
 					"" . TextFormat::EOL .
 					TextFormat::BOLD . TextFormat::WHITE . "Tebex Account" . TextFormat::RESET . TextFormat::EOL .
-					TextFormat::WHITE . "ID: " . TextFormat::GRAY . $account->getId() . TextFormat::EOL .
-					TextFormat::WHITE . "Domain: " . TextFormat::GRAY . $account->getDomain() . TextFormat::EOL .
-					TextFormat::WHITE . "Name: " . TextFormat::GRAY . $account->getName() . TextFormat::EOL .
-					TextFormat::WHITE . "Currency: " . TextFormat::GRAY . "{$account->getCurrency()->getIso4217()} ({$account->getCurrency()->getSymbol()})" . TextFormat::EOL .
-					TextFormat::WHITE . "Online Mode: " . TextFormat::GRAY . ($account->isOnlineModeEnabled() ? "Enabled" : "Disabled") . TextFormat::EOL .
-					TextFormat::WHITE . "Game Type: " . TextFormat::GRAY . $account->getGameType() . TextFormat::EOL .
-					TextFormat::WHITE . "Event Logging: " . TextFormat::GRAY . ($account->isLogEventsEnabled() ? "Enabled" : "Disabled") . TextFormat::EOL .
+					TextFormat::WHITE . "ID: " . TextFormat::GRAY . $account->id . TextFormat::EOL .
+					TextFormat::WHITE . "Domain: " . TextFormat::GRAY . $account->domain . TextFormat::EOL .
+					TextFormat::WHITE . "Name: " . TextFormat::GRAY . $account->name . TextFormat::EOL .
+					TextFormat::WHITE . "Currency: " . TextFormat::GRAY . "{$account->currency->iso_4217} ({$account->currency->symbol})" . TextFormat::EOL .
+					TextFormat::WHITE . "Online Mode: " . TextFormat::GRAY . ($account->online_mode ? "Enabled" : "Disabled") . TextFormat::EOL .
+					TextFormat::WHITE . "Game Type: " . TextFormat::GRAY . $account->game_type . TextFormat::EOL .
+					TextFormat::WHITE . "Event Logging: " . TextFormat::GRAY . ($account->log_events ? "Enabled" : "Disabled") . TextFormat::EOL .
 					"" . TextFormat::EOL .
 					TextFormat::BOLD . TextFormat::WHITE . "Tebex Server" . TextFormat::RESET . TextFormat::EOL .
-					TextFormat::WHITE . "ID: " . TextFormat::GRAY . $server->getId() . TextFormat::EOL .
-					TextFormat::WHITE . "Name: " . TextFormat::GRAY . $server->getName() . TextFormat::EOL .
+					TextFormat::WHITE . "ID: " . TextFormat::GRAY . $server->id . TextFormat::EOL .
+					TextFormat::WHITE . "Name: " . TextFormat::GRAY . $server->name . TextFormat::EOL .
 					"" . TextFormat::EOL .
 					TextFormat::BOLD . TextFormat::WHITE . "Tebex API" . TextFormat::RESET . TextFormat::EOL .
 					TextFormat::WHITE . "Latency: " . TextFormat::GRAY . round($this->plugin->getApi()->getLatency() * 1000) . "ms" . TextFormat::EOL .

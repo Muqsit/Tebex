@@ -109,9 +109,9 @@ final class Loader extends PluginBase{
 		}
 		$this->command->setExecutor($executor);
 
-		$account = $this->information->getAccount();
-		$server = $this->information->getServer();
-		$this->getLogger()->debug("Listening to events of \"{$server->getName()}\"[#{$server->getId()}] server as \"{$account->getName()}\"[#{$account->getId()}] (latency: " . round($this->getApi()->getLatency() * 1000) . "ms)");
+		$account = $this->information->account;
+		$server = $this->information->server;
+		$this->getLogger()->debug("Listening to events of \"{$server->name}\"[#{$server->id}] server as \"{$account->name}\"[#{$account->id}] (latency: " . round($this->getApi()->getLatency() * 1000) . "ms)");
 	}
 
 	public function getApi() : TebexApi{

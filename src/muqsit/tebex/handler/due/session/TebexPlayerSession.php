@@ -46,8 +46,8 @@ final class TebexPlayerSession{
 	 * @param Closure(bool) : void $callback
 	 */
 	public function executeOnlineCommand(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, Closure $callback) : void{
-		$conditions = $command->getConditions();
-		$delay = $conditions->getDelay();
+		$conditions = $command->conditions;
+		$delay = $conditions->delay;
 		if($delay > 0){
 			$this->scheduleCommandForDelay($command, $due_player, $delay * 20, $callback);
 		}else{
@@ -63,7 +63,7 @@ final class TebexPlayerSession{
 	 * @return bool
 	 */
 	private function scheduleCommandForDelay(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player, int $delay, Closure $callback) : bool{
-		if(isset($this->delayed_online_command_handlers[$id = $command->getId()])){
+		if(isset($this->delayed_online_command_handlers[$id = $command->id])){
 			return false;
 		}
 
@@ -75,8 +75,8 @@ final class TebexPlayerSession{
 	}
 
 	private function instantlyExecuteOnlineCommand(TebexQueuedOnlineCommand $command, TebexDuePlayer $due_player) : bool{
-		$conditions = $command->getConditions();
-		$slots = $conditions->getInventorySlots();
+		$conditions = $command->conditions;
+		$slots = $conditions->slots;
 		if($slots > 0){
 			$inventory = $this->player->getInventory();
 			$free_slots = $inventory->getSize() - count($inventory->getContents());
@@ -85,6 +85,6 @@ final class TebexPlayerSession{
 			}
 		}
 
-		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), TebexApiUtils::onlineFormatCommand($command->getCommand(), $this->player, $due_player));
+		return $this->player->getServer()->dispatchCommand(TebexCommandSender::getInstance(), TebexApiUtils::onlineFormatCommand($command->command, $this->player, $due_player));
 	}
 }

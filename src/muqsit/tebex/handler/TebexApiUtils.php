@@ -18,11 +18,11 @@ use pocketmine\Server;
 final class TebexApiUtils{
 
 	public static function convertGuiItemToItem(TebexGuiItem $gui_item) : Item{
-		$item = StringToItemParser::getInstance()->parse($gui_item->getValue());
+		$item = StringToItemParser::getInstance()->parse($gui_item->value);
 		if($item === null){
 			$plugin = Server::getInstance()->getPluginManager()->getPlugin("Tebex");
 			if($plugin instanceof Loader){
-				$plugin->getLogger()->warning("Failed to parse GUI item \"{$gui_item->getValue()}\", using PAPER as fallback");
+				$plugin->getLogger()->warning("Failed to parse GUI item \"{$gui_item->value}\", using PAPER as fallback");
 			}
 			return VanillaItems::PAPER();
 		}
@@ -34,18 +34,18 @@ final class TebexApiUtils{
 		return strtr($command->asRawString(), [
 			"{name}" => $gamertag,
 			"{player}" => $gamertag,
-			"{username}" => "\"{$due_player->getName()}\"",
+			"{username}" => "\"{$due_player->name}\"",
 			"{id}" => $player->getXuid()
 		]);
 	}
 
 	public static function offlineFormatCommand(TebexCommand $command, TebexDuePlayer $due_player) : string{
-		$gamertag = "\"{$due_player->getName()}\"";
+		$gamertag = "\"{$due_player->name}\"";
 		return strtr($command->asRawString(), [
 			"{name}" => $gamertag,
 			"{player}" => $gamertag,
 			"{username}" => $gamertag,
-			"{id}" => $due_player->getUuid() ?? ""
+			"{id}" => $due_player->uuid ?? ""
 		]);
 	}
 }

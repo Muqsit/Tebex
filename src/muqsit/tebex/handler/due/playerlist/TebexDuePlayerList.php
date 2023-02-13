@@ -64,8 +64,8 @@ final class TebexDuePlayerList{
 		$this->tebex_due_players_by_index = [];
 		foreach($due_players as $player){
 			$holder = new TebexDuePlayerHolder($player);
-			$this->tebex_due_players_by_id[$player->getId()] = $holder;
-			$this->tebex_due_players_by_index[$index = $this->indexer->fromTebexDuePlayer($player)] = $player->getId();
+			$this->tebex_due_players_by_id[$player->id] = $holder;
+			$this->tebex_due_players_by_index[$index = $this->indexer->fromTebexDuePlayer($player)] = $player->id;
 			if(isset($this->online_players[$index])){
 				$this->onMatch($this->online_players[$index]->getPlayer(), $holder);
 			}
@@ -74,7 +74,7 @@ final class TebexDuePlayerList{
 
 	public function remove(TebexDuePlayerHolder $holder) : void{
 		$player = $holder->getPlayer();
-		unset($this->tebex_due_players_by_id[$player->getId()], $this->tebex_due_players_by_index[$this->indexer->fromTebexDuePlayer($player)]);
+		unset($this->tebex_due_players_by_id[$player->id], $this->tebex_due_players_by_index[$this->indexer->fromTebexDuePlayer($player)]);
 	}
 
 	public function getTebexAwaitingPlayer(Player $player) : ?TebexDuePlayerHolder{

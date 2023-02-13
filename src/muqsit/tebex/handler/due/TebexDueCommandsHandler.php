@@ -52,26 +52,26 @@ final class TebexDueCommandsHandler{
 		$this->offline_commands_handler = new TebexDueOfflineCommandsHandler($plugin, $handler);
 
 		$api = $plugin->getApi();
-		$this->list = self::getListFromGameType($plugin->getInformation()->getAccount()->getGameType(), function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
+		$this->list = self::getListFromGameType($plugin->getInformation()->account->game_type, function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
 			$session = $this->list->getOnlinePlayer($player);
 			assert($session !== null);
-			$api->getQueuedOnlineCommands($holder->getPlayer()->getId(), TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
+			$api->getQueuedOnlineCommands($holder->getPlayer()->id, TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
 				if(!$player->isOnline()){
 					return;
 				}
 
-				$commands = $info->getCommands();
+				$commands = $info->commands;
 				$total_commands = count($commands);
 				$timestamp = microtime(true);
 				foreach($commands as $tebex_command){
 					$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
-						$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->getCommand(), $player, $holder->getPlayer());
+						$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->command, $player, $holder->getPlayer());
 						if(!$success){
 							$this->logger->warning("Failed to execute online command: {$command_string}");
 							return;
 						}
 
-						$command_id = $tebex_command->getId();
+						$command_id = $tebex_command->id;
 						$handler->queueCommandDeletion($command_id);
 						if(--$total_commands === 0){
 							$current_holder = $this->list->getTebexAwaitingPlayer($player);
@@ -95,7 +95,7 @@ final class TebexDueCommandsHandler{
 	public function markAllAsExecuted(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($callback) : void{
 			$marked = 0;
-			$batches = count($result->getPlayers()) + 1;
+			$batches = count($result->players) + 1;
 
 			$cb = static function(int $done) use(&$marked, &$batches, $callback) : void{
 				$marked += $done;
@@ -108,11 +108,11 @@ final class TebexDueCommandsHandler{
 
 			$this->offline_commands_handler->markAllAsExecuted($cb);
 
-			foreach($result->getPlayers() as $player){
-				$this->plugin->getApi()->getQueuedOnlineCommands($player->getId(), TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($cb) : void{
-					$commands = $info->getCommands();
+			foreach($result->players as $player){
+				$this->plugin->getApi()->getQueuedOnlineCommands($player->id, TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($cb) : void{
+					$commands = $info->commands;
 					foreach($commands as $command){
-						$this->handler->queueCommandDeletion($command->getId());
+						$this->handler->queueCommandDeletion($command->id);
 					}
 					$cb(count($commands));
 				}));
@@ -163,17 +163,17 @@ final class TebexDueCommandsHandler{
 		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($reschedule_condition, $callback) : void{
 			$this->onFetchDuePlayers($result);
 			if($callback !== null){
-				$callback(count($result->getPlayers()));
+				$callback(count($result->players));
 			}
 			if($reschedule_condition !== null && $reschedule_condition()){
-				$next_check = $result->getMeta()->getNextCheck();
+				$next_check = $result->meta->next_check;
 				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($reschedule_condition, $callback) : void{ $this->checkDuePlayers($reschedule_condition, $callback); }), $next_check * 20);
 			}
 		}));
 	}
 
 	private function onFetchDuePlayers(TebexDuePlayersInfo $result) : void{
-		$players = $result->getPlayers();
+		$players = $result->players;
 		$this->list->update($players);
 
 		$players_c = count($players);

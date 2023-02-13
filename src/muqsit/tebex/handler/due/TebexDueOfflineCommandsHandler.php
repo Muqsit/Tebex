@@ -38,7 +38,7 @@ final class TebexDueOfflineCommandsHandler{
 	public function check(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getQueuedOfflineCommands(TebexResponseHandler::onSuccess(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
 			if($callback !== null){
-				$callback(count($info->getCommands()));
+				$callback(count($info->commands));
 			}
 			$this->onFetchDueOfflineCommands($info);
 		}));
@@ -49,9 +49,9 @@ final class TebexDueOfflineCommandsHandler{
 	 */
 	public function markAllAsExecuted(?Closure $callback = null) : void{
 		$this->plugin->getApi()->getQueuedOfflineCommands(TebexResponseHandler::onSuccess(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
-			$commands = $info->getCommands();
+			$commands = $info->commands;
 			foreach($commands as $command){
-				$this->handler->queueCommandDeletion($command->getId());
+				$this->handler->queueCommandDeletion($command->id);
 			}
 			if($callback !== null){
 				$callback(count($commands));
@@ -60,16 +60,16 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	private function onFetchDueOfflineCommands(TebexQueuedOfflineCommandsInfo $info) : void{
-		$commands = $info->getCommands();
+		$commands = $info->commands;
 
 		$commands_c = count($commands);
 		$this->logger->debug("Fetched {$commands_c} offline command" . ($commands_c === 1 ? "" : "s"));
 
 		foreach($commands as $command){
 			$this->executeCommand($command, function(bool $success) use($command) : void{
-				$command_string = TebexApiUtils::offlineFormatCommand($command->getCommand(), $command->getPlayer());
+				$command_string = TebexApiUtils::offlineFormatCommand($command->command, $command->player);
 				if($success){
-					$command_id = $command->getId();
+					$command_id = $command->id;
 					$this->handler->queueCommandDeletion($command_id);
 					$this->logger->info("Executed offline command #{$command_id}: {$command_string}");
 				}else{
@@ -84,9 +84,9 @@ final class TebexDueOfflineCommandsHandler{
 	 * @param Closure(bool) : void $callback
 	 */
 	private function executeCommand(TebexQueuedOfflineCommand $command, Closure $callback) : void{
-		$delay = $command->getConditions()->getDelay();
+		$delay = $command->conditions->delay;
 		if($delay > 0){
-			if(!isset($this->delayed[$id = $command->getId()])){
+			if(!isset($this->delayed[$id = $command->id])){
 				$this->delayed[$id] = $id;
 				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($id, $command, $callback) : void{
 					$callback($this->instantlyExecuteCommand($command));
@@ -99,6 +99,6 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	private function instantlyExecuteCommand(TebexQueuedOfflineCommand $command) : bool{
-		return Server::getInstance()->dispatchCommand(TebexCommandSender::getInstance(), TebexApiUtils::offlineFormatCommand($command->getCommand(), $command->getPlayer()));
+		return Server::getInstance()->dispatchCommand(TebexCommandSender::getInstance(), TebexApiUtils::offlineFormatCommand($command->command, $command->player));
 	}
 }

@@ -17,6 +17,6 @@ final class NameBasedPlayerIndexer implements PlayerIndexer{
 	}
 
 	public function fromTebexDuePlayer(TebexDuePlayer $player) : string{
-		return strtolower($player->getName());
+		return strtolower($player->name);
 	}
 }
