@@ -1,9 +1,9 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Muqsit/Tebex
 build-by-default: true
 branches:
-  - master
-  - pmmp-api4
   - pmmp-api5
+  - pmmp-api4
+  - master
 projects:
   Tebex:
     path: ""
