@@ -21,7 +21,7 @@ final class TebexHandler{
 	private int $pending_commands_batch_counter = 0;
 
 	public function __construct(
-		private Loader $plugin
+		readonly private Loader $plugin
 	){
 		$this->init();
 	}

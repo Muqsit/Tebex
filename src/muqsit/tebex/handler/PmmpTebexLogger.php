@@ -11,7 +11,7 @@ use Throwable;
 final class PmmpTebexLogger implements TebexLogger{
 
 	public function __construct(
-		private Logger $logger
+		readonly private Logger $logger
 	){}
 
 	public function exception(Throwable $t) : void{

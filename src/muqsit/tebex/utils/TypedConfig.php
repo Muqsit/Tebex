@@ -9,7 +9,7 @@ use pocketmine\utils\Config;
 final class TypedConfig{
 
 	public function __construct(
-		private Config $config
+		readonly private Config $config
 	){}
 
 	public function getInt(string $key, int $default = 0, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX) : int{

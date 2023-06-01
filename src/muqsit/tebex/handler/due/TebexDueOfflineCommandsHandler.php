@@ -18,9 +18,9 @@ use pocketmine\Server;
 
 final class TebexDueOfflineCommandsHandler{
 
-	private Loader $plugin;
-	private Logger $logger;
-	private TebexHandler $handler;
+	readonly private Loader $plugin;
+	readonly private Logger $logger;
+	readonly private TebexHandler $handler;
 
 	/** @var int[] */
 	private array $delayed = [];

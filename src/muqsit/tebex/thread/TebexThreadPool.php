@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace muqsit\tebex\thread;
 
 use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
-use pmmp\thread\Thread;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperHandlerEntry;
 use UnderflowException;
 
 final class TebexThreadPool{
 
-	private SleeperHandlerEntry $sleeper_handler_entry;
+	readonly private SleeperHandlerEntry $sleeper_handler_entry;
 
 	/** @var TebexThread[] */
 	private array $workers = [];
@@ -20,7 +19,7 @@ final class TebexThreadPool{
 	private float $latency = 0.0;
 
 	public function __construct(
-		private TebexConnectionHandler $connection_handler
+		readonly private TebexConnectionHandler $connection_handler
 	){
 		$this->sleeper_handler_entry = Server::getInstance()->getTickSleeper()->addNotifier(function() : void{
 			foreach($this->workers as $thread){

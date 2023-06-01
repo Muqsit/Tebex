@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace muqsit\tebex\handler;
 
-use Logger;
 use muqsit\tebexapi\connection\handler\SimpleTebexConnectionHandler;
 use muqsit\tebexapi\connection\request\TebexRequest;
 use muqsit\tebexapi\connection\response\TebexResponseHandler;
@@ -18,8 +17,8 @@ use RuntimeException;
 
 final class ThreadedTebexConnection implements TebexConnection{
 
-	private TebexThreadPool $pool;
-	private SslConfiguration $ssl_config;
+	readonly private TebexThreadPool $pool;
+	readonly private SslConfiguration $ssl_config;
 
 	public function __construct(ThreadSafeLogger $logger, string $secret, SslConfiguration $ssl_config, int $workers){
 		$this->pool = new TebexThreadPool(new SimpleTebexConnectionHandler());

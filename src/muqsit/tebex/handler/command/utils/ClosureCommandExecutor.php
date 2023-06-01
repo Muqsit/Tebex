@@ -15,7 +15,7 @@ final class ClosureCommandExecutor implements CommandExecutor{
 	 * @param Closure(CommandSender, Command, string, string[]) : bool $executor
 	 */
 	public function __construct(
-		private Closure $executor
+		readonly private Closure $executor
 	){}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{

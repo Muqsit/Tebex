@@ -24,8 +24,8 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 	private array $aliases = [];
 
 	public function __construct(
-		private Loader $plugin,
-		private TebexHandler $handler
+		readonly private Loader $plugin,
+		readonly private TebexHandler $handler
 	){
 		$this->registerDefaultSubCommands();
 	}

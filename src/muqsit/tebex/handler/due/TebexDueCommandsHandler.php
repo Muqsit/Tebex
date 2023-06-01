@@ -37,14 +37,14 @@ final class TebexDueCommandsHandler{
 		}, $on_match);
 	}
 
-	private TebexDueOfflineCommandsHandler $offline_commands_handler;
-	private TebexDuePlayerList $list;
-	private Logger $logger;
+	readonly private TebexDueOfflineCommandsHandler $offline_commands_handler;
+	readonly private TebexDuePlayerList $list;
+	readonly private Logger $logger;
 	private bool $is_idle = true;
 
 	public function __construct(
-		private Loader $plugin,
-		private TebexHandler $handler
+		readonly private Loader $plugin,
+		readonly private TebexHandler $handler
 	){
 		TebexPlayerSession::init($plugin);
 

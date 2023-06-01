@@ -11,7 +11,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 final class TebexDuePlayerListListener implements Listener{
 
 	public function __construct(
-		private TebexDuePlayerList $list
+		readonly private TebexDuePlayerList $list
 	){}
 
 	/**

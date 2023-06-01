@@ -28,7 +28,7 @@ final class TebexThread extends Thread{
 
 	private static int $handler_ids = 0;
 
-	private SleeperHandlerEntry $sleeper_handler_entry;
+	readonly private SleeperHandlerEntry $sleeper_handler_entry;
 
 	/** @var ThreadSafeArray<string> */
 	private ThreadSafeArray $incoming;
@@ -36,12 +36,12 @@ final class TebexThread extends Thread{
 	/** @var ThreadSafeArray<string> */
 	private ThreadSafeArray $outgoing;
 
-	private ThreadSafeLogger $logger;
+	readonly private ThreadSafeLogger $logger;
 	public int $busy_score = 0;
 	private bool $running = false;
-	private string $secret;
-	private string $ca_path;
-	private string $_connection_handler;
+	readonly private string $secret;
+	readonly private string $ca_path;
+	readonly private string $_connection_handler;
 
 	/**
 	 * @param ThreadSafeLogger $logger

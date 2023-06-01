@@ -26,8 +26,8 @@ final class TebexDuePlayerList{
 	 * @param PlayerIndexer $indexer
 	 */
 	public function __construct(
-		private PlayerIndexer $indexer,
-		private Closure $on_match
+		readonly private PlayerIndexer $indexer,
+		readonly private Closure $on_match
 	){}
 
 	private function onMatch(Player $player, TebexDuePlayerHolder $holder) : void{

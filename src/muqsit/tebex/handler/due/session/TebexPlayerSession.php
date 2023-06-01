@@ -26,7 +26,7 @@ final class TebexPlayerSession{
 	private array $delayed_online_command_handlers = [];
 
 	public function __construct(
-		private Player $player
+		readonly private Player $player
 	){}
 
 	public function getPlayer() : Player{
