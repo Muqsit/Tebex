@@ -35,7 +35,7 @@ final class ThreadedTebexConnection implements TebexConnection{
 		}
 
 		for($i = 0; $i < $workers; $i++){
-			$thread = new TebexThread($logger, $this->pool->getSleeperHandlerEntry(), $secret, $ssl_config, $this->pool->getConnectionHandler());
+			$thread = new TebexThread($logger, $this->pool->sleeper_handler_entry, $secret, $ssl_config, $this->pool->connection_handler);
 			if(count($class_loaders) > 0){
 				$thread->setClassLoaders($class_loaders);
 			}

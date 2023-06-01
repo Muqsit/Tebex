@@ -55,7 +55,7 @@ final class TebexDueCommandsHandler{
 		$this->list = self::getListFromGameType($plugin->getInformation()->account->game_type, function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
 			$session = $this->list->getOnlinePlayer($player);
 			assert($session !== null);
-			$api->getQueuedOnlineCommands($holder->getPlayer()->id, TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
+			$api->getQueuedOnlineCommands($holder->player->id, TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
 				if(!$player->isOnline()){
 					return;
 				}
@@ -64,8 +64,8 @@ final class TebexDueCommandsHandler{
 				$total_commands = count($commands);
 				$timestamp = microtime(true);
 				foreach($commands as $tebex_command){
-					$session->executeOnlineCommand($tebex_command, $holder->getPlayer(), function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
-						$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->command, $player, $holder->getPlayer());
+					$session->executeOnlineCommand($tebex_command, $holder->player, function(bool $success) use($tebex_command, $handler, &$total_commands, $player, $holder, $timestamp) : void{
+						$command_string = TebexApiUtils::onlineFormatCommand($tebex_command->command, $player, $holder->player);
 						if(!$success){
 							$this->logger->warning("Failed to execute online command: {$command_string}");
 							return;
@@ -75,7 +75,7 @@ final class TebexDueCommandsHandler{
 						$handler->queueCommandDeletion($command_id);
 						if(--$total_commands === 0){
 							$current_holder = $this->list->getTebexAwaitingPlayer($player);
-							if($current_holder !== null && $current_holder->getCreated() < $timestamp){
+							if($current_holder !== null && $current_holder->created < $timestamp){
 								$this->list->remove($current_holder);
 							}
 						}

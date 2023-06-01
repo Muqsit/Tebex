@@ -35,7 +35,7 @@ final class TebexPlayerSession{
 
 	public function destroy() : void{
 		foreach($this->delayed_online_command_handlers as $handler){
-			$handler->getHandler()->cancel();
+			$handler->handler->cancel();
 		}
 		$this->delayed_online_command_handlers = [];
 	}

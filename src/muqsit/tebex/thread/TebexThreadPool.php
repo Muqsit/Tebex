@@ -11,7 +11,7 @@ use UnderflowException;
 
 final class TebexThreadPool{
 
-	readonly private SleeperHandlerEntry $sleeper_handler_entry;
+	readonly public SleeperHandlerEntry $sleeper_handler_entry;
 
 	/** @var TebexThread[] */
 	private array $workers = [];
@@ -19,21 +19,13 @@ final class TebexThreadPool{
 	private float $latency = 0.0;
 
 	public function __construct(
-		readonly private TebexConnectionHandler $connection_handler
+		readonly public TebexConnectionHandler $connection_handler
 	){
 		$this->sleeper_handler_entry = Server::getInstance()->getTickSleeper()->addNotifier(function() : void{
 			foreach($this->workers as $thread){
 				$this->collectThread($thread);
 			}
 		});
-	}
-
-	public function getConnectionHandler() : TebexConnectionHandler{
-		return $this->connection_handler;
-	}
-
-	public function getSleeperHandlerEntry(): SleeperHandlerEntry{
-		return $this->sleeper_handler_entry;
 	}
 
 	/**

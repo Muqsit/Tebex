@@ -73,7 +73,7 @@ final class TebexDuePlayerList{
 	}
 
 	public function remove(TebexDuePlayerHolder $holder) : void{
-		$player = $holder->getPlayer();
+		$player = $holder->player;
 		unset($this->tebex_due_players_by_id[$player->id], $this->tebex_due_players_by_index[$this->indexer->fromTebexDuePlayer($player)]);
 	}
 
