@@ -3,6 +3,7 @@ build-by-default: true
 branches:
   - master
   - pmmp-api4
+  - pmmp-api5
 projects:
   Tebex:
     path: ""
