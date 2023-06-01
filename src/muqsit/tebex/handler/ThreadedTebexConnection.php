@@ -13,6 +13,7 @@ use muqsit\tebexapi\connection\TebexConnection;
 use muqsit\tebex\thread\TebexThread;
 use muqsit\tebex\thread\TebexThreadPool;
 use pocketmine\Server;
+use pocketmine\thread\log\ThreadSafeLogger;
 use RuntimeException;
 
 final class ThreadedTebexConnection implements TebexConnection{
@@ -20,7 +21,7 @@ final class ThreadedTebexConnection implements TebexConnection{
 	private TebexThreadPool $pool;
 	private SslConfiguration $ssl_config;
 
-	public function __construct(Logger $logger, string $secret, SslConfiguration $ssl_config, int $workers){
+	public function __construct(ThreadSafeLogger $logger, string $secret, SslConfiguration $ssl_config, int $workers){
 		$this->pool = new TebexThreadPool(new SimpleTebexConnectionHandler());
 		$this->ssl_config = $ssl_config;
 
@@ -35,7 +36,7 @@ final class ThreadedTebexConnection implements TebexConnection{
 		}
 
 		for($i = 0; $i < $workers; $i++){
-			$thread = new TebexThread($logger, $this->pool->getNotifier(), $secret, $ssl_config, $this->pool->getConnectionHandler());
+			$thread = new TebexThread($logger, $this->pool->getSleeperHandlerEntry(), $secret, $ssl_config, $this->pool->getConnectionHandler());
 			if(count($class_loaders) > 0){
 				$thread->setClassLoaders($class_loaders);
 			}

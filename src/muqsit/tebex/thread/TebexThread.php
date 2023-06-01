@@ -15,9 +15,10 @@ use muqsit\tebexapi\connection\response\TebexResponseHandler;
 use muqsit\tebexapi\connection\response\TebexResponseHolder;
 use muqsit\tebexapi\connection\SslConfiguration;
 use muqsit\tebexapi\connection\TebexConnectionHelper;
-use pocketmine\snooze\SleeperNotifier;
+use pmmp\thread\ThreadSafeArray;
+use pocketmine\snooze\SleeperHandlerEntry;
+use pocketmine\thread\log\ThreadSafeLogger;
 use pocketmine\thread\Thread;
-use Threaded;
 use function is_string;
 
 final class TebexThread extends Thread{
@@ -27,16 +28,15 @@ final class TebexThread extends Thread{
 
 	private static int $handler_ids = 0;
 
-	/** @var SleeperNotifier<mixed> */
-	private SleeperNotifier $notifier;
+	private SleeperHandlerEntry $sleeper_handler_entry;
 
-	/** @var Threaded<string> */
-	private Threaded $incoming;
+	/** @var ThreadSafeArray<string> */
+	private ThreadSafeArray $incoming;
 
-	/** @var Threaded<string> */
-	private Threaded $outgoing;
+	/** @var ThreadSafeArray<string> */
+	private ThreadSafeArray $outgoing;
 
-	private Logger $logger;
+	private ThreadSafeLogger $logger;
 	public int $busy_score = 0;
 	private bool $running = false;
 	private string $secret;
@@ -44,19 +44,19 @@ final class TebexThread extends Thread{
 	private string $_connection_handler;
 
 	/**
-	 * @param Logger $logger
-	 * @param SleeperNotifier<mixed> $notifier
+	 * @param ThreadSafeLogger $logger
+	 * @param SleeperHandlerEntry $sleeper_handler_entry
 	 * @param string $secret
 	 * @param SslConfiguration $ssl_config
 	 * @param TebexConnectionHandler $connection_handler
 	 */
-	public function __construct(Logger $logger, SleeperNotifier $notifier, string $secret, SslConfiguration $ssl_config, TebexConnectionHandler $connection_handler){
+	public function __construct(ThreadSafeLogger $logger, SleeperHandlerEntry $sleeper_handler_entry, string $secret, SslConfiguration $ssl_config, TebexConnectionHandler $connection_handler){
 		$this->_connection_handler = igbinary_serialize($connection_handler);
 
-		$this->notifier = $notifier;
+		$this->sleeper_handler_entry = $sleeper_handler_entry;
 		$this->ca_path = $ssl_config->getCAInfoPath();
-		$this->incoming = new Threaded();
-		$this->outgoing = new Threaded();
+		$this->incoming = new ThreadSafeArray();
+		$this->outgoing = new ThreadSafeArray();
 		$this->logger = $logger;
 		$this->secret = $secret;
 	}
@@ -79,6 +79,8 @@ final class TebexThread extends Thread{
 	protected function onRun() : void{
 		$this->running = true;
 
+		$notifier = $this->sleeper_handler_entry->createNotifier();
+
 		/** @var TebexConnectionHandler $connection_handler */
 		$connection_handler = igbinary_unserialize($this->_connection_handler);
 
@@ -98,7 +100,7 @@ final class TebexThread extends Thread{
 				}
 
 				$this->outgoing[] = igbinary_serialize($response_holder);
-				$this->notifier->wakeupSleeper();
+				$notifier->wakeupSleeper();
 			}
 			$this->sleep();
 		}

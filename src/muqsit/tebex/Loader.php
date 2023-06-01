@@ -79,7 +79,7 @@ final class Loader extends PluginBase{
 			throw new RuntimeException("Failed to read contents of SSL file cacert.pem");
 		}
 
-		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getLogger(), $secret, SslConfiguration::fromData($ssl_data), $this->worker_limit));
+		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getServer()->getLogger(), $secret, SslConfiguration::fromData($ssl_data), $this->worker_limit));
 		$api->getInformation(new TebexResponseHandler(
 			static function(TebexInformation $information) use(&$result) : void{ $result = $information; },
 			static function(TebexException $e) use(&$result) : void{ $result = $e; }
