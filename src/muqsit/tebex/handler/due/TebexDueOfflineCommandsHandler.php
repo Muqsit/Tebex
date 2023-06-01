@@ -29,7 +29,7 @@ final class TebexDueOfflineCommandsHandler{
 		$this->plugin = $plugin;
 		$this->logger = $plugin->getLogger();
 		$this->handler = $handler;
-		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() : void{ $this->check(); }), $check_period);
+		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask($this->check(...)), $check_period);
 	}
 
 	/**

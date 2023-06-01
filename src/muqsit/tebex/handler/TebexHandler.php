@@ -37,7 +37,7 @@ final class TebexHandler{
 	public function queueCommandDeletion(int $command_id, int ...$command_ids) : void{
 		if($this->command_ids === null){
 			$this->command_ids = [];
-			$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() : void{ $this->deletePendingCommands(); }), 1);
+			$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask($this->deletePendingCommands(...)), 1);
 		}
 
 		array_push($this->command_ids, $command_id, ...$command_ids);

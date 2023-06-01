@@ -71,9 +71,7 @@ final class TebexThread extends Thread{
 		$this->incoming[] = igbinary_serialize(new TebexRequestHolder($request, $handler_id));
 		self::$handlers[$handler_id] = $handler;
 		++$this->busy_score;
-		$this->synchronized(function() : void{
-			$this->notifyOne();
-		});
+		$this->synchronized($this->notifyOne(...));
 	}
 
 	protected function onRun() : void{
@@ -116,9 +114,7 @@ final class TebexThread extends Thread{
 
 	public function stop() : void{
 		$this->running = false;
-		$this->synchronized(function() : void{
-			$this->notify();
-		});
+		$this->synchronized($this->notify(...));
 	}
 
 	/**
