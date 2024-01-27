@@ -22,6 +22,7 @@ use muqsit\tebex\utils\TypedConfig;
 use pocketmine\command\PluginCommand;
 use pocketmine\plugin\PluginBase;
 use RuntimeException;
+use function file_get_contents;
 
 final class Loader extends PluginBase{
 
@@ -72,12 +73,8 @@ final class Loader extends PluginBase{
 		/** @var TebexInformation|TebexException $result */
 		$result = null;
 
-		$_cacert_pem = $this->getResource("cacert.pem") ?? throw new RuntimeException("Failed to locate SSL file cacert.pem");
-		$ssl_data = stream_get_contents($_cacert_pem);
-		fclose($_cacert_pem);
-		if($ssl_data === false){
-			throw new RuntimeException("Failed to read contents of SSL file cacert.pem");
-		}
+		$ssl_data = file_get_contents($this->getResourcePath("cacert.pem"));
+		$ssl_data !== false || throw new RuntimeException("Failed to read SSL file cacert.pem");
 
 		$api = new ConnectionBasedTebexApi(new ThreadedTebexConnection($this->getServer()->getLogger(), $secret, SslConfiguration::fromData($ssl_data), $this->worker_limit));
 		$api->getInformation(new TebexResponseHandler(
