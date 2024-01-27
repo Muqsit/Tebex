@@ -32,7 +32,7 @@ final class TebexDueCommandsHandler{
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
 		return new TebexDuePlayerList(match($game_type){
 			"Minecraft (Bedrock)" => new XuidBasedPlayerIndexer(),
-			"Minecraft Offline" => new NameBasedPlayerIndexer(),
+			"Minecraft (Offline/Geyser)" => new NameBasedPlayerIndexer(),
 			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
 		}, $on_match);
 	}
