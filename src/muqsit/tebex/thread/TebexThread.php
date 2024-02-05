@@ -11,10 +11,12 @@ use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
 use muqsit\tebexapi\connection\request\TebexRequest;
 use muqsit\tebexapi\connection\request\TebexRequestHolder;
 use muqsit\tebexapi\connection\response\TebexResponse;
+use muqsit\tebexapi\connection\response\TebexResponseFailureHolder;
 use muqsit\tebexapi\connection\response\TebexResponseHandler;
 use muqsit\tebexapi\connection\response\TebexResponseHolder;
 use muqsit\tebexapi\connection\SslConfiguration;
 use muqsit\tebexapi\connection\TebexConnectionHelper;
+use muqsit\tebexapi\utils\TebexException;
 use pmmp\thread\ThreadSafeArray;
 use pocketmine\snooze\SleeperHandlerEntry;
 use pocketmine\thread\log\ThreadSafeLogger;
@@ -92,6 +94,8 @@ final class TebexThread extends Thread{
 
 				try{
 					$response_holder = $connection_handler->handle($request_holder, $default_curl_opts);
+				}catch(TebexException $e){
+					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $e);
 				}catch(Exception $e){
 					$this->logger->logException($e);
 					throw $e;
