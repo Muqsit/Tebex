@@ -50,7 +50,7 @@ final class TebexDuePlayerList{
 	}
 
 	/**
-	 * @return TebexDuePlayerHolder[]
+	 * @return array<int, TebexDuePlayerHolder>
 	 */
 	public function getAll() : array{
 		return $this->tebex_due_players_by_id;

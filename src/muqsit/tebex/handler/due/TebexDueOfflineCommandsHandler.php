@@ -22,7 +22,7 @@ final class TebexDueOfflineCommandsHandler{
 	readonly private Logger $logger;
 	readonly private TebexHandler $handler;
 
-	/** @var int[] */
+	/** @var array<int, int> */
 	private array $delayed = [];
 
 	public function __construct(Loader $plugin, TebexHandler $handler, int $check_period = 60 * 20){

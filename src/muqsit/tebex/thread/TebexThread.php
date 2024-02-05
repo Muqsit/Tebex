@@ -25,7 +25,7 @@ use function is_string;
 
 final class TebexThread extends Thread{
 
-	/** @var TebexResponseHandler<TebexResponse>[] */
+	/** @var array<int, TebexResponseHandler<TebexResponse>> */
 	private static array $handlers = [];
 
 	private static int $handler_ids = 0;

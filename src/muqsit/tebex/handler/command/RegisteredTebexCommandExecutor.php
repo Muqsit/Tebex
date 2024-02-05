@@ -73,9 +73,9 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 
 		$this->registerSubCommand(new TebexSubCommand("refresh", "Refresh offline and online command queues", new ClosureCommandExecutor(
 			function(CommandSender $sender, Command $command, string $label, array $args) : bool{
+				/** @var array<int, CommandSender>|null $command_senders_force_check */
 				static $command_senders_force_check = null;
 				if($command_senders_force_check === null){
-					/** @var CommandSender[] $command_senders_force_check */
 					$command_senders_force_check = [];
 					$this->handler->getDueCommandsHandler()->refresh(static function(int $offline_commands, int $online_players) use(&$command_senders_force_check) : void{
 						if($command_senders_force_check !== null){
@@ -101,9 +101,9 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 
 		$this->registerSubCommand(new TebexSubCommand("dropall", "Drop all queued commands", new ClosureCommandExecutor(
 			function(CommandSender $sender, Command $command, string $label, array $args) : bool{
+				/** @var array<int, CommandSender>|null $command_senders_dropall */
 				static $command_senders_dropall = null;
 				if($command_senders_dropall === null){
-					/** @var CommandSender[] $command_senders_dropall */
 					$command_senders_dropall = [];
 					$this->handler->getDueCommandsHandler()->markAllAsExecuted(static function(int $marked) use(&$command_senders_dropall) : void{
 						if($command_senders_dropall !== null){

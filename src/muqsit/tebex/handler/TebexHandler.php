@@ -15,7 +15,7 @@ final class TebexHandler{
 
 	private TebexDueCommandsHandler $due_commands_handler;
 
-	/** @var int[]|null */
+	/** @var list<int>|null */
 	private ?array $command_ids = null;
 
 	private int $pending_commands_batch_counter = 0;

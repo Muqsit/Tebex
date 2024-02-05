@@ -14,7 +14,7 @@ final class TebexThreadPool{
 
 	readonly public SleeperHandlerEntry $sleeper_handler_entry;
 
-	/** @var TebexThread[] */
+	/** @var array<int, TebexThread> */
 	private array $workers = [];
 
 	private float $latency = 0.0;
