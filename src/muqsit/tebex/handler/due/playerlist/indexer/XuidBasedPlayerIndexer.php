@@ -15,9 +15,7 @@ final class XuidBasedPlayerIndexer implements PlayerIndexer{
 
 	public function fromPlayer(Player $player) : string{
 		$xuid = $player->getXuid();
-		if($xuid === ""){
-			throw new InvalidArgumentException("Cannot retrieve XUID of player: {$player->getName()}");
-		}
+		$xuid !== "" || throw new InvalidArgumentException("Cannot retrieve XUID of player: {$player->getName()}");
 		return $xuid;
 	}
 

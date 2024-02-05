@@ -8,6 +8,7 @@ use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperHandlerEntry;
 use UnderflowException;
+use function count;
 
 final class TebexThreadPool{
 
@@ -36,10 +37,7 @@ final class TebexThreadPool{
 	}
 
 	public function start() : void{
-		if(count($this->workers) === 0){
-			throw new UnderflowException("Cannot start an empty pool of workers");
-		}
-
+		count($this->workers) > 0 || throw new UnderflowException("Cannot start an empty pool of workers");
 		foreach($this->workers as $thread){
 			$thread->start();
 		}

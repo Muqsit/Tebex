@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace muqsit\tebex\utils;
 
 use InvalidArgumentException;
+use function is_array;
+use function is_int;
+use function is_string;
 
 final class TypeValidator{
 
@@ -13,9 +16,7 @@ final class TypeValidator{
 	}
 
 	public static function validateInt(string $key, mixed $value, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX) : int{
-		if(!is_int($value)){
-			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
-		}
+		is_int($value) || throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		if($value < $min || $value > $max){
 			throw new InvalidArgumentException("{$key}'s value is out of range [{$min}, {$max}]");
 		}
@@ -23,9 +24,7 @@ final class TypeValidator{
 	}
 
 	public static function validateString(string $key, mixed $value) : string{
-		if(!is_string($value)){
-			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
-		}
+		is_string($value) || throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		return $value;
 	}
 
@@ -35,9 +34,7 @@ final class TypeValidator{
 	 * @return string[]
 	 */
 	public static function validateStringList(string $key, mixed $value) : array{
-		if(!is_array($value)){
-			throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
-		}
+		is_array($value) || throw new InvalidArgumentException("Invalid value for {$key}: " . self::printValue($value));
 		foreach($value as $index => $item){
 			self::validateString("{$key}.{$index}", $item);
 		}

@@ -132,9 +132,7 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 	}
 
 	public function unregisterSubCommand(string $name) : void{
-		if(!isset($this->sub_commands[$name])){
-			throw new InvalidArgumentException("Tried unregistering an unregistered sub-command: {$name}");
-		}
+		isset($this->sub_commands[$name]) || throw new InvalidArgumentException("Tried unregistering an unregistered sub-command: {$name}");
 		foreach($this->sub_commands[$name]->aliases as $alias){
 			unset($this->aliases[$alias]);
 		}
