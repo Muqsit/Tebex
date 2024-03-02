@@ -6,7 +6,6 @@ namespace muqsit\tebex\thread;
 
 use Exception;
 use Generator;
-use Logger;
 use muqsit\tebexapi\connection\handler\TebexConnectionHandler;
 use muqsit\tebexapi\connection\request\TebexRequest;
 use muqsit\tebexapi\connection\request\TebexRequestHolder;
@@ -73,7 +72,7 @@ final class TebexThread extends Thread{
 		$this->incoming[] = igbinary_serialize(new TebexRequestHolder($request, $handler_id));
 		self::$handlers[$handler_id] = $handler;
 		++$this->busy_score;
-		$this->synchronized($this->notifyOne(...));
+		$this->synchronized($this->notify(...));
 	}
 
 	protected function onRun() : void{
@@ -97,8 +96,7 @@ final class TebexThread extends Thread{
 				}catch(TebexException $e){
 					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $e);
 				}catch(Exception $e){
-					$this->logger->logException($e);
-					throw $e;
+					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, new TebexException($e->getMessage(), 5000, $e->getCode(), $e));
 				}
 
 				$this->outgoing[] = igbinary_serialize($response_holder);
