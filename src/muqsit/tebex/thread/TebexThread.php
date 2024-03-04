@@ -94,9 +94,9 @@ final class TebexThread extends Thread{
 				try{
 					$response_holder = $connection_handler->handle($request_holder, $default_curl_opts);
 				}catch(TebexException $e){
-					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $e);
+					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, $e->getLatency(), $e->getMessage(), $e->getCode(), $e->getTraceAsString());
 				}catch(Exception $e){
-					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, new TebexException($e->getMessage(), 5000, $e->getCode(), $e));
+					$response_holder = new TebexResponseFailureHolder($request_holder->handler_id, 5000, $e->getMessage(), $e->getCode(), $e->getTraceAsString());
 				}
 
 				$this->outgoing[] = igbinary_serialize($response_holder);
