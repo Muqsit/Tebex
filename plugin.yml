@@ -1,6 +1,6 @@
 name: Tebex
 main: muqsit\tebex\Loader
-version: 0.1.11
+version: 0.1.12
 author: Muqsit
 api: 5.0.0
 permissions:

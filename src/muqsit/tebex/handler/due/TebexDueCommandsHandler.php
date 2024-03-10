@@ -145,10 +145,10 @@ final class TebexDueCommandsHandler{
 	}
 
 	/**
-	 * @param (Closure(int, int|TebexException) : void)|null $callback
+	 * @param (Closure(int|TebexException, int|TebexException) : void)|null $callback
 	 */
 	public function refresh(?Closure $callback = null) : void{
-		$this->offline_commands_handler->check(function(int $offline_cmds_count) use($callback) : void{
+		$this->offline_commands_handler->check(function(int|TebexException $offline_cmds_count) use($callback) : void{
 			$this->checkDuePlayers(null, static function(int|TebexException $response) use($offline_cmds_count, $callback) : void{
 				if($callback !== null){
 					$callback($offline_cmds_count, $response);

@@ -13,6 +13,7 @@ use muqsit\tebex\handler\command\TebexCommandSender;
 use muqsit\tebex\handler\TebexApiUtils;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
+use muqsit\tebexapi\utils\TebexException;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 
@@ -33,14 +34,18 @@ final class TebexDueOfflineCommandsHandler{
 	}
 
 	/**
-	 * @param (Closure(int) : void)|null $callback
+	 * @param (Closure(int|TebexException) : void)|null $callback
 	 */
 	public function check(?Closure $callback = null) : void{
-		$this->plugin->getApi()->getQueuedOfflineCommands(TebexResponseHandler::onSuccess(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
+		$this->plugin->getApi()->getQueuedOfflineCommands(new TebexResponseHandler(function(TebexQueuedOfflineCommandsInfo $info) use($callback) : void{
 			if($callback !== null){
 				$callback(count($info->commands));
 			}
 			$this->onFetchDueOfflineCommands($info);
+		}, function(TebexException $exception) use($callback) : void{
+			if($callback !== null){
+				$callback($exception);
+			}
 		}));
 	}
 
