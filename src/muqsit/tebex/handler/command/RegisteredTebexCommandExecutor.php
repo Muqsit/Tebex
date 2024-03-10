@@ -9,6 +9,7 @@ use muqsit\tebex\handler\command\utils\ClosureCommandExecutor;
 use muqsit\tebex\handler\command\utils\TebexSubCommand;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
+use muqsit\tebexapi\utils\TebexException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
@@ -77,14 +78,14 @@ final class RegisteredTebexCommandExecutor implements CommandExecutor{
 				static $command_senders_force_check = null;
 				if($command_senders_force_check === null){
 					$command_senders_force_check = [];
-					$this->handler->getDueCommandsHandler()->refresh(static function(int $offline_commands, int $online_players) use(&$command_senders_force_check) : void{
+					$this->handler->getDueCommandsHandler()->refresh(static function(int $offline_commands, int|TebexException $online_players) use(&$command_senders_force_check) : void{
 						if($command_senders_force_check !== null){
 							foreach($command_senders_force_check as $sender){
 								if(!($sender instanceof Player) || $sender->isOnline()){
 									$sender->sendMessage(
 										TextFormat::WHITE . "Refreshed command queue" . TextFormat::EOL .
 										TextFormat::WHITE . "Offline commands fetched: " . TextFormat::GRAY . $offline_commands . TextFormat::EOL .
-										TextFormat::WHITE . "Online players due: " . TextFormat::GRAY . $online_players
+										TextFormat::WHITE . "Online players due: " . TextFormat::GRAY . ($online_players instanceof TebexException ? TextFormat::RED . TextFormat::ITALIC . $online_players->getMessage() . TextFormat::RESET : $online_players)
 									);
 								}
 							}

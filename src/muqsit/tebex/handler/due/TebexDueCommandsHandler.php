@@ -19,8 +19,10 @@ use muqsit\tebex\handler\due\session\TebexPlayerSession;
 use muqsit\tebex\handler\TebexApiUtils;
 use muqsit\tebex\handler\TebexHandler;
 use muqsit\tebex\Loader;
+use muqsit\tebexapi\utils\TebexException;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
+use function max;
 
 final class TebexDueCommandsHandler{
 
@@ -32,7 +34,7 @@ final class TebexDueCommandsHandler{
 	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
 		return new TebexDuePlayerList(match($game_type){
 			"Minecraft (Bedrock)" => new XuidBasedPlayerIndexer(),
-			"Minecraft (Offline/Geyser)" => new NameBasedPlayerIndexer(),
+			"Minecraft Offline" => new NameBasedPlayerIndexer(),
 			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
 		}, $on_match);
 	}
@@ -143,13 +145,13 @@ final class TebexDueCommandsHandler{
 	}
 
 	/**
-	 * @param (Closure(int, int) : void)|null $callback
+	 * @param (Closure(int, int|TebexException) : void)|null $callback
 	 */
 	public function refresh(?Closure $callback = null) : void{
 		$this->offline_commands_handler->check(function(int $offline_cmds_count) use($callback) : void{
-			$this->checkDuePlayers(null, static function(int $due_players_count) use($offline_cmds_count, $callback) : void{
+			$this->checkDuePlayers(null, static function(int|TebexException $response) use($offline_cmds_count, $callback) : void{
 				if($callback !== null){
-					$callback($offline_cmds_count, $due_players_count);
+					$callback($offline_cmds_count, $response);
 				}
 			});
 		});
@@ -157,18 +159,25 @@ final class TebexDueCommandsHandler{
 
 	/**
 	 * @param (Closure() : bool)|null $reschedule_condition
-	 * @param (Closure(int) : void)|null $callback
+	 * @param (Closure(int|TebexException) : void)|null $callback
 	 */
 	public function checkDuePlayers(?Closure $reschedule_condition = null, ?Closure $callback = null) : void{
-		$this->plugin->getApi()->getDuePlayersList(TebexResponseHandler::onSuccess(function(TebexDuePlayersInfo $result) use($reschedule_condition, $callback) : void{
+		$try_rescheduling = function(int $next_check) use($reschedule_condition, $callback) : void{
+			if($reschedule_condition !== null && $reschedule_condition()){
+				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($reschedule_condition, $callback) : void{ $this->checkDuePlayers($reschedule_condition, $callback); }), max(1, $next_check) * 20);
+			}
+		};
+		$this->plugin->getApi()->getDuePlayersList(new TebexResponseHandler(function(TebexDuePlayersInfo $result) use($try_rescheduling, $callback) : void{
 			$this->onFetchDuePlayers($result);
 			if($callback !== null){
 				$callback(count($result->players));
 			}
-			if($reschedule_condition !== null && $reschedule_condition()){
-				$next_check = $result->meta->next_check;
-				$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use($reschedule_condition, $callback) : void{ $this->checkDuePlayers($reschedule_condition, $callback); }), $next_check * 20);
+			$try_rescheduling($result->meta->next_check);
+		}, function(TebexException $exception) use($callback, $try_rescheduling) : void{
+			if($callback !== null){
+				$callback($exception);
 			}
+			$try_rescheduling(5);
 		}));
 	}
 
