@@ -8,6 +8,7 @@ use Closure;
 use InvalidArgumentException;
 use Logger;
 use muqsit\tebex\handler\due\playerlist\indexer\NameBasedPlayerIndexer;
+use muqsit\tebex\handler\due\playerlist\indexer\PlayerIndexer;
 use muqsit\tebex\handler\due\playerlist\indexer\XuidBasedPlayerIndexer;
 use muqsit\tebexapi\connection\response\TebexResponseHandler;
 use muqsit\tebexapi\endpoint\queue\commands\online\TebexQueuedOnlineCommandsInfo;
@@ -26,19 +27,6 @@ use function max;
 
 final class TebexDueCommandsHandler{
 
-	/**
-	 * @param string $game_type
-	 * @param Closure(Player, TebexDuePlayerHolder) : void $on_match
-	 * @return TebexDuePlayerList
-	 */
-	private static function getListFromGameType(string $game_type, Closure $on_match) : TebexDuePlayerList{
-		return new TebexDuePlayerList(match($game_type){
-			"Minecraft (Bedrock)" => new XuidBasedPlayerIndexer(),
-			"Minecraft Offline" => new NameBasedPlayerIndexer(),
-			default => throw new InvalidArgumentException("Unsupported game server type {$game_type}")
-		}, $on_match);
-	}
-
 	readonly private TebexDueOfflineCommandsHandler $offline_commands_handler;
 	readonly private TebexDuePlayerList $list;
 	readonly private Logger $logger;
@@ -54,7 +42,7 @@ final class TebexDueCommandsHandler{
 		$this->offline_commands_handler = new TebexDueOfflineCommandsHandler($plugin, $handler);
 
 		$api = $plugin->getApi();
-		$this->list = self::getListFromGameType($plugin->getInformation()->account->game_type, function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
+		$this->list = new TebexDuePlayerList($this->selectIndexer(), function(Player $player, TebexDuePlayerHolder $holder) use($api, $handler) : void{
 			$session = $this->list->getOnlinePlayer($player);
 			assert($session !== null);
 			$api->getQueuedOnlineCommands($holder->player->id, TebexResponseHandler::onSuccess(function(TebexQueuedOnlineCommandsInfo $info) use($player, $session, $holder, $handler) : void{
@@ -89,6 +77,24 @@ final class TebexDueCommandsHandler{
 
 		$plugin->getServer()->getPluginManager()->registerEvents(new TebexDuePlayerListListener($this->list), $plugin);
 		$plugin->getServer()->getPluginManager()->registerEvents(new TebexLazyDueCommandsListener($this), $plugin);
+	}
+
+	private function selectIndexer() : PlayerIndexer{
+		$information = $this->plugin->getInformation();
+		$game_type = $information->account->game_type;
+		if($game_type === "Minecraft (Bedrock)"){
+			if($this->plugin->getServer()->getOnlineMode()){
+				return new XuidBasedPlayerIndexer();
+			}
+			$this->plugin->getLogger()->warning("Your webstore (" . $information->server->name . "#" . $information->server->id . ") is configured with the game type '{$game_type}', but your server is not running in online-mode.");
+			$this->plugin->getLogger()->warning("Consider using a 'Minecraft (Offline/Geyser)' Tebex webstore, or set 'xbox-auth' to 'on' in server.properties");
+			$this->plugin->getLogger()->warning("The plugin will switch to use 'Minecraft (Offline/Geyser)' configuration on this server.");
+			return new NameBasedPlayerIndexer();
+		}
+		if($game_type === "Minecraft (Offline/Geyser)"){
+			return new NameBasedPlayerIndexer();
+		}
+		throw new InvalidArgumentException("Unsupported game server type {$game_type}");
 	}
 
 	/**
