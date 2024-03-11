@@ -9,5 +9,5 @@ projects:
     path: ""
     libs:
       - src: muqsit/tebexapi/TebexApi
-        version: ^0.2.0
+        version: ^0.2.1
 ...
